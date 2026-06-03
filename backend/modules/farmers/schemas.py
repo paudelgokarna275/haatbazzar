@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from pydantic import BaseModel
 
 
@@ -11,8 +13,8 @@ class FarmerCreate(BaseModel):
 
 
 class FarmerResponse(BaseModel):
-    id: str
-    user_id: str
+    id: UUID
+    user_id: UUID
     farm_name: str
     farm_description: str | None
     farm_address: str | None

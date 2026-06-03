@@ -12,9 +12,10 @@ services:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
+      interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 10
+      start_period: 30s
 
   api:
     build:
@@ -23,11 +24,11 @@ services:
     restart: always
     ports:
       - "8000:8000"
+    env_file:
+      - ./backend/.env
     environment:
       DATABASE_URL: postgresql+asyncpg://postgres:postgres@db:5432/haadbazzar
       DATABASE_SYNC_URL: postgresql://postgres:postgres@db:5432/haadbazzar
-      SECRET_KEY: 6b2b38c0ed50c7678562405dae42bd2c1596b569ff21d4a572bbb54a4f6cdf40e6203c6d1b9d5406f8420ea45329d3d4c10c5e4df9248e0e24d64d7b2579efa8
-      DEBUG: "true"
     depends_on:
       db:
         condition: service_healthy

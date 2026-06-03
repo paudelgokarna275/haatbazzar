@@ -5,8 +5,8 @@ from functools import lru_cache
 class Settings(BaseSettings):
     APP_NAME: str = "Haatbazzar API"
     DEBUG: bool = False
-    DATABASE_URL: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/haadbazzar"
-    DATABASE_SYNC_URL: str = "postgresql://postgres:postgres@localhost:5432/haadbazzar"
+    DATABASE_URL: str
+    DATABASE_SYNC_URL: str
     SECRET_KEY: str
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30

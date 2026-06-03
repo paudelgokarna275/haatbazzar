@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Product Detail — FarmLink Nepal</title>
-  <meta name="description" content="View product details, farmer information, pre-order options, and customer reviews on FarmLink Nepal.">
+  <title>Product Detail — HaatBazaar Nepal</title>
+  <meta name="description" content="View product details, farmer information, pre-order options, and customer reviews on HaatBazaar Nepal.">
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/product-detail.css">
 </head>
@@ -13,19 +13,19 @@
 <!-- NAV -->
 <nav class="nav" id="main-nav">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo"><span class="logo-icon">🌿</span>FarmLink <span style="color:var(--accent)">Nepal</span></a>
+    <a href="index.html" class="nav-logo"><span class="logo-icon"></span>HaatBazaar <span style="color:var(--accent)">Nepal</span></a>
     <div class="nav-links">
       <a href="index.html" class="nav-link">Home</a>
       <a href="marketplace.html" class="nav-link active">Marketplace</a>
       <a href="farmer-profile.html" class="nav-link">Farmers</a>
-      <a href="crop-tracking.html" class="nav-link">Crop Tracking</a>
+      
     </div>
     <div class="nav-actions">
       <div class="lang-toggle">
         <button class="lang-btn active" data-lang="en">EN</button>
         <button class="lang-btn" data-lang="np">नेपाली</button>
       </div>
-      <a href="checkout.html" class="btn-icon" style="position:relative;">🛒
+      <a href="checkout.html" class="btn-icon" style="position:relative;">
         <span class="cart-badge" style="position:absolute;top:-6px;right:-6px;background:var(--accent);color:white;width:18px;height:18px;border-radius:50%;font-size:0.65rem;font-weight:700;display:none;align-items:center;justify-content:center;">0</span>
       </a>
       <button class="btn btn-ghost btn-sm btn-login">Log In</button>
@@ -61,7 +61,7 @@
         <div class="gallery-main">
           <img id="gallery-main-img" src="assets/images/produce-market.png" alt="Product" class="gallery-main-img">
           <div class="gallery-badges" id="gallery-badges"></div>
-          <button class="gallery-wishlist-btn" id="pd-wishlist-btn" onclick="toggleProductWishlist()">🤍</button>
+          <button class="gallery-wishlist-btn" id="pd-wishlist-btn" onclick="toggleProductWishlist()"></button>
         </div>
         <div class="gallery-thumbs" id="gallery-thumbs">
           <img src="assets/images/produce-market.png" class="gallery-thumb active" onclick="setMainImg(this.src)">
@@ -72,16 +72,16 @@
         <!-- Harvest Progress -->
         <div class="harvest-progress-card">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-3);">
-            <h4 style="font-family:var(--font-heading);font-weight:700;font-size:0.95rem;">🌱 Crop Progress</h4>
+            <h4 style="font-family:var(--font-heading);font-weight:700;font-size:0.95rem;"> Crop Progress</h4>
             <a href="crop-tracking.html" style="font-size:0.8rem;color:var(--primary);font-weight:600;">Track Live →</a>
           </div>
           <div class="progress-bar" style="margin-bottom:var(--space-2);">
             <div class="progress-fill" style="width:60%"></div>
           </div>
           <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--text-muted);">
-            <span>🌱 Seeded</span><span>🌿 Growing</span><span>🌸 Flowering</span><span>✅ Ready</span>
+            <span> Seeded</span><span> Growing</span><span> Flowering</span><span> Ready</span>
           </div>
-          <p style="font-size:0.8rem;color:var(--text-muted);margin-top:var(--space-3);">📅 Estimated harvest: <strong>June 15, 2026</strong></p>
+          <p style="font-size:0.8rem;color:var(--text-muted);margin-top:var(--space-3);"> Estimated harvest: <strong>June 15, 2026</strong></p>
         </div>
       </div>
 
@@ -104,11 +104,11 @@
           <div class="pd-farmer-info">
             <div class="pd-farmer-name" id="pd-farmer-name">Hari Bahadur Tamang</div>
             <div class="pd-farmer-farm" id="pd-farmer-farm">Green Valley Organic Farm</div>
-            <div class="pd-farmer-loc" id="pd-farmer-loc">📍 Sindhupalchok</div>
+            <div class="pd-farmer-loc" id="pd-farmer-loc"> Sindhupalchok</div>
           </div>
           <div class="pd-farmer-rating">
             ⭐ 4.8
-            <span class="badge badge-verified" style="display:block;margin-top:4px;">✅ Verified</span>
+            <span class="badge badge-verified" style="display:block;margin-top:4px;"> Verified</span>
           </div>
         </a>
 
@@ -134,14 +134,14 @@
 
         <!-- Action Buttons -->
         <div class="pd-actions">
-          <button class="btn btn-primary btn-lg" id="pd-add-cart" style="flex:1;">🛒 Add to Cart</button>
-          <button class="btn btn-accent btn-lg" id="pd-buy-now" style="flex:1;">⚡ Buy Now</button>
+          <button class="btn btn-primary btn-lg" id="pd-add-cart" style="flex:1;"> Add to Cart</button>
+          <button class="btn btn-accent btn-lg" id="pd-buy-now" style="flex:1;"> Buy Now</button>
         </div>
 
         <!-- Pre-Order Box -->
         <div class="preorder-box" id="preorder-box">
           <div class="preorder-header">
-            <span>📅 Pre-Order Available</span>
+            <span> Pre-Order Available</span>
             <span class="badge badge-accent">Save 10%</span>
           </div>
           <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:var(--space-4);">Reserve this crop before harvest! Pay a 20% deposit now and the rest on delivery.</p>
@@ -156,7 +156,7 @@
               <span>Balance on Delivery</span><strong id="balance-amount">Rs 64</strong>
             </div>
           </div>
-          <button class="btn btn-accent w-full" style="width:100%;justify-content:center;" onclick="Cart.add(currentProductId); showToast('Pre-order placed! Deposit of Rs 16 reserved. 🌾', 'harvest')">📅 Place Pre-Order</button>
+          <button class="btn btn-accent w-full" style="width:100%;justify-content:center;" onclick="Cart.add(currentProductId); showToast('Pre-order placed! Deposit of Rs 16 reserved. ', 'harvest')"> Place Pre-Order</button>
         </div>
 
         <!-- Description -->
@@ -167,17 +167,17 @@
 
         <!-- Tags -->
         <div class="pd-tags" id="pd-tags">
-          <span class="chip">🌱 Organic</span>
-          <span class="chip">🏔️ Mountain Grown</span>
-          <span class="chip">🚫 Pesticide Free</span>
-          <span class="chip">📦 Same-Day Pick</span>
+          <span class="chip"> Organic</span>
+          <span class="chip">️ Mountain Grown</span>
+          <span class="chip"> Pesticide Free</span>
+          <span class="chip"> Same-Day Pick</span>
         </div>
 
         <!-- Delivery Info -->
         <div class="delivery-info">
-          <div class="delivery-item"><span>🚚</span><div><strong>Express Delivery</strong><p style="font-size:0.8rem;color:var(--text-muted);margin:0">2-4 hours in Kathmandu Valley</p></div></div>
-          <div class="delivery-item"><span>🔄</span><div><strong>Fresh Guarantee</strong><p style="font-size:0.8rem;color:var(--text-muted);margin:0">Full refund if not 100% fresh</p></div></div>
-          <div class="delivery-item"><span>🌱</span><div><strong>Traceable Farm</strong><p style="font-size:0.8rem;color:var(--text-muted);margin:0">Know exactly where your food comes from</p></div></div>
+          <div class="delivery-item"><span></span><div><strong>Express Delivery</strong><p style="font-size:0.8rem;color:var(--text-muted);margin:0">2-4 hours in Kathmandu Valley</p></div></div>
+          <div class="delivery-item"><span></span><div><strong>Fresh Guarantee</strong><p style="font-size:0.8rem;color:var(--text-muted);margin:0">Full refund if not 100% fresh</p></div></div>
+          <div class="delivery-item"><span></span><div><strong>Traceable Farm</strong><p style="font-size:0.8rem;color:var(--text-muted);margin:0">Know exactly where your food comes from</p></div></div>
         </div>
       </div>
     </div>
@@ -196,11 +196,11 @@
           <div class="stars" style="font-size:1.5rem;margin-bottom:var(--space-2);">⭐⭐⭐⭐⭐</div>
           <p style="font-size:0.85rem;color:var(--text-muted);">Based on 124 reviews</p>
           <div class="rating-bars">
-            <div class="rating-bar-row"><span>5★</span><div class="progress-bar"><div class="progress-fill" style="width:78%"></div></div><span>78%</span></div>
-            <div class="rating-bar-row"><span>4★</span><div class="progress-bar"><div class="progress-fill" style="width:14%"></div></div><span>14%</span></div>
-            <div class="rating-bar-row"><span>3★</span><div class="progress-bar"><div class="progress-fill" style="width:5%"></div></div><span>5%</span></div>
-            <div class="rating-bar-row"><span>2★</span><div class="progress-bar"><div class="progress-fill" style="width:2%"></div></div><span>2%</span></div>
-            <div class="rating-bar-row"><span>1★</span><div class="progress-bar"><div class="progress-fill" style="width:1%"></div></div><span>1%</span></div>
+            <div class="rating-bar-row"><span>5</span><div class="progress-bar"><div class="progress-fill" style="width:78%"></div></div><span>78%</span></div>
+            <div class="rating-bar-row"><span>4</span><div class="progress-bar"><div class="progress-fill" style="width:14%"></div></div><span>14%</span></div>
+            <div class="rating-bar-row"><span>3</span><div class="progress-bar"><div class="progress-fill" style="width:5%"></div></div><span>5%</span></div>
+            <div class="rating-bar-row"><span>2</span><div class="progress-bar"><div class="progress-fill" style="width:2%"></div></div><span>2%</span></div>
+            <div class="rating-bar-row"><span>1</span><div class="progress-bar"><div class="progress-fill" style="width:1%"></div></div><span>1%</span></div>
           </div>
         </div>
 
@@ -216,7 +216,7 @@
               <span class="review-date">May 28, 2026</span>
             </div>
             <p class="review-text">"Absolutely the freshest tomatoes I've ever had! You can taste the difference when there are no chemicals. Arrived same day, beautifully packed. Will definitely reorder!"</p>
-            <div class="review-helpful"><button onclick="showToast('Thanks for your feedback!', 'info')">👍 Helpful (12)</button></div>
+            <div class="review-helpful"><button onclick="showToast('Thanks for your feedback!', 'info')"> Helpful (12)</button></div>
           </div>
           <div class="review-card">
             <div class="review-top">
@@ -228,7 +228,7 @@
               <span class="review-date">May 20, 2026</span>
             </div>
             <p class="review-text">"Hari dai's tomatoes are legendary. I've been buying for 6 months now. The crop tracking is a brilliant feature — I loved watching them grow!"</p>
-            <div class="review-helpful"><button onclick="showToast('Thanks for your feedback!', 'info')">👍 Helpful (8)</button></div>
+            <div class="review-helpful"><button onclick="showToast('Thanks for your feedback!', 'info')"> Helpful (8)</button></div>
           </div>
         </div>
       </div>
@@ -254,7 +254,7 @@
           <label class="form-label">Your Review</label>
           <textarea class="form-textarea" placeholder="Tell us about your experience with this product..."></textarea>
         </div>
-        <button class="btn btn-primary" onclick="showToast('Review submitted! Thank you 🙏', 'success')">Submit Review</button>
+        <button class="btn btn-primary" onclick="showToast('Review submitted! Thank you ', 'success')">Submit Review</button>
       </div>
     </div>
 
@@ -270,8 +270,8 @@
 <div class="modal-overlay" id="auth-modal">
   <div class="modal">
     <div class="modal-header">
-      <h3 style="font-family:var(--font-heading);font-weight:700;">Join FarmLink Nepal 🌿</h3>
-      <button data-close-modal style="font-size:1.25rem;color:var(--text-muted);background:none;border:none;cursor:pointer;">✕</button>
+      <h3 style="font-family:var(--font-heading);font-weight:700;">Join HaatBazaar Nepal </h3>
+      <button data-close-modal style="font-size:1.25rem;color:var(--text-muted);background:none;border:none;cursor:pointer;"></button>
     </div>
     <div style="display:flex;border-bottom:1px solid var(--border-light);padding:0 var(--space-6);">
       <button class="auth-tab active" data-tab="login" style="flex:1;padding:var(--space-4);font-weight:600;font-size:0.9rem;border-bottom:2px solid var(--primary);color:var(--primary);background:none;border-top:none;border-left:none;border-right:none;cursor:pointer;">Log In</button>
@@ -279,10 +279,10 @@
     </div>
     <div class="auth-panel modal-body" data-panel="login">
       <div style="background:var(--primary-50);border-radius:var(--radius);padding:var(--space-4);margin-bottom:var(--space-4);">
-        <p style="font-size:0.8rem;font-weight:700;color:var(--primary);margin-bottom:var(--space-2);">🚀 Demo:</p>
+        <p style="font-size:0.8rem;font-weight:700;color:var(--primary);margin-bottom:var(--space-2);"> Demo:</p>
         <div style="display:flex;gap:var(--space-2);">
-          <button class="btn btn-primary btn-sm" data-role-login="consumer">👤 Consumer</button>
-          <button class="btn btn-secondary btn-sm" data-role-login="farmer">👨‍🌾 Farmer</button>
+          <button class="btn btn-primary btn-sm" data-role-login="consumer"> Consumer</button>
+          <button class="btn btn-secondary btn-sm" data-role-login="farmer">‍ Farmer</button>
         </div>
       </div>
       <button class="btn btn-primary w-full" style="width:100%;justify-content:center;" data-role-login="consumer">Log In</button>

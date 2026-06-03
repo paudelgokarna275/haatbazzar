@@ -1,9 +1,11 @@
 from datetime import date
+from uuid import UUID
+
 from pydantic import BaseModel
 
 
 class UserProfileResponse(BaseModel):
-    user_id: str
+    user_id: UUID
     bio: str | None
     avatar_url: str | None
     address: str | None

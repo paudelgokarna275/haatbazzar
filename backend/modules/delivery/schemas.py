@@ -1,10 +1,12 @@
 from datetime import datetime
+from uuid import UUID
+
 from pydantic import BaseModel
 
 
 class DeliveryResponse(BaseModel):
-    id: str
-    order_id: str
+    id: UUID
+    order_id: UUID
     status: str
     delivery_address: str | None
     delivery_person: str | None

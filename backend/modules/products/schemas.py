@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from pydantic import BaseModel, Field
 
 
@@ -12,8 +14,8 @@ class ProductCreate(BaseModel):
 
 
 class ProductResponse(BaseModel):
-    id: str
-    farmer_id: str
+    id: UUID
+    farmer_id: UUID
     name: str
     description: str | None
     price: float

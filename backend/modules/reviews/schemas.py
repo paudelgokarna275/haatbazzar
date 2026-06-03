@@ -1,4 +1,6 @@
 from datetime import datetime
+from uuid import UUID
+
 from pydantic import BaseModel, Field
 
 
@@ -9,9 +11,9 @@ class ReviewCreate(BaseModel):
 
 
 class ReviewResponse(BaseModel):
-    id: str
-    user_id: str
-    product_id: str
+    id: UUID
+    user_id: UUID
+    product_id: UUID
     rating: int
     comment: str | None
     created_at: datetime

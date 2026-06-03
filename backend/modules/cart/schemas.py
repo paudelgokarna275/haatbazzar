@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from pydantic import BaseModel, Field
 
 
@@ -7,8 +9,8 @@ class CartAddRequest(BaseModel):
 
 
 class CartItemResponse(BaseModel):
-    id: str
-    product_id: str
+    id: UUID
+    product_id: UUID
     quantity: float
 
 

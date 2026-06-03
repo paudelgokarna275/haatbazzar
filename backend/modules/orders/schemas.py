@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from pydantic import BaseModel, Field
 
 
@@ -14,16 +16,16 @@ class OrderCreate(BaseModel):
 
 
 class OrderItemResponse(BaseModel):
-    id: str
-    product_id: str
-    farmer_id: str
+    id: UUID
+    product_id: UUID
+    farmer_id: UUID
     quantity: float
     unit_price: float
 
 
 class OrderResponse(BaseModel):
-    id: str
-    buyer_id: str
+    id: UUID
+    buyer_id: UUID
     status: str
     total_amount: float
     shipping_address: str | None

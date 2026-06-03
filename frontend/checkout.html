@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Checkout — FarmLink Nepal</title>
+  <title>Checkout — HaatBazaar Nepal</title>
   <link rel="stylesheet" href="css/main.css">
   <style>
     body { background: var(--bg-2); }
@@ -35,7 +35,7 @@
 
 <nav class="nav" id="main-nav">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo"><span class="logo-icon">🌿</span>FarmLink <span style="color:var(--accent)">Nepal</span></a>
+    <a href="index.html" class="nav-logo"><span class="logo-icon"></span>HaatBazaar <span style="color:var(--accent)">Nepal</span></a>
     <div class="nav-actions">
       <div class="lang-toggle"><button class="lang-btn active" data-lang="en">EN</button><button class="lang-btn" data-lang="np">नेपाली</button></div>
       <div id="user-menu" style="display:flex;align-items:center;gap:10px;"><span id="user-name" style="font-size:0.875rem;font-weight:600;"></span><button data-logout class="btn btn-ghost btn-sm">Logout</button></div>
@@ -70,19 +70,19 @@
         
         <label class="payment-option active">
           <input type="radio" name="payment" checked>
-          <span style="font-size:1.5rem;">💸</span>
+          <span style="font-size:1.5rem;"></span>
           <div style="font-weight:600;">eSewa / Khalti Digital Wallet</div>
         </label>
         
         <label class="payment-option">
           <input type="radio" name="payment">
-          <span style="font-size:1.5rem;">🏦</span>
+          <span style="font-size:1.5rem;"></span>
           <div style="font-weight:600;">Bank Transfer (ConnectIPS)</div>
         </label>
         
         <label class="payment-option">
           <input type="radio" name="payment">
-          <span style="font-size:1.5rem;">🚚</span>
+          <span style="font-size:1.5rem;"></span>
           <div style="font-weight:600;">Cash on Delivery</div>
         </label>
       </div>
@@ -103,13 +103,13 @@
         <div class="summary-row total"><span>Total</span><span id="co-total">Rs 0</span></div>
 
         <button class="btn btn-primary btn-lg w-full" style="width:100%;justify-content:center;margin-top:var(--space-6);" onclick="placeOrder()">Place Order</button>
-        <p style="font-size:0.75rem;color:var(--text-muted);text-align:center;margin-top:var(--space-3);">By placing your order, you agree to FarmLink Nepal's Terms of Service and Privacy Policy.</p>
+        <p style="font-size:0.75rem;color:var(--text-muted);text-align:center;margin-top:var(--space-3);">By placing your order, you agree to HaatBazaar Nepal's Terms of Service and Privacy Policy.</p>
       </div>
 
       <div style="background:#E8F5E9;border:1px solid #C8E6C9;border-radius:var(--radius-md);padding:var(--space-5);text-align:center;">
-        <span style="font-size:2rem;margin-bottom:var(--space-2);display:block;">🤝</span>
+        <span style="font-size:2rem;margin-bottom:var(--space-2);display:block;"></span>
         <h4 style="font-weight:700;color:var(--primary-dark);margin-bottom:4px;">Fair Trade Guarantee</h4>
-        <p style="font-size:0.8rem;color:var(--primary-dark);">100% of the produce price goes directly to the farmer. FarmLink only charges a nominal platform fee.</p>
+        <p style="font-size:0.8rem;color:var(--primary-dark);">100% of the produce price goes directly to the farmer. HaatBazaar only charges a nominal platform fee.</p>
       </div>
     </div>
 
@@ -119,7 +119,7 @@
 <!-- Order Success Modal -->
 <div class="modal-overlay" id="success-modal">
   <div class="modal" style="text-align:center;max-width:400px;padding:var(--space-8);">
-    <div style="font-size:4rem;margin-bottom:var(--space-3);">🎉</div>
+    <div style="font-size:4rem;margin-bottom:var(--space-3);"></div>
     <h2 style="font-family:var(--font-heading);font-weight:800;margin-bottom:var(--space-2);color:var(--primary);">Order Placed!</h2>
     <p style="color:var(--text-muted);margin-bottom:var(--space-6);">Thank you for supporting Nepali farmers. Your order ID is <strong>#FL-005</strong>.</p>
     <a href="consumer-dashboard.html" class="btn btn-primary w-full" style="justify-content:center;">Go to Dashboard</a>
@@ -152,7 +152,7 @@
           <img src="${product.image}" class="cart-img">
           <div class="cart-info">
             <div class="cart-name">${product.name}</div>
-            ${farmer ? `<div class="cart-farmer">👨‍🌾 ${farmer.name}</div>` : ''}
+            ${farmer ? `<div class="cart-farmer">‍ ${farmer.name}</div>` : ''}
             <div class="cart-price-row">
               <span style="font-size:0.85rem;color:var(--text-muted);">Qty: ${item.qty}</span>
               <span class="cart-price">Rs ${product.price * item.qty}</span>

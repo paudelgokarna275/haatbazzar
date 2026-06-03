@@ -15,7 +15,7 @@ Farm-to-consumer marketplace with AI-driven produce quality verification. Farmer
 cd backend
 python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env   # fill in SECRET_KEY and DATABASE_URL
+cp .env.example .env   
 alembic upgrade head
 uvicorn main:app --reload
 ```

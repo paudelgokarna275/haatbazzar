@@ -1,0 +1,1520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmLink - Direct Agricultural Marketplace</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Lucide Icons (Used for high-fidelity indicators) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- MAIN CONTAINER FOR PUBLIC WEB SITE -->
+    <div id="public-layout">
+        <!-- Public Navigation Header -->
+        <header class="public-header">
+            <div class="container public-nav">
+                <a href="#" class="brand-logo" onclick="navigateTo('home')">
+                    <svg viewBox="0 0 24 24" width="32" height="32" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    <span>FarmLink</span>
+                </a>
+                <ul class="nav-links">
+                    <li><a href="#" id="nav-home" class="active" onclick="navigateTo('home')">Home</a></li>
+                    <li><a href="#" id="nav-about" onclick="navigateTo('about')">About Us</a></li>
+                    <li><a href="#" id="nav-marketplace" onclick="navigateTo('marketplace')">Marketplace</a></li>
+                    <li><a href="#" id="nav-contact" onclick="navigateTo('contact')">Contact</a></li>
+                </ul>
+                <div class="nav-actions">
+                    <button class="btn btn-outline" id="nav-dashboard-btn" style="display: none;" onclick="goToDashboard()">My Dashboard</button>
+                    <button class="btn btn-primary" id="nav-auth-btn" onclick="navigateTo('auth')">Login / Join</button>
+                    <div id="nav-user-dropdown" style="display: none; position: relative;">
+                        <button class="btn btn-secondary" onclick="toggleUserDropdown()" id="dropdown-user-btn" style="display: flex; align-items: center; gap: 0.5rem;">
+                            <i data-lucide="user"></i> <span id="nav-user-name">User</span>
+                        </button>
+                        <div id="user-menu-dropdown" class="hidden" style="position: absolute; right: 0; top: 110%; background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 0.5rem; box-shadow: var(--shadow-md); min-width: 150px; z-index: 100;">
+                            <button onclick="goToDashboard()" style="display: flex; align-items: center; gap: 0.5rem; width: 100%; padding: 0.5rem; text-align: left; font-weight: 500;"><i data-lucide="layout-dashboard" size="16"></i> Dashboard</button>
+                            <button onclick="handleLogout()" style="display: flex; align-items: center; gap: 0.5rem; width: 100%; padding: 0.5rem; text-align: left; color: var(--error); font-weight: 500;"><i data-lucide="log-out" size="16"></i> Logout</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- PUBLIC PAGE: HOME -->
+        <main id="home-view" class="page-section hero-section">
+            <div class="container">
+                <div class="hero-grid">
+                    <div class="hero-content">
+                        <h1>Connecting Farmers <span>Directly</span> to Consumers</h1>
+                        <p>FarmLink cuts out middleman fees, ensuring farmers earn fair payouts for their hard work while providing consumers with access to fresher, high-quality, and reasonably priced produce.</p>
+                        <div class="hero-ctas">
+                            <button class="btn btn-primary btn-lg" onclick="navigateTo('marketplace')">Shop Fresh Products</button>
+                            <button class="btn btn-secondary btn-lg" onclick="navigateToRegisterAsFarmer()">Join as a Farmer</button>
+                        </div>
+                    </div>
+                    <div class="hero-illustration">
+                        <div class="illustration-card">
+                            <h3>FarmLink Flow</h3>
+                            <div class="illustration-step">
+                                <div class="step-num-circle">1</div>
+                                <div>
+                                    <strong>Farmers List Crops</strong>
+                                    <p>Harvest details, origin, and dynamic suggestions help set fair prices.</p>
+                                </div>
+                            </div>
+                            <div class="illustration-step">
+                                <div class="step-num-circle">2</div>
+                                <div>
+                                    <strong>Buyers Purchase &amp; Grade</strong>
+                                    <p>Quality grading is certified by platform admins, orders are secured in escrow.</p>
+                                </div>
+                            </div>
+                            <div class="illustration-step">
+                                <div class="step-num-circle">3</div>
+                                <div>
+                                    <strong>Delivery Partner Transits</strong>
+                                    <p>Drivers transport fresh goods, track milestones, and trigger payouts.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="floating-badge floating-badge-1">
+                            <i data-lucide="shield-check" style="color: var(--primary);"></i>
+                            <div>
+                                <strong style="display: block; font-size: 0.85rem;">Escrow Payments</strong>
+                                <span style="font-size: 0.75rem; color: var(--text-secondary);">100% Protection</span>
+                            </div>
+                        </div>
+                        <div class="floating-badge floating-badge-2">
+                            <i data-lucide="truck" style="color: var(--secondary);"></i>
+                            <div>
+                                <strong style="display: block; font-size: 0.85rem;">Smart Transit</strong>
+                                <span style="font-size: 0.75rem; color: var(--text-secondary);">Fast &amp; Transparent</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- How It Works Section -->
+                <section style="margin-top: 8rem;">
+                    <div class="section-header">
+                        <h2>Eliminating the Middleman in 3 Steps</h2>
+                        <p>We provide a reliable platform for farm-to-table transparency and logistics scheduling.</p>
+                    </div>
+                    <div class="how-it-works-grid">
+                        <div class="how-step">
+                            <div class="step-icon-box"><i data-lucide="store"></i></div>
+                            <h3>Farmers List Directly</h3>
+                            <p>Farmers register their farm profiles, verify details, and post fresh produce with location tags.</p>
+                        </div>
+                        <div class="how-step">
+                            <div class="step-icon-box"><i data-lucide="shopping-bag"></i></div>
+                            <h3>Customers Buy Fresh</h3>
+                            <p>Customers filter crops by location, grade, and harvest date, scheduling home deliveries directly.</p>
+                        </div>
+                        <div class="how-step">
+                            <div class="step-icon-box"><i data-lucide="package-check"></i></div>
+                            <h3>Verified Delivery</h3>
+                            <p>Delivery partners accept routes, collect fresh packages, and complete payouts upon delivery confirmation.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Featured Products Grid -->
+                <section style="margin-top: 8rem;">
+                    <div class="section-header">
+                        <h2>Featured Fresh Produce</h2>
+                        <p>Sourced directly from verified local farms near you.</p>
+                    </div>
+                    <div class="product-grid" id="featured-products-container">
+                        <!-- Loaded dynamically -->
+                    </div>
+                    <div style="text-align: center; margin-top: 3rem;">
+                        <button class="btn btn-secondary" onclick="navigateTo('marketplace')">View All Marketplace Products</button>
+                    </div>
+                </section>
+
+                <!-- Statistics Banner -->
+                <section class="stats-bar">
+                    <div class="stats-bar-grid">
+                        <div class="stats-bar-item">
+                            <h3 id="stat-farmers-count">0</h3>
+                            <p>Verified Farmers</p>
+                        </div>
+                        <div class="stats-bar-item">
+                            <h3 id="stat-crops-count">0</h3>
+                            <p>Active Listings</p>
+                        </div>
+                        <div class="stats-bar-item">
+                            <h3 id="stat-orders-count">0</h3>
+                            <p>Successful Deliveries</p>
+                        </div>
+                        <div class="stats-bar-item">
+                            <h3 id="stat-volume-count">$0</h3>
+                            <p>Transaction Volume</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Testimonials -->
+                <section style="margin-top: 8rem;">
+                    <div class="section-header">
+                        <h2>What Our Members Say</h2>
+                        <p>Hear from the agricultural producers, families, and transport partners powering FarmLink.</p>
+                    </div>
+                    <div class="testimonials-grid">
+                        <div class="testimonial-card">
+                            <p class="testimonial-text">"Before FarmLink, I had to sell my potato harvests to bulk agents for less than half the retail price. Now, I set my own prices and make 40% more profit."</p>
+                            <div class="testimonial-user">
+                                <div class="user-avatar-circle">RS</div>
+                                <div class="user-details">
+                                    <h4>Ramesh Shrestha</h4>
+                                    <span>Potato Farmer</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="testimonial-card">
+                            <p class="testimonial-text">"The taste of vegetables from FarmLink is completely different. The harvest date is listed, and knowing my money goes directly to the family farm is wonderful."</p>
+                            <div class="testimonial-user">
+                                <div class="user-avatar-circle">AP</div>
+                                <div class="user-details">
+                                    <h4>Anjali Patel</h4>
+                                    <span>Household Customer</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="testimonial-card">
+                            <p class="testimonial-text">"I use my pickup truck to do weekend deliveries. The jobs show exact mileage and crop weights, and I receive payment instantly upon customer dropoff."</p>
+                            <div class="testimonial-user">
+                                <div class="user-avatar-circle">KB</div>
+                                <div class="user-details">
+                                    <h4>Kiran Bhatta</h4>
+                                    <span>Delivery Partner</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- PUBLIC PAGE: ABOUT -->
+        <main id="about-view" class="page-section container hidden">
+            <div class="about-grid">
+                <div class="about-content">
+                    <h2>Our Mission: Empowering Farmers, Feeding Communities</h2>
+                    <p>At FarmLink, we believe that agricultural trade has been bottlenecked for decades by layered supply chains and opaque middlemen. The people who sweat in the fields receive the lowest margins, and consumers pay high markups for weeks-old cold-stored crops.</p>
+                    <p>By providing direct-to-consumer software, smart dynamic pricing guides, quality inspections, and logistical integration, we bring fair-trade commerce directly to every mobile device and laptop.</p>
+                    <div class="about-values">
+                        <div class="value-card">
+                            <h4>Direct ESCROW Security</h4>
+                            <p>Funds are secured instantly upon purchase and only released once the buyer receives and confirms their fresh produce.</p>
+                        </div>
+                        <div class="value-card">
+                            <h4>Logistics Integration</h4>
+                            <p>Every customer order automatically registers in our driver pool, allowing local vehicle owners to earn income on delivery routes.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-illustration">
+                    <img src="https://images.unsplash.com/photo-1595974482597-4b8da8879bc5?auto=format&fit=crop&q=80&w=600" alt="Beautiful farming harvest" style="width: 100%; border-radius: var(--radius-xl); box-shadow: var(--shadow-lg); border: 1px solid var(--border);">
+                </div>
+            </div>
+        </main>
+
+        <!-- PUBLIC PAGE: MARKETPLACE -->
+        <main id="marketplace-view" class="page-section container hidden">
+            <div class="section-header" style="margin-bottom: 2rem;">
+                <h2>Agricultural Open Marketplace</h2>
+                <p>Browse fresh items listed directly from local farms. Real-time pricing suggestions and platform-verified quality grades.</p>
+            </div>
+            
+            <div class="marketplace-layout">
+                <!-- Filters Sidebar -->
+                <aside class="filter-sidebar">
+                    <div class="filter-group">
+                        <h4>Search Crops</h4>
+                        <input type="text" id="filter-search" class="filter-input" placeholder="e.g. Tomatoes..." oninput="applyMarketplaceFilters()">
+                    </div>
+                    <div class="filter-group">
+                        <h4>Category</h4>
+                        <select id="filter-category" class="filter-select" onchange="applyMarketplaceFilters()">
+                            <option value="all">All Categories</option>
+                            <option value="vegetables">Vegetables</option>
+                            <option value="fruits">Fruits</option>
+                            <option value="grains">Grains</option>
+                            <option value="dairy">Dairy</option>
+                            <option value="poultry">Poultry</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <h4>Origin / Location</h4>
+                        <select id="filter-location" class="filter-select" onchange="applyMarketplaceFilters()">
+                            <option value="all">All Locations</option>
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <h4>Quality Grade</h4>
+                        <select id="filter-grade" class="filter-select" onchange="applyMarketplaceFilters()">
+                            <option value="all">All Grades (Verified)</option>
+                            <option value="Grade A">Grade A (Premium)</option>
+                            <option value="Grade B">Grade B (Standard)</option>
+                            <option value="Grade C">Grade C (Budget)</option>
+                            <option value="Unassigned">Pending Grading</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-outline" style="width: 100%;" onclick="clearFilters()">Reset Filters</button>
+                </aside>
+
+                <!-- Products Display -->
+                <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        <span id="marketplace-results-count" style="font-weight: 600; color: var(--text-secondary);">Showing 0 active products</span>
+                        <div style="display: flex; gap: 0.5rem; align-items: center;">
+                            <span style="font-size: 0.85rem; font-weight: 600;">Sort By:</span>
+                            <select id="filter-sort" class="filter-select" style="width: 150px; padding: 0.5rem;" onchange="applyMarketplaceFilters()">
+                                <option value="newest">Newest Listed</option>
+                                <option value="price-low">Price: Low to High</option>
+                                <option value="price-high">Price: High to Low</option>
+                                <option value="harvest">Harvest Date</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="product-grid" id="marketplace-grid">
+                        <!-- Loaded dynamically -->
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- PUBLIC PAGE: CONTACT -->
+        <main id="contact-view" class="page-section container hidden">
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h2>Get in Touch with FarmLink Support</h2>
+                    <p>Have questions about setting up your farmer payout account, bulk delivery options, or platform verifications? Our regional agricultural support offices are here to help.</p>
+                    
+                    <div class="contact-card">
+                        <div class="contact-item">
+                            <div class="contact-icon"><i data-lucide="map-pin"></i></div>
+                            <div>
+                                <strong>Platform Head Office</strong>
+                                <p>102 Green-Hill Way, Koteshwor, Kathmandu</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon"><i data-lucide="phone"></i></div>
+                            <div>
+                                <strong>Phone Support</strong>
+                                <p>+977-1-4567890 (9 AM - 6 PM)</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon"><i data-lucide="mail"></i></div>
+                            <div>
+                                <strong>Email Address</strong>
+                                <p>support@farmlink.com</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form-wrapper">
+                    <h3>Send Us a Message</h3>
+                    <form id="contact-form" style="margin-top: 1.5rem;" onsubmit="handleContactSubmit(event)">
+                        <div class="form-group">
+                            <label for="contact-name">Your Full Name</label>
+                            <input type="text" id="contact-name" class="form-input" required placeholder="John Doe">
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-email">Email Address</label>
+                            <input type="email" id="contact-email" class="form-input" required placeholder="john@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-msg">Message Description</label>
+                            <textarea id="contact-msg" class="form-input" rows="5" required placeholder="How can our support team help your farm or orders?"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Message</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+
+        <!-- PUBLIC PAGE: AUTHENTICATION -->
+        <main id="auth-view" class="page-section container hidden">
+            <div class="auth-card">
+                <!-- Login/Register Selection Tabs -->
+                <div style="display: flex; border-bottom: 2px solid var(--border); margin-bottom: 2rem;">
+                    <button class="btn" id="tab-login-btn" style="flex: 1; border-radius: 0; padding-bottom: 1rem; border-bottom: 2px solid var(--primary); color: var(--primary);" onclick="switchAuthTab('login')">Sign In</button>
+                    <button class="btn" id="tab-register-btn" style="flex: 1; border-radius: 0; padding-bottom: 1rem; border-bottom: 2px solid transparent; color: var(--text-secondary);" onclick="switchAuthTab('register')">Register</button>
+                </div>
+
+                <!-- Sign In Form -->
+                <div id="login-form-wrapper">
+                    <div class="auth-header">
+                        <h2>Welcome Back</h2>
+                        <p>Access your FarmLink account and dashboard</p>
+                    </div>
+                    <form id="login-form" onsubmit="handleLoginSubmit(event)">
+                        <div class="form-group">
+                            <label for="login-email">Email Address</label>
+                            <input type="email" id="login-email" class="form-input" required placeholder="name@domain.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="login-password">Password</label>
+                            <input type="password" id="login-password" class="form-input" required placeholder="Enter password">
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Sign In</button>
+                    </form>
+                </div>
+
+                <!-- Register Form -->
+                <div id="register-form-wrapper" class="hidden">
+                    <div class="auth-header">
+                        <h2>Create Your Account</h2>
+                        <p>Select your system role to connect with FarmLink</p>
+                    </div>
+                    
+                    <div class="role-selector">
+                        <button class="role-chip active" id="chip-farmer" onclick="setRegisterRole('Farmer')">Farmer</button>
+                        <button class="role-chip" id="chip-customer" onclick="setRegisterRole('Customer')">Customer</button>
+                        <button class="role-chip" id="chip-delivery" onclick="setRegisterRole('Delivery Partner')">Delivery</button>
+                        <button class="role-chip" id="chip-admin" onclick="setRegisterRole('Admin')">Admin</button>
+                    </div>
+
+                    <form id="register-form" onsubmit="handleRegisterSubmit(event)">
+                        <div class="form-group">
+                            <label for="reg-name">Full Name / Org Name</label>
+                            <input type="text" id="reg-name" class="form-input" required placeholder="John Doe">
+                        </div>
+                        <div class="form-group">
+                            <label for="reg-email">Email Address</label>
+                            <input type="email" id="reg-email" class="form-input" required placeholder="john@farmlink.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="reg-phone">Phone Number</label>
+                            <input type="tel" id="reg-phone" class="form-input" required placeholder="98XXXXXXXX">
+                        </div>
+                        <div class="form-group">
+                            <label for="reg-location">Location / Area</label>
+                            <input type="text" id="reg-location" class="form-input" required placeholder="e.g. Dhulikhel, Kavre">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="reg-pass">Password</label>
+                                <input type="password" id="reg-pass" class="form-input" required placeholder="Password">
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-confirm">Confirm Password</label>
+                                <input type="password" id="reg-confirm" class="form-input" required placeholder="Confirm">
+                            </div>
+                        </div>
+                        
+                        <!-- Extra Fields for Farmer Profile Details -->
+                        <div id="farmer-extra-fields" style="background: var(--background); padding: 1.25rem; border-radius: var(--radius); margin-bottom: 1.25rem; border: 1px solid var(--border);">
+                            <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--primary);">Farmer Verification Information</h4>
+                            <div class="form-group">
+                                <label for="reg-farm-name">Farm Name</label>
+                                <input type="text" id="reg-farm-name" class="form-input" placeholder="e.g. Green Valley Organic Farm">
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-farm-doc">Upload ID / Farm License Certificate (Mock)</label>
+                                <input type="file" id="reg-farm-doc" class="form-input" style="padding: 0.5rem;">
+                            </div>
+                        </div>
+
+                        <!-- Extra Fields for Delivery Partner Profile Details -->
+                        <div id="delivery-extra-fields" class="hidden" style="background: var(--background); padding: 1.25rem; border-radius: var(--radius); margin-bottom: 1.25rem; border: 1px solid var(--border);">
+                            <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--secondary);">Delivery Vehicle Information</h4>
+                            <div class="form-group">
+                                <label for="reg-vehicle-type">Vehicle Type</label>
+                                <select id="reg-vehicle-type" class="form-input">
+                                    <option value="Pickup Truck">Pickup Truck (Heavy)</option>
+                                    <option value="Mini Van">Mini Van (Medium)</option>
+                                    <option value="Motorcycle / Scooter">Motorcycle (Light)</option>
+                                    <option value="Bicycle">Bicycle (Eco)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-vehicle-num">Vehicle License Plate Number</label>
+                                <input type="text" id="reg-vehicle-num" class="form-input" placeholder="e.g. BA 3 PA 4567">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Create Account</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+
+        <!-- PUBLIC FOOTER -->
+        <footer class="site-footer">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-brand">
+                        <h3>
+                            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                            <span>FarmLink</span>
+                        </h3>
+                        <p>Providing agricultural direct sales channels to optimize the supply chain, elevate farmer earnings, and provide fresher produce to end customer tables.</p>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Explore FarmLink</h4>
+                        <ul class="footer-links">
+                            <li><a href="#" onclick="navigateTo('home')">Home Page</a></li>
+                            <li><a href="#" onclick="navigateTo('about')">About Us</a></li>
+                            <li><a href="#" onclick="navigateTo('marketplace')">Crop Marketplace</a></li>
+                            <li><a href="#" onclick="navigateTo('contact')">Get Support</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Agricultural Systems</h4>
+                        <p style="font-size: 0.85rem; line-height: 1.8;">Verify licenses, inspect crop grades, schedule pickup transits, and secure payouts in escrow automatically with our simplified web applications.</p>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>&copy; 2026 FarmLink Inc. All rights reserved.</p>
+                    <p>Designed for agricultural empowerment.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+
+    <!-- 1. FARMER PORTAL DASHBOARD VIEW -->
+    <div id="farmer-dashboard-view" class="dashboard-container hidden">
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-brand">
+                <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                <span>Farmer Portal</span>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-menu-item"><a href="#" class="sidebar-menu-link active" onclick="switchDashboardSection('farmer', 'home')"><i data-lucide="layout-dashboard"></i> Overview</a></li>
+                <li class="sidebar-menu-item"><a href="#" class="sidebar-menu-link" onclick="switchDashboardSection('farmer', 'add-crop')"><i data-lucide="plus-circle"></i> Add Produce</a></li>
+                <li class="sidebar-menu-item"><a href="#" class="sidebar-menu-link" onclick="switchDashboardSection('farmer', 'listings')"><i data-lucide="wheat"></i> My Listings</a></li>
+                <li class="sidebar-menu-item"><a href="#" class="sidebar-menu-link" onclick="switchDashboardSection('farmer', 'orders')"><i data-lucide="shopping-cart"></i> Direct Orders</a></li>
+                <li class="sidebar-menu-item"><a href="#" class="sidebar-menu-link" onclick="switchDashboardSection('farmer', 'earnings')"><i data-lucide="wallet"></i> Earnings</a></li>
+                <li class="sidebar-menu-item"><a href="#" class="sidebar-menu-link" onclick="switchDashboardSection('farmer', 'demands')"><i data-lucide="trending-up"></i> Crop Demands</a></li>
+                <li class="sidebar-menu-item" style="margin-top: 2rem;"><a href="#" class="sidebar-menu-link" style="color: var(--error);" onclick="handleLogout()"><i data-lucide="log-out"></i> Sign Out</a></li>
+            </ul>
+            <div class="sidebar-user">
+                <div class="sidebar-user-avatar" id="farmer-avatar">F</div>
+                <div class="sidebar-user-info">
+                    <h5 id="farmer-name">Farmer Name</h5>
+                    <span id="farmer-location-badge">Location</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="dashboard-main">
+            <header class="dashboard-header">
+                <div class="dashboard-header-left">
+                    <h2 id="farmer-section-title">Farmer Overview</h2>
+                </div>
+                <div class="dashboard-header-right">
+                    <button class="btn btn-outline btn-sm" onclick="navigateTo('home')">Return to Website</button>
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+                <!-- Farmer section: Home -->
+                <div id="farmer-section-home" class="dashboard-section active">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-val">
+                                <h4>Total Listings</h4>
+                                <p id="f-stat-listings">0</p>
+                            </div>
+                            <div class="stat-icon-wrapper" style="background: var(--primary-tint); color: var(--primary);"><i data-lucide="package"></i></div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-val">
+                                <h4>Escrow Balance</h4>
+                                <p id="f-stat-escrow">$0.00</p>
+                            </div>
+                            <div class="stat-icon-wrapper" style="background: var(--info-bg); color: var(--info);"><i data-lucide="lock"></i></div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-val">
+                                <h4>Total Earnings</h4>
+                                <p id="f-stat-earnings">$0.00</p>
+                            </div>
+                            <div class="stat-icon-wrapper" style="background: var(--success-bg); color: var(--success);"><i data-lucide="banknote"></i></div>
+                        </div>
+                    </div>
+
+                    <!-- Farmer verification warning alert -->
+                    <div id="farmer-verification-alert" class="demand-alert" style="background: #fef9c3; border-color: #fef08a; color: #a16207;">
+                        <i data-lucide="alert-triangle"></i>
+                        <div>
+                            <strong>Verification Pending:</strong> Please upload verification files in your farmer profile settings. Admins must approve before your crop listings appear on the public marketplace.
+                        </div>
+                    </div>
+
+                    <!-- Crop demands alert if any are posted -->
+                    <div class="demand-alert" id="farmer-demand-banner">
+                        <i data-lucide="trending-up"></i>
+                        <div>
+                            <strong>Active Customer Demands:</strong> Consumers have requested crop supplies. <a href="#" onclick="switchDashboardSection('farmer', 'demands')" style="text-decoration: underline; font-weight: 700;">Check demand lists</a> to match your current production.
+                        </div>
+                    </div>
+
+                    <div class="grid-2col">
+                        <div class="dash-card">
+                            <div class="dash-card-header">
+                                <h3>Recent Active Orders</h3>
+                            </div>
+                            <div class="dash-card-body table-responsive">
+                                <table class="dash-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Order ID</th>
+                                            <th>Produce</th>
+                                            <th>Total</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="farmer-recent-orders">
+                                        <!-- Loaded dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="dash-card">
+                            <div class="dash-card-header">
+                                <h3>Crop Market Trends</h3>
+                            </div>
+                            <div class="dash-card-body">
+                                <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1rem;">Suggested agricultural retail bounds based on system-wide analytics.</p>
+                                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                                    <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">
+                                        <strong>Tomato (Fresh)</strong>
+                                        <span style="color: var(--success); font-weight: 700;">High Demand ($2.00 - $3.50 / kg)</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">
+                                        <strong>Potatoes</strong>
+                                        <span>Stable Demand ($1.20 - $1.80 / kg)</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">
+                                        <strong>Organic Apples</strong>
+                                        <span style="color: var(--success); font-weight: 700;">High Demand ($4.00 - $5.50 / kg)</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">
+                                        <strong>Wheat Grain</strong>
+                                        <span>Low Supply ($0.80 - $1.20 / kg)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Farmer section: Add Crop -->
+                <div id="farmer-section-add-crop" class="dashboard-section">
+                    <div class="dash-card" style="max-width: 800px; margin: 0 auto;">
+                        <div class="dash-card-header">
+                            <h3>Add Produce Listing</h3>
+                        </div>
+                        <div class="dash-card-body">
+                            <form id="farmer-add-crop-form" onsubmit="handleFarmerAddCrop(event)">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="fc-name">Crop Name</label>
+                                        <input type="text" id="fc-name" class="form-input" required placeholder="e.g. Sweet Organic Tomatoes" oninput="updatePricingSuggestion()">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="fc-category">Category</label>
+                                        <select id="fc-category" class="form-input" required onchange="updatePricingSuggestion()">
+                                            <option value="vegetables">Vegetables</option>
+                                            <option value="fruits">Fruits</option>
+                                            <option value="grains">Grains</option>
+                                            <option value="dairy">Dairy</option>
+                                            <option value="poultry">Poultry</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="fc-stock">Available Stock Quantity</label>
+                                        <input type="number" id="fc-stock" class="form-input" required min="1" placeholder="e.g. 200">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="fc-unit">Pricing Unit</label>
+                                        <select id="fc-unit" class="form-input" required>
+                                            <option value="kg">Kilogram (kg)</option>
+                                            <option value="sack">Sack</option>
+                                            <option value="pieces">Pieces</option>
+                                            <option value="dozen">Dozen</option>
+                                            <option value="liter">Liter</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Dynamic Pricing System suggestion output -->
+                                <div class="smart-pricing-card">
+                                    <div class="smart-pricing-header">
+                                        <i data-lucide="sparkles"></i>
+                                        <span>Dynamic Pricing Guide Suggestion</span>
+                                    </div>
+                                    <div class="smart-pricing-body" id="dynamic-price-suggestion-box">
+                                        Please enter a crop name or select a category to receive suggested fair pricing values.
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="fc-price">Selling Price ($ per Unit)</label>
+                                        <input type="number" step="0.01" id="fc-price" class="form-input" required placeholder="e.g. 2.50">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="fc-harvest">Harvest Date</label>
+                                        <input type="date" id="fc-harvest" class="form-input" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="fc-origin">Crop Origin (District / Village)</label>
+                                        <input type="text" id="fc-origin" class="form-input" required placeholder="e.g. Kakani, Nuwakot">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="fc-image">Upload Photo Link / Mock</label>
+                                        <select id="fc-image" class="form-input">
+                                            <option value="tomato">Fresh Tomatoes</option>
+                                            <option value="potato">Organic Potatoes</option>
+                                            <option value="carrot">Fresh Carrots</option>
+                                            <option value="apple">Red Apples</option>
+                                            <option value="grain">Wheat Grains</option>
+                                            <option value="cabbage">Green Cabbage</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="fc-desc">Description &amp; Farming Practices</label>
+                                    <textarea id="fc-desc" class="form-input" rows="4" placeholder="Mention if you use organic composting, greenhouse techniques, etc."></textarea>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary" style="width: 100%;">Create Listing</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Farmer section: Listings -->
+                <div id="farmer-section-listings" class="dashboard-section">
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h3>My Active Produce Listings</h3>
+                        </div>
+                        <div class="dash-card-body table-responsive">
+                            <table class="dash-table">
+                                <thead>
+                                    <tr>
+                                        <th>Produce</th>
+                                        <th>Category</th>
+                                        <th>Stock</th>
+                                        <th>Price</th>
+                                        <th>Grade Status</th>
+                                        <th>Listing Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="farmer-listings-table">
+                                    <!-- Loaded dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Farmer section: Orders -->
+                <div id="farmer-section-orders" class="dashboard-section">
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h3>Customer Order Records</h3>
+                        </div>
+                        <div class="dash-card-body table-responsive">
+                            <table class="dash-table">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Buyer Name</th>
+                                        <th>Items Purchased</th>
+                                        <th>Delivery Target</th>
+                                        <th>Escrow Status</th>
+                                        <th>Transit Stage</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="farmer-orders-table">
+                                    <!-- Loaded dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Farmer section: Earnings -->
+                <div id="farmer-section-earnings" class="dashboard-section">
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h3>Payout Transactions</h3>
+                        </div>
+                        <div class="dash-card-body table-responsive">
+                            <table class="dash-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Order ID</th>
+                                        <th>Crops Sourced</th>
+                                        <th>Volume Transacted</th>
+                                        <th>Transfer Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="farmer-earnings-table">
+                                    <!-- Loaded dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Farmer section: Demands -->
+                <div id="farmer-section-demands" class="dashboard-section">
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h3>Customer Sourcing Demands</h3>
+                            <p style="font-size: 0.85rem; color: var(--text-secondary);">Direct market requests from registered consumers. Match their quantity demands to increase sales volume.</p>
+                        </div>
+                        <div class="dash-card-body table-responsive">
+                            <table class="dash-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date Posted</th>
+                                        <th>Requested Crop</th>
+                                        <th>Quantity Target</th>
+                                        <th>Expected Budget</th>
+                                        <th>Buyer Region</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="farmer-demands-table">
+                                    <!-- Loaded dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+
+    <!-- 2. CUSTOMER PORTAL DASHBOARD VIEW -->
+    <div id="customer-dashboard-view" class="dashboard-container hidden">
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-brand">
+                <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                <span>Customer Hub</span>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-menu-item"><a href="#" class="sidebar-menu-link active" onclick="switchDashboardSection('customer', 'home')"><i data-lucide="layout-dashboard"></i> Dashboard Overview</a></li>
+                <li class="sidebar-menu-item"><a href="#" class="sidebar-menu-link" onclick="switchDashboardSection('customer', 'orders')"><i data-lucide="shopping-bag"></i> Order History</a></li>
+                <li class="sidebar-menu-item"><a href="#" class="sidebar-menu-link" onclick="switchDashboardSection('customer', 'demand')"><i data-lucide="mail-question"></i> Sourcing Request</a></li>
+                <li class="sidebar-menu-item" style="margin-top: 2rem;"><a href="#" class="sidebar-menu-link" style="color: var(--error);" onclick="handleLogout()"><i data-lucide="log-out"></i> Logout</a></li>
+            </ul>
+            <div class="sidebar-user">
+                <div class="sidebar-user-avatar" id="customer-avatar">C</div>
+                <div class="sidebar-user-info">
+                    <h5 id="customer-name">Customer Name</h5>
+                    <span>Registered Buyer</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="dashboard-main">
+            <header class="dashboard-header">
+                <div class="dashboard-header-left">
+                    <h2 id="customer-section-title">Customer Dashboard</h2>
+                </div>
+                <div class="dashboard-header-right">
+                    <button class="btn btn-primary btn-sm" onclick="navigateTo('marketplace')">Go to Marketplace Shop</button>
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+                <!-- Customer section: Home -->
+                <div id="customer-section-home" class="dashboard-section active">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-val">
+                                <h4>Orders Placed</h4>
+                                <p id="c-stat-orders">0</p>
+                            </div>
+                            <div class="stat-icon-wrapper" style="background: var(--info-bg); color: var(--info);"><i data-lucide="shopping-cart"></i></div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-val">
+                                <h4>Pending Deliveries</h4>
+                                <p id="c-stat-pending">0</p>
+                            </div>
+                            <div class="stat-icon-wrapper" style="background: var(--warning-bg); color: var(--warning);"><i data-lucide="truck"></i></div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-val">
+                                <h4>Escrow Transactions</h4>
+                                <p id="c-stat-escrow">$0.00</p>
+                            </div>
+                            <div class="stat-icon-wrapper" style="background: var(--success-bg); color: var(--success);"><i data-lucide="lock"></i></div>
+                        </div>
+                    </div>
+
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h3>Current Shipment &amp; Transit Statuses</h3>
+                        </div>
+                        <div class="dash-card-body table-responsive">
+                            <table class="dash-table">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Items</th>
+                                        <th>Total Paid</th>
+                                        <th>Delivery Partner</th>
+                                        <th>Escrow Release</th>
+                                        <th>Status Stage</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="customer-active-shipments">
+                                    <!-- Loaded dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Customer section: Orders -->
+                <div id="customer-section-orders" class="dashboard-section">
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h3>Full Order History</h3>
+                        </div>
+                        <div class="dash-card-body table-responsive">
+                            <table class="dash-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Order ID</th>
+                                        <th>Items</th>
+                                        <th>Total Cost</th>
+                                        <th>Escrow Transfer</th>
+                                        <th>Status</th>
+                                        <th>Feedback Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="customer-orders-history">
+                                    <!-- Loaded dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Customer section: Demand Sourcing -->
+                <div id="customer-section-demand" class="dashboard-section">
+                    <div class="grid-2col">
+                        <div class="dash-card">
+                            <div class="dash-card-header">
+                                <h3>Post Sourcing Crop Request</h3>
+                            </div>
+                            <div class="dash-card-body">
+                                <form id="customer-post-demand-form" onsubmit="handleCustomerPostDemand(event)">
+                                    <div class="form-group">
+                                        <label for="cd-crop">Crop Name Desired</label>
+                                        <input type="text" id="cd-crop" class="form-input" required placeholder="e.g. Organic Strawberries">
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="cd-qty">Required Quantity</label>
+                                            <input type="number" id="cd-qty" class="form-input" required placeholder="e.g. 50">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="cd-unit">Unit</label>
+                                            <select id="cd-unit" class="form-input" required>
+                                                <option value="kg">Kilograms (kg)</option>
+                                                <option value="sack">Sacks</option>
+                                                <option value="pieces">Pieces</option>
+                                                <option value="dozen">Dozens</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cd-price">Estimated Target Price ($ per unit)</label>
+                                        <input type="number" step="0.01" id="cd-price" class="form-input" required placeholder="e.g. 3.50">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cd-region">Delivery Destination Town / Village</label>
+                                        <input type="text" id="cd-region" class="form-input" required placeholder="e.g. Koteshwor, Kathmandu">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary" style="width: 100%;">Broadcast Sourcing Demand</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="dash-card">
+                            <div class="dash-card-header">
+                                <h3>My Sourcing Broadcasts</h3>
+                            </div>
+                            <div class="dash-card-body table-responsive">
+                                <table class="dash-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Crop Required</th>
+                                            <th>Target Vol</th>
+                                            <th>Price Bound</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="customer-demands-history">
+                                        <!-- Loaded dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+
+    <!-- 3. DELIVERY PARTNER PORTAL VIEW -->
+    <div id="delivery-dashboard-view" class="dashboard-container hidden">
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-brand">
+                <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                <span>Delivery Hub</span>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-menu-item"><a href="#" class="sidebar-menu-link active" onclick="switchDashboardSection('delivery', 'home')"><i data-lucide="layout-dashboard"></i> Driver Overview</a></li>
+                <li class="sidebar-menu-item"><a href="#" class="sidebar-menu-link" onclick="switchDashboardSection('delivery', 'jobs')"><i data-lucide="route"></i> Available Routes</a></li>
+                <li class="sidebar-menu-item"><a href="#" class="sidebar-menu-link" onclick="switchDashboardSection('delivery', 'active')"><i data-lucide="truck"></i> Active Deliveries</a></li>
+                <li class="sidebar-menu-item" style="margin-top: 2rem;"><a href="#" class="sidebar-menu-link" style="color: var(--error);" onclick="handleLogout()"><i data-lucide="log-out"></i> Logout</a></li>
+            </ul>
+            <div class="sidebar-user">
+                <div class="sidebar-user-avatar" id="delivery-avatar">D</div>
+                <div class="sidebar-user-info">
+                    <h5 id="delivery-name">Driver Name</h5>
+                    <span id="delivery-vehicle-badge">Vehicle Type</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="dashboard-main">
+            <header class="dashboard-header">
+                <div class="dashboard-header-left">
+                    <h2 id="delivery-section-title">Logistics Partner</h2>
+                </div>
+                <div class="dashboard-header-right">
+                    <button class="btn btn-outline btn-sm" onclick="navigateTo('home')">Return to Home</button>
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+                <!-- Delivery Section: Home -->
+                <div id="delivery-section-home" class="dashboard-section active">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-val">
+                                <h4>Jobs Handled</h4>
+                                <p id="d-stat-handled">0</p>
+                            </div>
+                            <div class="stat-icon-wrapper" style="background: var(--primary-tint); color: var(--primary);"><i data-lucide="check-circle2"></i></div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-val">
+                                <h4>Available Shipments</h4>
+                                <p id="d-stat-available">0</p>
+                            </div>
+                            <div class="stat-icon-wrapper" style="background: var(--info-bg); color: var(--info);"><i data-lucide="package-search"></i></div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-val">
+                                <h4>Total Transit Fees</h4>
+                                <p id="d-stat-earnings">$0.00</p>
+                            </div>
+                            <div class="stat-icon-wrapper" style="background: var(--success-bg); color: var(--success);"><i data-lucide="banknote"></i></div>
+                        </div>
+                    </div>
+
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h3>Current Active Shipments</h3>
+                        </div>
+                        <div class="dash-card-body table-responsive">
+                            <table class="dash-table">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Farm Origin (Pickup)</th>
+                                        <th>Customer Target (Drop)</th>
+                                        <th>Weight / Item</th>
+                                        <th>Estd Route Pay</th>
+                                        <th>Current Stage</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="delivery-recent-active">
+                                    <!-- Loaded dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Delivery Section: Available Jobs -->
+                <div id="delivery-section-jobs" class="dashboard-section">
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h3>Open Sourced Transport Requests</h3>
+                            <p style="font-size: 0.85rem; color: var(--text-secondary);">Select pickup loads that fit your vehicle size and geographic location.</p>
+                        </div>
+                        <div class="dash-card-body table-responsive">
+                            <table class="dash-table">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Pickup Farm Location</th>
+                                        <th>Destination Area</th>
+                                        <th>Weight / Item Type</th>
+                                        <th>Distance Surcharge Fee</th>
+                                        <th>Action Option</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="delivery-jobs-table">
+                                    <!-- Loaded dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Delivery Section: Active Transit Actions -->
+                <div id="delivery-section-active" class="dashboard-section">
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h3>Update Active Shipments Progress</h3>
+                        </div>
+                        <div class="dash-card-body table-responsive">
+                            <table class="dash-table">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Pickup Origin</th>
+                                        <th>Customer Dropoff Address</th>
+                                        <th>Customer Contact Phone</th>
+                                        <th>Current Transit Status</th>
+                                        <th>Stage Action Trigger</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="delivery-active-details-table">
+                                    <!-- Loaded dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+
+    <!-- 4. ADMIN DASHBOARD VIEW -->
+    <div id="admin-dashboard-view" class="dashboard-container hidden">
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-brand">
+                <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                <span>Admin Panel</span>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-menu-item"><a href="#" class="sidebar-menu-link active" onclick="switchDashboardSection('admin', 'home')"><i data-lucide="bar-chart-3"></i> System Analytics</a></li>
+                <li class="sidebar-menu-item"><a href="#" class="sidebar-menu-link" onclick="switchDashboardSection('admin', 'verifications')"><i data-lucide="user-check"></i> Farmer Audit</a></li>
+                <li class="sidebar-menu-item"><a href="#" class="sidebar-menu-link" onclick="switchDashboardSection('admin', 'listings')"><i data-lucide="shield-alert"></i> Listing Audit</a></li>
+                <li class="sidebar-menu-item"><a href="#" class="sidebar-menu-link" onclick="switchDashboardSection('admin', 'users')"><i data-lucide="users"></i> Manage Users</a></li>
+                <li class="sidebar-menu-item"><a href="#" class="sidebar-menu-link" onclick="switchDashboardSection('admin', 'disputes')"><i data-lucide="help-circle"></i> Disputes &amp; Tickets</a></li>
+                <li class="sidebar-menu-item" style="margin-top: 2rem;"><a href="#" class="sidebar-menu-link" style="color: var(--error);" onclick="handleLogout()"><i data-lucide="log-out"></i> Logout</a></li>
+            </ul>
+            <div class="sidebar-user">
+                <div class="sidebar-user-avatar" style="background: var(--error); color: white;">A</div>
+                <div class="sidebar-user-info">
+                    <h5>System Admin</h5>
+                    <span>FarmLink Operator</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="dashboard-main">
+            <header class="dashboard-header">
+                <div class="dashboard-header-left">
+                    <h2 id="admin-section-title">System Administration</h2>
+                </div>
+                <div class="dashboard-header-right">
+                    <button class="btn btn-outline btn-sm" onclick="navigateTo('home')">Go to Site View</button>
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+                <!-- Admin Section: Home -->
+                <div id="admin-section-home" class="dashboard-section active">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-val">
+                                <h4>Total System Users</h4>
+                                <p id="a-stat-users">0</p>
+                            </div>
+                            <div class="stat-icon-wrapper" style="background: var(--info-bg); color: var(--info);"><i data-lucide="users"></i></div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-val">
+                                <h4>Pending Crop Verifications</h4>
+                                <p id="a-stat-pending-crops">0</p>
+                            </div>
+                            <div class="stat-icon-wrapper" style="background: var(--warning-bg); color: var(--warning);"><i data-lucide="wheat"></i></div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-val">
+                                <h4>Financial Volume</h4>
+                                <p id="a-stat-volume">$0.00</p>
+                            </div>
+                            <div class="stat-icon-wrapper" style="background: var(--success-bg); color: var(--success);"><i data-lucide="banknote"></i></div>
+                        </div>
+                    </div>
+
+                    <div class="grid-2col">
+                        <div class="dash-card">
+                            <div class="dash-card-header">
+                                <h3>Platform Verification Requests</h3>
+                            </div>
+                            <div class="dash-card-body table-responsive">
+                                <table class="dash-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Farm Owner</th>
+                                            <th>Farm Name</th>
+                                            <th>Location</th>
+                                            <th>License Doc</th>
+                                            <th>Action Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admin-recent-farmer-verifications">
+                                        <!-- Loaded dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="dash-card">
+                            <div class="dash-card-header">
+                                <h3>System Activity Logs</h3>
+                            </div>
+                            <div class="dash-card-body">
+                                <ul style="list-style: none; font-size: 0.85rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.75rem;" id="admin-activity-logs">
+                                    <!-- Loaded dynamically -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Admin Section: Farmer Verifications -->
+                <div id="admin-section-verifications" class="dashboard-section">
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h3>Farmer Profile Verification Audit</h3>
+                        </div>
+                        <div class="dash-card-body table-responsive">
+                            <table class="dash-table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Phone</th>
+                                        <th>Farm Name</th>
+                                        <th>Document Uploaded</th>
+                                        <th>Verification Status</th>
+                                        <th>Audit Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-full-farmer-verifications">
+                                    <!-- Loaded dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Admin Section: Listing Audit -->
+                <div id="admin-section-listings" class="dashboard-section">
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h3>Verify Crop Quality &amp; Set Grading</h3>
+                            <p style="font-size: 0.85rem; color: var(--text-secondary);">Set grades (Grade A - Premium, Grade B - Standard, Grade C - Budget) or approve listed crops for public display.</p>
+                        </div>
+                        <div class="dash-card-body table-responsive">
+                            <table class="dash-table">
+                                <thead>
+                                    <tr>
+                                        <th>Listed By</th>
+                                        <th>Crop Name</th>
+                                        <th>Location</th>
+                                        <th>Price Listed</th>
+                                        <th>Current Grade</th>
+                                        <th>Audit Grade Action</th>
+                                        <th>Platform Status</th>
+                                        <th>Remove Listing</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-listings-audit-table">
+                                    <!-- Loaded dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Admin Section: Users -->
+                <div id="admin-section-users" class="dashboard-section">
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h3>Manage Sourcing Members</h3>
+                        </div>
+                        <div class="dash-card-body table-responsive">
+                            <table class="dash-table">
+                                <thead>
+                                    <tr>
+                                        <th>Member ID</th>
+                                        <th>Name</th>
+                                        <th>Role Group</th>
+                                        <th>Email Address</th>
+                                        <th>Location Area</th>
+                                        <th>Moderator Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-users-table">
+                                    <!-- Loaded dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Admin Section: Disputes -->
+                <div id="admin-section-disputes" class="dashboard-section">
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h3>Platform Complaints &amp; Escrow Disputes</h3>
+                        </div>
+                        <div class="dash-card-body table-responsive">
+                            <table class="dash-table">
+                                <thead>
+                                    <tr>
+                                        <th>Complaint ID</th>
+                                        <th>Buyer Name</th>
+                                        <th>Order Link ID</th>
+                                        <th>Details</th>
+                                        <th>Resolution Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-disputes-table">
+                                    <!-- Loaded dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+
+    <!-- ==================== DIALOG MODALS ==================== -->
+
+    <!-- Checkout / Order Creation Modal -->
+    <div id="checkout-modal" class="modal-backdrop hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Escrow Checkout Security</h3>
+                <button class="modal-close-btn" onclick="closeCheckoutModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="background: var(--primary-tint); padding: 1rem; border-radius: var(--radius); margin-bottom: 1.5rem; border: 1px solid var(--primary-light);">
+                    <h5 style="color: var(--primary); font-weight: 700; margin-bottom: 0.25rem;">Direct Farm-to-Table Guarantee</h5>
+                    <p style="font-size: 0.85rem; color: var(--text-secondary);">Your payment is securely held in FarmLink Escrow and will be released to the farmer only when you confirm receipt of the delivery.</p>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.75rem;">
+                    <span>Crop Selected:</span>
+                    <strong id="modal-checkout-crop">Tomato</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.75rem;">
+                    <span>Unit Price:</span>
+                    <strong id="modal-checkout-price">$0.00</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.75rem;">
+                    <span>Available Stock:</span>
+                    <span id="modal-checkout-stock">0 kg</span>
+                </div>
+                
+                <form id="checkout-form" onsubmit="handlePlaceOrder(event)" style="margin-top: 1.5rem;">
+                    <input type="hidden" id="checkout-crop-id">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="checkout-quantity">Quantity to Purchase</label>
+                            <input type="number" id="checkout-quantity" class="form-input" required min="1" oninput="calculateTotalCheckoutSum()">
+                        </div>
+                        <div class="form-group">
+                            <label for="checkout-delivery-date">Schedule Delivery Date</label>
+                            <input type="date" id="checkout-delivery-date" class="form-input" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="checkout-delivery-partner">Select Delivery Partner Option</label>
+                        <select id="checkout-delivery-partner" class="form-input" required onchange="calculateTotalCheckoutSum()">
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="checkout-address">Delivery Address</label>
+                        <input type="text" id="checkout-address" class="form-input" required placeholder="e.g. House 45, Green Lane, Kathmandu">
+                    </div>
+
+                    <div style="background: var(--background); padding: 1rem; border-radius: var(--radius); margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem;">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+                            <span>Crops Total:</span>
+                            <span id="summary-crops-total">$0.00</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+                            <span>Logistics Fee:</span>
+                            <span id="summary-shipping-fee">$0.00</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-weight: 800; font-size: 1.15rem; border-top: 1px solid var(--border); padding-top: 0.5rem; color: var(--primary);">
+                            <span>Total Escrow Amount:</span>
+                            <span id="summary-final-total">$0.00</span>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+                        <button type="button" class="btn btn-outline" style="flex: 1;" onclick="closeCheckoutModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary" style="flex: 1.5;">Confirm Escrow Payment</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rating & Customer Review Modal -->
+    <div id="review-modal" class="modal-backdrop hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Leave Produce Feedback</h3>
+                <button class="modal-close-btn" onclick="closeReviewModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.5rem;">Please evaluate your experience with the crop quality and delivery transit services.</p>
+                <form id="review-form" onsubmit="handleReviewSubmit(event)">
+                    <input type="hidden" id="review-order-id">
+                    
+                    <div class="form-group">
+                        <label>Produce Rating Quality</label>
+                        <div class="stars-interactive" id="interactive-star-row">
+                            <span class="star-interactive-item" data-val="1" onclick="setInteractiveRating(1)">&#9733;</span>
+                            <span class="star-interactive-item" data-val="2" onclick="setInteractiveRating(2)">&#9733;</span>
+                            <span class="star-interactive-item" data-val="3" onclick="setInteractiveRating(3)">&#9733;</span>
+                            <span class="star-interactive-item" data-val="4" onclick="setInteractiveRating(4)">&#9733;</span>
+                            <span class="star-interactive-item" data-val="5" onclick="setInteractiveRating(5)">&#9733;</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="review-text">Review Comments</label>
+                        <textarea id="review-text" class="form-input" rows="4" required placeholder="Describe crop freshness, size, cleanliness, or delivery experience..."></textarea>
+                    </div>
+
+                    <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+                        <button type="button" class="btn btn-outline" style="flex: 1;" onclick="closeReviewModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary" style="flex: 1.5;">Submit Review</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Crop Detail Modal (Public viewing) -->
+    <div id="crop-detail-modal" class="modal-backdrop hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="detail-crop-title">Crop Details</h3>
+                <button class="modal-close-btn" onclick="closeCropDetailModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="grid-2col" style="align-items: center; margin-bottom: 1.5rem;">
+                    <div id="detail-crop-icon-box" style="font-size: 4rem; height: 160px; background: var(--primary-tint); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; color: var(--primary);">
+                        🍅
+                    </div>
+                    <div>
+                        <span id="detail-crop-grade" class="status-pill status-grade-a">Grade A</span>
+                        <h4 id="detail-crop-price" style="font-size: 1.6rem; color: var(--primary); font-weight: 800; margin: 0.5rem 0;">$0.00 / unit</h4>
+                        <p style="font-size: 0.9rem; color: var(--text-secondary);">Stock Left: <strong id="detail-crop-stock">0</strong></p>
+                        <p style="font-size: 0.9rem; color: var(--text-secondary);">Harvested: <strong id="detail-crop-harvest">2026-06-01</strong></p>
+                    </div>
+                </div>
+
+                <div style="border-top: 1px solid var(--border); padding-top: 1rem; margin-bottom: 1.5rem;">
+                    <h5 style="font-weight: 700; margin-bottom: 0.5rem;">Farming Practices &amp; Details</h5>
+                    <p id="detail-crop-desc" style="font-size: 0.9rem; color: var(--text-secondary);">Descriptions goes here...</p>
+                </div>
+
+                <div style="border-top: 1px solid var(--border); padding-top: 1rem; background: var(--background); padding: 1rem; border-radius: var(--radius); margin-bottom: 1.5rem;">
+                    <h5 style="font-weight: 700; margin-bottom: 0.5rem; color: var(--primary);">Farmer Information</h5>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+                        <span>Name:</span>
+                        <strong id="detail-farmer-name">Farmer Name</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-top: 0.25rem;">
+                        <span>Location Origin:</span>
+                        <span id="detail-farmer-loc">Loc</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-top: 0.25rem;">
+                        <span>Verification Status:</span>
+                        <strong style="color: var(--success);"><i data-lucide="check-circle" size="14"></i> Verified Profile</strong>
+                    </div>
+                </div>
+
+                <div style="border-top: 1px solid var(--border); padding-top: 1rem;">
+                    <h5 style="font-weight: 700; margin-bottom: 0.5rem;">Product Reviews</h5>
+                    <div id="detail-crop-reviews" style="display: flex; flex-direction: column; gap: 0.75rem; max-height: 150px; overflow-y: auto;">
+                        <span style="font-size: 0.85rem; color: var(--text-muted);">No reviews posted for this crop yet.</span>
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+                    <button class="btn btn-outline" style="flex: 1;" onclick="closeCropDetailModal()">Close</button>
+                    <button id="detail-checkout-btn" class="btn btn-primary" style="flex: 1.5;" onclick="triggerCheckoutFromDetail()">Buy Direct from Farmer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APP JS LINK -->
+    <script src="app.js"></script>
+    <script>
+        // Start lucide icons load
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>

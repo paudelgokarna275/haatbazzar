@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Detail — FarmLink Nepal</title>
+  <meta name="description" content="View product details, farmer information, pre-order options, and customer reviews on FarmLink Nepal.">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/product-detail.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="main-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><span class="logo-icon">🌿</span>FarmLink <span style="color:var(--accent)">Nepal</span></a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="marketplace.html" class="nav-link active">Marketplace</a>
+      <a href="farmer-profile.html" class="nav-link">Farmers</a>
+      <a href="crop-tracking.html" class="nav-link">Crop Tracking</a>
+    </div>
+    <div class="nav-actions">
+      <div class="lang-toggle">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="np">नेपाली</button>
+      </div>
+      <a href="checkout.html" class="btn-icon" style="position:relative;">🛒
+        <span class="cart-badge" style="position:absolute;top:-6px;right:-6px;background:var(--accent);color:white;width:18px;height:18px;border-radius:50%;font-size:0.65rem;font-weight:700;display:none;align-items:center;justify-content:center;">0</span>
+      </a>
+      <button class="btn btn-ghost btn-sm btn-login">Log In</button>
+      <button class="btn btn-primary btn-sm btn-signup">Join Free</button>
+      <div id="user-menu" class="hidden" style="display:flex;align-items:center;gap:10px;">
+        <span id="user-name" style="font-size:0.875rem;font-weight:600;"></span>
+        <button data-logout class="btn btn-ghost btn-sm">Logout</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div style="padding-top:var(--nav-height);">
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb-bar">
+  <div class="container">
+    <nav class="breadcrumb">
+      <a href="index.html">Home</a> <span>/</span>
+      <a href="marketplace.html">Marketplace</a> <span>/</span>
+      <span id="breadcrumb-name">Organic Tomatoes</span>
+    </nav>
+  </div>
+</div>
+
+<!-- PRODUCT DETAIL MAIN -->
+<section class="section-sm">
+  <div class="container">
+    <div class="pd-layout">
+
+      <!-- LEFT: Gallery -->
+      <div class="pd-gallery">
+        <div class="gallery-main">
+          <img id="gallery-main-img" src="assets/images/produce-market.png" alt="Product" class="gallery-main-img">
+          <div class="gallery-badges" id="gallery-badges"></div>
+          <button class="gallery-wishlist-btn" id="pd-wishlist-btn" onclick="toggleProductWishlist()">🤍</button>
+        </div>
+        <div class="gallery-thumbs" id="gallery-thumbs">
+          <img src="assets/images/produce-market.png" class="gallery-thumb active" onclick="setMainImg(this.src)">
+          <img src="assets/images/farm-cover.png" class="gallery-thumb" onclick="setMainImg(this.src)">
+          <img src="assets/images/crop-stages.png" class="gallery-thumb" onclick="setMainImg(this.src)">
+        </div>
+
+        <!-- Harvest Progress -->
+        <div class="harvest-progress-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-3);">
+            <h4 style="font-family:var(--font-heading);font-weight:700;font-size:0.95rem;">🌱 Crop Progress</h4>
+            <a href="crop-tracking.html" style="font-size:0.8rem;color:var(--primary);font-weight:600;">Track Live →</a>
+          </div>
+          <div class="progress-bar" style="margin-bottom:var(--space-2);">
+            <div class="progress-fill" style="width:60%"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--text-muted);">
+            <span>🌱 Seeded</span><span>🌿 Growing</span><span>🌸 Flowering</span><span>✅ Ready</span>
+          </div>
+          <p style="font-size:0.8rem;color:var(--text-muted);margin-top:var(--space-3);">📅 Estimated harvest: <strong>June 15, 2026</strong></p>
+        </div>
+      </div>
+
+      <!-- RIGHT: Info -->
+      <div class="pd-info">
+        <div id="pd-badges" class="pd-badge-row"></div>
+
+        <h1 class="pd-title" id="pd-title">Organic Tomatoes</h1>
+
+        <div class="pd-rating-row">
+          <div class="stars" id="pd-stars">⭐⭐⭐⭐⭐</div>
+          <span id="pd-rating-text" style="font-size:0.875rem;color:var(--text-muted);">4.8 (124 reviews)</span>
+          <span style="color:var(--border);">|</span>
+          <span id="pd-sold" style="font-size:0.875rem;color:var(--text-muted);">348 sold</span>
+        </div>
+
+        <!-- Farmer Mini Card -->
+        <a href="farmer-profile.html" class="pd-farmer-card" id="pd-farmer-card">
+          <img src="assets/images/farmer-1.png" alt="Farmer" class="pd-farmer-img" id="pd-farmer-img">
+          <div class="pd-farmer-info">
+            <div class="pd-farmer-name" id="pd-farmer-name">Hari Bahadur Tamang</div>
+            <div class="pd-farmer-farm" id="pd-farmer-farm">Green Valley Organic Farm</div>
+            <div class="pd-farmer-loc" id="pd-farmer-loc">📍 Sindhupalchok</div>
+          </div>
+          <div class="pd-farmer-rating">
+            ⭐ 4.8
+            <span class="badge badge-verified" style="display:block;margin-top:4px;">✅ Verified</span>
+          </div>
+        </a>
+
+        <!-- Price -->
+        <div class="pd-price-box">
+          <div class="pd-price" id="pd-price">Rs 80 <span class="pd-unit">/kg</span></div>
+          <div class="pd-price-meta">
+            <span class="badge badge-success">In Stock</span>
+            <span style="font-size:0.8rem;color:var(--text-muted);">Min. order: 1 kg</span>
+          </div>
+        </div>
+
+        <!-- Quantity -->
+        <div class="pd-qty-row">
+          <label class="form-label">Quantity:</label>
+          <div class="qty-selector">
+            <button class="qty-btn" onclick="changeQty(-1)">−</button>
+            <input type="number" id="qty-input" class="qty-input" value="1" min="1" max="50">
+            <button class="qty-btn" onclick="changeQty(1)">+</button>
+          </div>
+          <span id="pd-total-price" style="font-family:var(--font-heading);font-weight:800;font-size:1.125rem;color:var(--primary);">Rs 80</span>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="pd-actions">
+          <button class="btn btn-primary btn-lg" id="pd-add-cart" style="flex:1;">🛒 Add to Cart</button>
+          <button class="btn btn-accent btn-lg" id="pd-buy-now" style="flex:1;">⚡ Buy Now</button>
+        </div>
+
+        <!-- Pre-Order Box -->
+        <div class="preorder-box" id="preorder-box">
+          <div class="preorder-header">
+            <span>📅 Pre-Order Available</span>
+            <span class="badge badge-accent">Save 10%</span>
+          </div>
+          <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:var(--space-4);">Reserve this crop before harvest! Pay a 20% deposit now and the rest on delivery.</p>
+          <div class="preorder-details">
+            <div class="preorder-detail-item">
+              <span>Harvest Date</span><strong>June 15, 2026</strong>
+            </div>
+            <div class="preorder-detail-item">
+              <span>Deposit (20%)</span><strong id="deposit-amount">Rs 16</strong>
+            </div>
+            <div class="preorder-detail-item">
+              <span>Balance on Delivery</span><strong id="balance-amount">Rs 64</strong>
+            </div>
+          </div>
+          <button class="btn btn-accent w-full" style="width:100%;justify-content:center;" onclick="Cart.add(currentProductId); showToast('Pre-order placed! Deposit of Rs 16 reserved. 🌾', 'harvest')">📅 Place Pre-Order</button>
+        </div>
+
+        <!-- Description -->
+        <div class="pd-description">
+          <h3 style="font-family:var(--font-heading);font-weight:700;margin-bottom:var(--space-3);">About This Product</h3>
+          <p id="pd-desc-text" style="font-size:0.9rem;line-height:1.7;">Sun-ripened organic tomatoes grown in the clean mountain air of Sindhupalchok. No pesticides, no chemicals — just pure farm love.</p>
+        </div>
+
+        <!-- Tags -->
+        <div class="pd-tags" id="pd-tags">
+          <span class="chip">🌱 Organic</span>
+          <span class="chip">🏔️ Mountain Grown</span>
+          <span class="chip">🚫 Pesticide Free</span>
+          <span class="chip">📦 Same-Day Pick</span>
+        </div>
+
+        <!-- Delivery Info -->
+        <div class="delivery-info">
+          <div class="delivery-item"><span>🚚</span><div><strong>Express Delivery</strong><p style="font-size:0.8rem;color:var(--text-muted);margin:0">2-4 hours in Kathmandu Valley</p></div></div>
+          <div class="delivery-item"><span>🔄</span><div><strong>Fresh Guarantee</strong><p style="font-size:0.8rem;color:var(--text-muted);margin:0">Full refund if not 100% fresh</p></div></div>
+          <div class="delivery-item"><span>🌱</span><div><strong>Traceable Farm</strong><p style="font-size:0.8rem;color:var(--text-muted);margin:0">Know exactly where your food comes from</p></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REVIEWS SECTION -->
+    <div class="pd-reviews reveal">
+      <div class="reviews-header">
+        <h2 style="font-family:var(--font-heading);font-weight:700;">Customer Reviews</h2>
+        <button class="btn btn-secondary" onclick="document.getElementById('review-form').scrollIntoView({behavior:'smooth'})">Write a Review</button>
+      </div>
+
+      <div class="reviews-layout">
+        <!-- Rating Summary -->
+        <div class="rating-summary">
+          <div class="rating-big">4.8</div>
+          <div class="stars" style="font-size:1.5rem;margin-bottom:var(--space-2);">⭐⭐⭐⭐⭐</div>
+          <p style="font-size:0.85rem;color:var(--text-muted);">Based on 124 reviews</p>
+          <div class="rating-bars">
+            <div class="rating-bar-row"><span>5★</span><div class="progress-bar"><div class="progress-fill" style="width:78%"></div></div><span>78%</span></div>
+            <div class="rating-bar-row"><span>4★</span><div class="progress-bar"><div class="progress-fill" style="width:14%"></div></div><span>14%</span></div>
+            <div class="rating-bar-row"><span>3★</span><div class="progress-bar"><div class="progress-fill" style="width:5%"></div></div><span>5%</span></div>
+            <div class="rating-bar-row"><span>2★</span><div class="progress-bar"><div class="progress-fill" style="width:2%"></div></div><span>2%</span></div>
+            <div class="rating-bar-row"><span>1★</span><div class="progress-bar"><div class="progress-fill" style="width:1%"></div></div><span>1%</span></div>
+          </div>
+        </div>
+
+        <!-- Review List -->
+        <div class="review-list">
+          <div class="review-card">
+            <div class="review-top">
+              <img src="assets/images/farmer-2.png" alt="Reviewer" class="review-avatar">
+              <div>
+                <strong>Priya Maharjan</strong>
+                <div class="stars" style="font-size:0.85rem;">⭐⭐⭐⭐⭐</div>
+              </div>
+              <span class="review-date">May 28, 2026</span>
+            </div>
+            <p class="review-text">"Absolutely the freshest tomatoes I've ever had! You can taste the difference when there are no chemicals. Arrived same day, beautifully packed. Will definitely reorder!"</p>
+            <div class="review-helpful"><button onclick="showToast('Thanks for your feedback!', 'info')">👍 Helpful (12)</button></div>
+          </div>
+          <div class="review-card">
+            <div class="review-top">
+              <img src="assets/images/farmer-1.png" alt="Reviewer" class="review-avatar">
+              <div>
+                <strong>Ramesh Thapa</strong>
+                <div class="stars" style="font-size:0.85rem;">⭐⭐⭐⭐⭐</div>
+              </div>
+              <span class="review-date">May 20, 2026</span>
+            </div>
+            <p class="review-text">"Hari dai's tomatoes are legendary. I've been buying for 6 months now. The crop tracking is a brilliant feature — I loved watching them grow!"</p>
+            <div class="review-helpful"><button onclick="showToast('Thanks for your feedback!', 'info')">👍 Helpful (8)</button></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Write Review Form -->
+      <div class="review-form-section" id="review-form">
+        <h3 style="font-family:var(--font-heading);font-weight:700;margin-bottom:var(--space-5);">Write a Review</h3>
+        <div class="star-rating-input">
+          <span style="font-size:0.9rem;font-weight:600;margin-right:var(--space-3);">Your Rating:</span>
+          <div class="star-input">
+            <span class="star-pick" data-val="1">⭐</span>
+            <span class="star-pick" data-val="2">⭐</span>
+            <span class="star-pick" data-val="3">⭐</span>
+            <span class="star-pick" data-val="4">⭐</span>
+            <span class="star-pick" data-val="5">⭐</span>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);margin-bottom:var(--space-4);">
+          <div class="form-group"><label class="form-label">Name</label><input type="text" class="form-input" placeholder="Your name"></div>
+          <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" placeholder="your@email.com"></div>
+        </div>
+        <div class="form-group" style="margin-bottom:var(--space-4);">
+          <label class="form-label">Your Review</label>
+          <textarea class="form-textarea" placeholder="Tell us about your experience with this product..."></textarea>
+        </div>
+        <button class="btn btn-primary" onclick="showToast('Review submitted! Thank you 🙏', 'success')">Submit Review</button>
+      </div>
+    </div>
+
+    <!-- RELATED PRODUCTS -->
+    <div class="related-section reveal">
+      <h2 style="font-family:var(--font-heading);font-weight:700;margin-bottom:var(--space-6);">More from This Farm</h2>
+      <div class="related-grid" id="related-grid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Auth Modal -->
+<div class="modal-overlay" id="auth-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 style="font-family:var(--font-heading);font-weight:700;">Join FarmLink Nepal 🌿</h3>
+      <button data-close-modal style="font-size:1.25rem;color:var(--text-muted);background:none;border:none;cursor:pointer;">✕</button>
+    </div>
+    <div style="display:flex;border-bottom:1px solid var(--border-light);padding:0 var(--space-6);">
+      <button class="auth-tab active" data-tab="login" style="flex:1;padding:var(--space-4);font-weight:600;font-size:0.9rem;border-bottom:2px solid var(--primary);color:var(--primary);background:none;border-top:none;border-left:none;border-right:none;cursor:pointer;">Log In</button>
+      <button class="auth-tab" data-tab="signup" style="flex:1;padding:var(--space-4);font-weight:600;font-size:0.9rem;border-bottom:2px solid transparent;color:var(--text-muted);background:none;border-top:none;border-left:none;border-right:none;cursor:pointer;">Sign Up</button>
+    </div>
+    <div class="auth-panel modal-body" data-panel="login">
+      <div style="background:var(--primary-50);border-radius:var(--radius);padding:var(--space-4);margin-bottom:var(--space-4);">
+        <p style="font-size:0.8rem;font-weight:700;color:var(--primary);margin-bottom:var(--space-2);">🚀 Demo:</p>
+        <div style="display:flex;gap:var(--space-2);">
+          <button class="btn btn-primary btn-sm" data-role-login="consumer">👤 Consumer</button>
+          <button class="btn btn-secondary btn-sm" data-role-login="farmer">👨‍🌾 Farmer</button>
+        </div>
+      </div>
+      <button class="btn btn-primary w-full" style="width:100%;justify-content:center;" data-role-login="consumer">Log In</button>
+    </div>
+    <div class="auth-panel hidden modal-body" data-panel="signup">
+      <button class="btn btn-primary w-full" style="width:100%;justify-content:center;" data-role-login="consumer">Create Account</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script src="js/product-detail.js"></script>
+</body>
+</html>

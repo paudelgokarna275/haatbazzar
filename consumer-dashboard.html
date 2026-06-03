@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Consumer Dashboard — FarmLink Nepal</title>
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    /* Dashboard Specific Overrides */
+    body { background: var(--bg-2); }
+  </style>
+</head>
+<body>
+
+<nav class="nav" id="main-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><span class="logo-icon">🌿</span>FarmLink <span style="color:var(--accent)">Nepal</span></a>
+    <div class="nav-actions">
+      <div class="lang-toggle"><button class="lang-btn active" data-lang="en">EN</button><button class="lang-btn" data-lang="np">नेपाली</button></div>
+      <a href="checkout.html" class="btn-icon" style="position:relative;">🛒<span class="cart-badge" style="position:absolute;top:-6px;right:-6px;background:var(--accent);color:white;width:18px;height:18px;border-radius:50%;font-size:0.65rem;font-weight:700;display:none;align-items:center;justify-content:center;">0</span></a>
+      <div id="user-menu" style="display:flex;align-items:center;gap:10px;"><span id="user-name" style="font-size:0.875rem;font-weight:600;">Bikash Adhikari</span><button data-logout class="btn btn-ghost btn-sm">Logout</button></div>
+    </div>
+  </div>
+</nav>
+
+<div class="dashboard-layout">
+  
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Menu</div>
+      <a href="#" class="sidebar-link active"><span class="sidebar-icon">📊</span> Overview</a>
+      <a href="marketplace.html" class="sidebar-link"><span class="sidebar-icon">🛒</span> Shop Produce</a>
+      <a href="#" class="sidebar-link"><span class="sidebar-icon">📦</span> My Orders <span class="sidebar-badge">2</span></a>
+      <a href="crop-tracking.html" class="sidebar-link"><span class="sidebar-icon">🌱</span> Crop Tracking</a>
+      <a href="subscription.html" class="sidebar-link"><span class="sidebar-icon">📆</span> Subscriptions</a>
+      <a href="group-buying.html" class="sidebar-link"><span class="sidebar-icon">👥</span> Group Buying</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Saved</div>
+      <a href="#" class="sidebar-link"><span class="sidebar-icon">❤️</span> Wishlist</a>
+      <a href="#" class="sidebar-link"><span class="sidebar-icon">👨‍🌾</span> Adopted Farms</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Account</div>
+      <a href="#" class="sidebar-link"><span class="sidebar-icon">⚙️</span> Settings</a>
+      <a href="#" class="sidebar-link"><span class="sidebar-icon">📍</span> Addresses</a>
+      <a href="#" class="sidebar-link" data-logout><span class="sidebar-icon">🚪</span> Logout</a>
+    </div>
+  </aside>
+
+  <main class="dashboard-main">
+    <div class="dashboard-header">
+      <h1 style="font-family:var(--font-heading);font-weight:800;font-size:1.75rem;">Welcome back, Bikash! 👋</h1>
+      <p style="color:var(--text-muted);">Here's what's happening with your farm fresh food.</p>
+    </div>
+
+    <!-- Alert Banner -->
+    <div style="background:linear-gradient(135deg,#E8F5E9,#C8E6C9);border:1px solid var(--primary-light);border-radius:var(--radius-md);padding:var(--space-5);margin-bottom:var(--space-6);display:flex;align-items:center;justify-content:space-between;">
+      <div style="display:flex;align-items:center;gap:var(--space-4);">
+        <span style="font-size:2rem;">🌾</span>
+        <div>
+          <h4 style="font-weight:700;color:var(--primary-dark);margin-bottom:2px;">Harvest Alert: Fresh Strawberries</h4>
+          <p style="font-size:0.875rem;color:var(--primary-dark);">Sita Gurung in Pokhara just harvested a new batch. Available now!</p>
+        </div>
+      </div>
+      <a href="product-detail.html?id=6" class="btn btn-primary">View Product</a>
+    </div>
+
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-icon green">📦</div>
+        <div>
+          <div class="metric-value">2</div>
+          <div class="metric-label">Active Orders</div>
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon orange">🌱</div>
+        <div>
+          <div class="metric-value">1</div>
+          <div class="metric-label">Crops Tracking</div>
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon blue">❤️</div>
+        <div>
+          <div class="metric-value">12</div>
+          <div class="metric-label">Saved Products</div>
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon purple">🤝</div>
+        <div>
+          <div class="metric-value">1</div>
+          <div class="metric-label">Adopted Farm</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:2fr 1fr;gap:var(--space-6);">
+      
+      <!-- Recent Orders -->
+      <div class="card" style="padding:var(--space-6);">
+        <div style="display:flex;justify-content:space-between;margin-bottom:var(--space-5);">
+          <h3 style="font-family:var(--font-heading);font-weight:700;">Recent Orders</h3>
+          <a href="#" style="font-size:0.85rem;color:var(--primary);font-weight:600;">View All</a>
+        </div>
+        <div class="table-wrap">
+          <table class="table">
+            <thead>
+              <tr><th>Order ID</th><th>Product</th><th>Status</th><th>Total</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><a href="crop-tracking.html" style="color:var(--primary);font-weight:600;">FL-002</a></td>
+                <td><div style="display:flex;align-items:center;gap:8px;"><img src="assets/images/produce-market.png" style="width:30px;height:30px;border-radius:4px;">Mountain Honey</div></td>
+                <td><span class="status-badge status-growing">🌱 Growing</span></td>
+                <td>Rs 1700</td>
+              </tr>
+              <tr>
+                <td><a href="#" style="color:var(--primary);font-weight:600;">FL-003</a></td>
+                <td><div style="display:flex;align-items:center;gap:8px;"><img src="assets/images/produce-market.png" style="width:30px;height:30px;border-radius:4px;">Fresh Strawberries</div></td>
+                <td><span class="status-badge status-confirmed">✅ Confirmed</span></td>
+                <td>Rs 960</td>
+              </tr>
+              <tr>
+                <td><a href="#" style="color:var(--primary);font-weight:600;">FL-001</a></td>
+                <td><div style="display:flex;align-items:center;gap:8px;"><img src="assets/images/produce-market.png" style="width:30px;height:30px;border-radius:4px;">Organic Tomatoes</div></td>
+                <td><span class="status-badge status-delivered">📦 Delivered</span></td>
+                <td>Rs 400</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Subscription Status -->
+      <div class="card" style="padding:var(--space-6);">
+        <h3 style="font-family:var(--font-heading);font-weight:700;margin-bottom:var(--space-5);">My Subscription</h3>
+        <div style="background:var(--primary-50);border:1px solid var(--primary-100);border-radius:var(--radius);padding:var(--space-4);text-align:center;">
+          <div style="font-size:2.5rem;margin-bottom:var(--space-2);">📦</div>
+          <h4 style="font-weight:700;color:var(--primary-dark);margin-bottom:4px;">Weekly Veggie Box</h4>
+          <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:var(--space-3);">Next delivery: <strong style="color:var(--text);">Friday, Jun 5</strong></p>
+          <a href="subscription.html" class="btn btn-primary btn-sm w-full" style="justify-content:center;">Manage Box</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Recommendations -->
+    <div style="margin-top:var(--space-8);">
+      <h3 style="font-family:var(--font-heading);font-weight:700;margin-bottom:var(--space-4);">Recommended for You</h3>
+      <div class="products-grid" id="recommended-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-5);">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Check auth
+    if (!FL.state.user || FL.state.user.role !== 'consumer') {
+      window.location.href = 'index.html';
+      return;
+    }
+    
+    // Render some recommendations
+    const grid = document.getElementById('recommended-grid');
+    grid.innerHTML = FL.products.slice(0, 4).map(p => `
+      <div class="product-card" style="background:white;">
+        <div class="product-card-img-wrap">
+          <img src="${p.image}" class="product-card-img" onclick="window.location='product-detail.html?id=${p.id}'" style="cursor:pointer;height:140px;">
+        </div>
+        <div class="product-card-body" style="padding:12px;">
+          <h4 style="font-size:0.9rem;font-weight:700;margin-bottom:4px;">${p.name}</h4>
+          <div style="font-size:0.85rem;color:var(--primary);font-weight:700;">Rs ${p.price}</div>
+        </div>
+      </div>
+    `).join('');
+  });
+</script>
+</body>
+</html>

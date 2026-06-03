@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Municipality Dashboard — FarmLink Nepal</title>
+  <link rel="stylesheet" href="css/main.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { background: var(--bg-2); }
+  </style>
+</head>
+<body>
+
+<nav class="nav" id="main-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><span class="logo-icon">🌿</span>FarmLink <span style="color:var(--accent)">Nepal</span></a>
+    <div class="nav-actions">
+      <div class="lang-toggle"><button class="lang-btn active" data-lang="en">EN</button><button class="lang-btn" data-lang="np">नेपाली</button></div>
+      <div style="display:flex;align-items:center;gap:10px;"><span style="font-size:0.875rem;font-weight:600;">Sindhupalchok Admin</span><a href="index.html" class="btn btn-ghost btn-sm">Logout</a></div>
+    </div>
+  </div>
+</nav>
+
+<div class="dashboard-layout">
+  
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Region Overview</div>
+      <a href="#" class="sidebar-link active"><span class="sidebar-icon">🗺️</span> Regional Map</a>
+      <a href="#" class="sidebar-link"><span class="sidebar-icon">👨‍🌾</span> Registered Farmers</a>
+      <a href="#" class="sidebar-link"><span class="sidebar-icon">🌾</span> Crop Production</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Reports</div>
+      <a href="#" class="sidebar-link"><span class="sidebar-icon">📈</span> Economic Impact</a>
+      <a href="#" class="sidebar-link"><span class="sidebar-icon">♻️</span> Surplus/Waste</a>
+      <a href="#" class="sidebar-link"><span class="sidebar-icon">🌧️</span> Climate Alerts</a>
+    </div>
+  </aside>
+
+  <main class="dashboard-main">
+    <div class="dashboard-header" style="display:flex;justify-content:space-between;align-items:flex-end;">
+      <div>
+        <h1 style="font-family:var(--font-heading);font-weight:800;font-size:1.75rem;">Municipality Dashboard: Sindhupalchok</h1>
+        <p style="color:var(--text-muted);">Macro-level view of agricultural activity in your region.</p>
+      </div>
+      <button class="btn btn-primary" onclick="showToast('Report generated successfully!', 'success')">📄 Generate Report</button>
+    </div>
+
+    <div class="metric-grid" style="grid-template-columns:repeat(4,1fr);">
+      <div class="metric-card">
+        <div class="metric-icon green">👨‍🌾</div>
+        <div>
+          <div class="metric-value">452</div>
+          <div class="metric-label">Registered Farmers</div>
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon blue">📦</div>
+        <div>
+          <div class="metric-value">12.4T</div>
+          <div class="metric-label">Produce Sold (Monthly)</div>
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon orange">💰</div>
+        <div>
+          <div class="metric-value">Rs 4.2M</div>
+          <div class="metric-label">Farmer Revenue Generated</div>
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon purple">🌱</div>
+        <div>
+          <div class="metric-value">78%</div>
+          <div class="metric-label">Organic Adoption Rate</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-6);margin-bottom:var(--space-6);">
+      <!-- Production Chart -->
+      <div class="chart-container" style="background:white;padding:var(--space-5);border-radius:var(--radius-md);border:1px solid var(--border-light);">
+        <h3 style="font-family:var(--font-heading);font-weight:700;margin-bottom:var(--space-4);">Top Crops by Volume (Tonnes)</h3>
+        <div style="position: relative; height: 250px;">
+          <canvas id="cropChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Alerts Panel -->
+      <div class="chart-container" style="background:white;padding:var(--space-5);border-radius:var(--radius-md);border:1px solid var(--border-light);">
+        <h3 style="font-family:var(--font-heading);font-weight:700;margin-bottom:var(--space-4);">Regional Alerts</h3>
+        <div style="display:flex;flex-direction:column;gap:var(--space-3);">
+          <div style="background:#FFF3E0;padding:var(--space-3);border-radius:var(--radius-sm);border:1px solid #FFE0B2;display:flex;gap:var(--space-3);">
+            <span style="font-size:1.5rem;">🌧️</span>
+            <div>
+              <strong style="color:var(--accent-dark);font-size:0.9rem;">Heavy Rain Warning</strong>
+              <p style="font-size:0.8rem;color:var(--accent-dark);margin-top:2px;">Expected in Melamchi area next week. Notify tomato farmers.</p>
+            </div>
+          </div>
+          <div style="background:#E3F2FD;padding:var(--space-3);border-radius:var(--radius-sm);border:1px solid #BBDEFB;display:flex;gap:var(--space-3);">
+            <span style="font-size:1.5rem;">♻️</span>
+            <div>
+              <strong style="color:#1565C0;font-size:0.9rem;">Surplus Cabbage Detected</strong>
+              <p style="font-size:0.8rem;color:#1565C0;margin-top:2px;">1.2 tonnes of surplus cabbage listed in Helambu. Consider institutional procurement.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="padding:var(--space-6);">
+      <h3 style="font-family:var(--font-heading);font-weight:700;margin-bottom:var(--space-5);">Recent Farmer Verifications</h3>
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr><th>Farmer Name</th><th>Location</th><th>Primary Crop</th><th>Status</th><th>Action</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Shyam Gurung</td>
+              <td>Chautara</td>
+              <td>Potatoes</td>
+              <td><span class="badge badge-surplus" style="background:var(--bg-2);color:var(--text-muted);">Pending Verification</span></td>
+              <td><button class="btn btn-sm btn-primary">Review</button></td>
+            </tr>
+            <tr>
+              <td>Hari Bahadur Tamang</td>
+              <td>Melamchi</td>
+              <td>Tomatoes</td>
+              <td><span class="badge badge-organic">Verified Organic</span></td>
+              <td><span style="color:var(--text-light);font-size:0.8rem;">Reviewed</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script src="js/main.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const ctx = document.getElementById('cropChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Potatoes', 'Tomatoes', 'Cabbage', 'Cauliflower', 'Others'],
+        datasets: [{
+          data: [4.5, 3.2, 2.1, 1.8, 0.8],
+          backgroundColor: ['#FFCA28', '#EF5350', '#81C784', '#E0E0E0', '#BCAAA4']
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { position: 'right' } }
+      }
+    });
+  });
+</script>
+</body>
+</html>

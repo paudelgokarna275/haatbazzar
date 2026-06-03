@@ -11,3 +11,4 @@ python-multipart
 Pillow
 torch
 transformers
+email-validator

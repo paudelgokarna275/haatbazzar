@@ -4,7 +4,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from core.database import get_db
 from modules.auth.schemas import RegisterRequest, LoginRequest, TokenResponse, RefreshRequest
 from modules.auth.service import register_user, authenticate_user, generate_tokens, refresh_access_token, get_user_by_email
-from main import _is_login_rate_limited
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -20,6 +19,7 @@ async def register(data: RegisterRequest, db: AsyncSession = Depends(get_db)):
 
 @router.post("/login", response_model=TokenResponse)
 async def login(request: Request, data: LoginRequest, db: AsyncSession = Depends(get_db)):
+    from main import _is_login_rate_limited
     ip = request.client.host if request.client else "unknown"
     if _is_login_rate_limited(ip):
         raise HTTPException(status_code=status.HTTP_429_TOO_MANY_REQUESTS, detail="Too many login attempts, try again later")

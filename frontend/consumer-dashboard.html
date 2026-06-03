@@ -161,19 +161,23 @@
 <script src="js/data.js"></script>
 <script src="js/main.js"></script>
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('DOMContentLoaded', async () => {
     // Check auth
     if (!FL.state.user || FL.state.user.role !== 'consumer') {
       window.location.href = 'index.html';
       return;
     }
-    
+
+    if (typeof FL.ensureDataReady === 'function') {
+      await FL.ensureDataReady();
+    }
+
     // Render some recommendations
     const grid = document.getElementById('recommended-grid');
     grid.innerHTML = FL.products.slice(0, 4).map(p => `
       <div class="product-card" style="background:white;">
         <div class="product-card-img-wrap">
-          <img src="${p.image}" class="product-card-img" onclick="window.location='product-detail.html?id=${p.id}'" style="cursor:pointer;height:140px;">
+          <img src="${p.image}" class="product-card-img" onclick="window.location='product-detail.html?id=${encodeURIComponent(String(p.id))}'" style="cursor:pointer;height:140px;">
         </div>
         <div class="product-card-body" style="padding:12px;">
           <h4 style="font-size:0.9rem;font-weight:700;margin-bottom:4px;">${p.name}</h4>

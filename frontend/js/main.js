@@ -127,19 +127,35 @@ function createToastContainer() {
 const Cart = {
   get() { return JSON.parse(localStorage.getItem('fl_cart') || '[]'); },
   save(cart) { localStorage.setItem('fl_cart', JSON.stringify(cart)); this.updateBadge(); },
-  add(productId, qty = 1) {
+  add(productId, qty = 1, productOverride) {
+    const id = String(productId);
     const cart = this.get();
-    const existing = cart.find(i => i.id === productId);
-    if (existing) existing.qty += qty;
-    else {
-      const product = FL.products.find(p => p.id === productId);
-      if (product) cart.push({ id: productId, qty, name: product.name, price: product.price, unit: product.unit, image: product.image, farmer: FL.farmers.find(f=>f.id===product.farmerId)?.name });
+    const existing = cart.find(i => String(i.id) === id);
+    if (existing) {
+      existing.qty += qty;
+    } else {
+      const product = productOverride || (typeof FL.findProduct === 'function' ? FL.findProduct(id) : null);
+      if (!product) {
+        if (typeof showToast === 'function') showToast('Product not found', 'error');
+        return;
+      }
+      const farmer = typeof FL.findFarmer === 'function' ? FL.findFarmer(product.farmerId) : null;
+      cart.push({
+        id,
+        qty,
+        name: product.name,
+        price: product.price,
+        unit: product.unit,
+        image: product.image,
+        farmer: farmer ? farmer.name : '',
+      });
     }
     this.save(cart);
-    showToast(`Added to cart!`, 'success');
+    if (typeof showToast === 'function') showToast('Added to cart!', 'success');
   },
   remove(productId) {
-    const cart = this.get().filter(i => i.id !== productId);
+    const id = String(productId);
+    const cart = this.get().filter(i => String(i.id) !== id);
     this.save(cart);
   },
   total() { return this.get().reduce((sum, i) => sum + i.price * i.qty, 0); },
@@ -158,21 +174,26 @@ const Cart = {
 const Wishlist = {
   get() { return JSON.parse(localStorage.getItem('fl_wishlist') || '[]'); },
   toggle(productId) {
-    let list = this.get();
-    if (list.includes(productId)) {
-      list = list.filter(id => id !== productId);
-      showToast('Removed from wishlist', 'info');
+    const id = String(productId);
+    let list = this.get().map(String);
+    if (list.includes(id)) {
+      list = list.filter(item => item !== id);
+      if (typeof showToast === 'function') showToast('Removed from wishlist', 'info');
     } else {
-      list.push(productId);
-      showToast('Added to wishlist ❤️', 'success');
+      list.push(id);
+      if (typeof showToast === 'function') showToast('Added to wishlist', 'success');
     }
     localStorage.setItem('fl_wishlist', JSON.stringify(list));
-    document.querySelectorAll(`[data-wishlist="${productId}"]`).forEach(btn => {
-      btn.classList.toggle('active', list.includes(productId));
-      btn.innerHTML = list.includes(productId) ? '❤️' : '🤍';
+    const safeId = window.CSS && CSS.escape ? CSS.escape(id) : id;
+    document.querySelectorAll(`[data-wishlist="${safeId}"]`).forEach(btn => {
+      btn.classList.toggle('active', list.includes(id));
+      btn.innerHTML = list.includes(id) ? '❤️' : '🤍';
     });
   },
-  has(productId) { return this.get().includes(productId); }
+  has(productId) {
+    const id = String(productId);
+    return this.get().map(String).includes(id);
+  }
 };
 
 /* ── Auth Modal ── */
@@ -191,6 +212,123 @@ const Auth = {
   switchTab(tab) {
     document.querySelectorAll('.auth-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
     document.querySelectorAll('.auth-panel').forEach(p => p.classList.toggle('hidden', p.dataset.panel !== tab));
+  },
+  async loginApi(email, password) {
+    if (!email || !password) {
+      showToast('Email and password are required', 'warning');
+      return false;
+    }
+    try {
+      const data = await FL.apiFetch('/api/v1/auth/login', {
+        method: 'POST',
+        body: { email, password },
+      });
+      FL.setTokens(data.access_token, data.refresh_token);
+      const role = await Auth.detectRole();
+      FL.state.user = { name: email, email, role };
+      FL.state.role = role;
+      localStorage.setItem('fl_user', JSON.stringify(FL.state.user));
+      Auth.hide();
+      updateAuthUI();
+      showToast('Logged in successfully', 'success');
+      return true;
+    } catch (err) {
+      showToast(err.message || 'Login failed', 'error');
+      return false;
+    }
+  },
+  async registerApi(payload) {
+    if (!payload || !payload.email || !payload.password || !payload.full_name || !payload.phone) {
+      showToast('Please complete all fields', 'warning');
+      return false;
+    }
+    try {
+      const data = await FL.apiFetch('/api/v1/auth/register', {
+        method: 'POST',
+        body: payload,
+      });
+      FL.setTokens(data.access_token, data.refresh_token);
+      const role = await Auth.detectRole();
+      const name = payload.full_name || payload.email;
+      FL.state.user = { name, email: payload.email, role };
+      FL.state.role = role;
+      localStorage.setItem('fl_user', JSON.stringify(FL.state.user));
+      Auth.hide();
+      updateAuthUI();
+      showToast('Account created', 'success');
+      return true;
+    } catch (err) {
+      showToast(err.message || 'Sign up failed', 'error');
+      return false;
+    }
+  },
+  async detectRole() {
+    try {
+      await FL.apiFetch('/api/v1/farmers/me');
+      return 'farmer';
+    } catch (err) {
+      return 'consumer';
+    }
+  },
+  initApiForms() {
+    const loginPanel = document.querySelector('.auth-panel[data-panel="login"]');
+    if (loginPanel && !loginPanel.querySelector('[data-api-login]')) {
+      loginPanel.insertAdjacentHTML('beforeend', `
+        <div class="auth-api-form" data-api-login style="margin-top:var(--space-4);">
+          <div class="form-group" style="margin-bottom:var(--space-3);">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-input" data-api-email placeholder="you@example.com">
+          </div>
+          <div class="form-group" style="margin-bottom:var(--space-3);">
+            <label class="form-label">Password</label>
+            <input type="password" class="form-input" data-api-password placeholder="********">
+          </div>
+          <button type="button" class="btn btn-primary w-full" data-api-login-btn style="width:100%;justify-content:center;">Log In with API</button>
+          <p style="font-size:0.75rem;color:var(--text-muted);margin-top:var(--space-2);">Use your backend account credentials.</p>
+        </div>
+      `);
+      const loginBtn = loginPanel.querySelector('[data-api-login-btn]');
+      loginBtn?.addEventListener('click', async () => {
+        const email = loginPanel.querySelector('[data-api-email]')?.value?.trim();
+        const password = loginPanel.querySelector('[data-api-password]')?.value || '';
+        await Auth.loginApi(email, password);
+      });
+    }
+
+    const signupPanel = document.querySelector('.auth-panel[data-panel="signup"]');
+    if (signupPanel && !signupPanel.querySelector('[data-api-signup]')) {
+      signupPanel.insertAdjacentHTML('beforeend', `
+        <div class="auth-api-form" data-api-signup>
+          <div class="form-group" style="margin-bottom:var(--space-3);">
+            <label class="form-label">Full Name</label>
+            <input type="text" class="form-input" data-api-name placeholder="Full name">
+          </div>
+          <div class="form-group" style="margin-bottom:var(--space-3);">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-input" data-api-email placeholder="you@example.com">
+          </div>
+          <div class="form-group" style="margin-bottom:var(--space-3);">
+            <label class="form-label">Phone</label>
+            <input type="tel" class="form-input" data-api-phone placeholder="+9779812345678">
+          </div>
+          <div class="form-group" style="margin-bottom:var(--space-3);">
+            <label class="form-label">Password</label>
+            <input type="password" class="form-input" data-api-password placeholder="At least 8 chars with 1 digit and 1 uppercase">
+          </div>
+          <button type="button" class="btn btn-primary w-full" data-api-signup-btn style="width:100%;justify-content:center;">Create Account</button>
+        </div>
+      `);
+      const signupBtn = signupPanel.querySelector('[data-api-signup-btn]');
+      signupBtn?.addEventListener('click', async () => {
+        const payload = {
+          full_name: signupPanel.querySelector('[data-api-name]')?.value?.trim(),
+          email: signupPanel.querySelector('[data-api-email]')?.value?.trim(),
+          phone: signupPanel.querySelector('[data-api-phone]')?.value?.trim(),
+          password: signupPanel.querySelector('[data-api-password]')?.value || '',
+        };
+        await Auth.registerApi(payload);
+      });
+    }
   },
   login(role) {
     const users = {
@@ -213,6 +351,8 @@ const Auth = {
   },
   logout() {
     FL.state.user = null;
+    FL.state.role = 'consumer';
+    if (typeof FL.clearTokens === 'function') FL.clearTokens();
     localStorage.removeItem('fl_user');
     updateAuthUI();
     showToast('Logged out successfully', 'info');
@@ -262,12 +402,16 @@ function initSearch() {
 
 /* ── Init ── */
 document.addEventListener('DOMContentLoaded', () => {
+  if (typeof FL.ensureDataReady === 'function') {
+    FL.ensureDataReady();
+  }
   initNav();
   initLang();
   initReveal();
   initCounters();
   initSearch();
   Auth.restore();
+  Auth.initApiForms();
   Cart.updateBadge();
 
   // Auth modal events

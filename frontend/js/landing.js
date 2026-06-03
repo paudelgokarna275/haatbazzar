@@ -9,7 +9,7 @@ function renderFarmers() {
 
   const topFarmers = FL.farmers.slice(0, 3);
   grid.innerHTML = topFarmers.map(f => `
-    <a href="farmer-profile.html?id=${f.id}" class="farmer-card reveal" style="display:block;">
+    <a href="farmer-profile.html?id=${encodeURIComponent(String(f.id))}" class="farmer-card reveal" style="display:block;">
       <img src="${f.cover}" alt="${f.farm}" class="farmer-card-cover">
       <div class="farmer-card-body">
         <div class="farmer-avatar-wrap">
@@ -22,8 +22,8 @@ function renderFarmers() {
             <div class="farmer-location">📍 ${f.location}</div>
           </div>
           <div class="stars" style="font-size:0.8rem;">
-            ${'⭐'.repeat(Math.floor(f.rating))}
-            <span style="color:var(--text-muted);margin-left:3px;font-size:0.75rem;">${f.rating}</span>
+            ${f.rating > 0 ? '⭐'.repeat(Math.max(1, Math.floor(f.rating))) : ''}
+            <span style="color:var(--text-muted);margin-left:3px;font-size:0.75rem;">${f.rating > 0 ? f.rating : 'New'}</span>
           </div>
         </div>
         ${f.organic ? '<span class="badge badge-organic">🌱 Organic</span>' : ''}
@@ -58,16 +58,21 @@ function renderProducts(filter = 'all') {
   grid.innerHTML = products.map(p => {
     const farmer = FL.farmers.find(f => f.id === p.farmerId);
     const isWishlisted = Wishlist.has(p.id);
+    const idValue = JSON.stringify(String(p.id));
+    const productUrl = `product-detail.html?id=${encodeURIComponent(String(p.id))}`;
+    const ratingText = p.rating > 0
+      ? `⭐ ${p.rating} <span style="color:var(--text-light)">(${p.reviews})</span>`
+      : '<span style="color:var(--text-light)">New</span>';
     return `
       <div class="product-card reveal">
         <div class="product-card-img-wrap">
-          <img src="${p.image}" alt="${p.name}" class="product-card-img" onclick="window.location='product-detail.html?id=${p.id}'">
+          <img src="${p.image}" alt="${p.name}" class="product-card-img" onclick="window.location='${productUrl}'">
           <div class="product-card-badges">
             ${p.organic ? '<span class="badge badge-organic">🌱 Organic</span>' : ''}
             ${p.surplus ? '<span class="badge badge-surplus">♻️ Surplus</span>' : ''}
             ${p.preOrder ? '<span class="badge badge-accent">📅 Pre-Order</span>' : ''}
           </div>
-          <button class="product-wishlist-btn ${isWishlisted ? 'active' : ''}" data-wishlist="${p.id}" onclick="Wishlist.toggle(${p.id})">
+          <button class="product-wishlist-btn ${isWishlisted ? 'active' : ''}" data-wishlist="${p.id}" onclick="Wishlist.toggle(${idValue})">
             ${isWishlisted ? '❤️' : '🤍'}
           </button>
         </div>
@@ -76,24 +81,22 @@ function renderProducts(filter = 'all') {
             <img src="${farmer?.avatar || ''}" alt="${farmer?.name}" class="product-farmer-avatar">
             <span class="product-farmer-name">${farmer ? (FL.state.lang==='np' ? farmer.nameNp : farmer.name) : ''}</span>
           </div>
-          <h3 class="product-name" onclick="window.location='product-detail.html?id=${p.id}'" style="cursor:pointer;">
+          <h3 class="product-name" onclick="window.location='${productUrl}'" style="cursor:pointer;">
             ${FL.state.lang === 'np' ? p.nameNp : p.name}
           </h3>
-          <div class="product-location">📍 ${p.location}</div>
+          <div class="product-location">📍 ${p.location || 'Nepal'}</div>
           <div class="product-price-row">
             <div>
               <span class="product-price">Rs ${p.price}</span>
               <span class="product-unit">/ ${p.unit}</span>
             </div>
-            <div class="product-rating">
-              ⭐ ${p.rating} <span style="color:var(--text-light)">(${p.reviews})</span>
-            </div>
+            <div class="product-rating">${ratingText}</div>
           </div>
           <div style="display:flex;gap:var(--space-2);margin-top:var(--space-3);">
-            <button class="btn btn-primary btn-sm" style="flex:1;" onclick="Cart.add(${p.id})">
+            <button class="btn btn-primary btn-sm" style="flex:1;" onclick="Cart.add(${idValue})">
               🛒 ${FL.state.lang==='np' ? 'कार्टमा थप' : 'Add to Cart'}
             </button>
-            <a href="product-detail.html?id=${p.id}" class="btn btn-secondary btn-sm">Details</a>
+            <a href="${productUrl}" class="btn btn-secondary btn-sm">Details</a>
           </div>
         </div>
       </div>
@@ -144,7 +147,10 @@ function initHeroTags() {
 }
 
 /* ── Init Landing ── */
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  if (typeof FL.ensureDataReady === 'function') {
+    await FL.ensureDataReady();
+  }
   renderFarmers();
   renderProducts();
   initProductFilters();

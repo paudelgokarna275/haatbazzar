@@ -2,16 +2,19 @@
    HaatBazaar Nepal — Product Detail JS
    ========================================================= */
 
-let currentProductId = 1;
+let currentProductId = '';
 let currentQty = 1;
 
-function loadProduct() {
+async function loadProduct() {
   const params = new URLSearchParams(window.location.search);
-  const id = parseInt(params.get('id')) || 1;
+  const idParam = params.get('id');
+  const fallbackId = FL.products[0] ? String(FL.products[0].id) : '';
+  const id = idParam || fallbackId;
   currentProductId = id;
 
-  const product = FL.products.find(p => p.id === id) || FL.products[0];
-  const farmer = FL.farmers.find(f => f.id === product.farmerId);
+  const product = (typeof FL.getProductById === 'function' ? await FL.getProductById(id) : null) || FL.findProduct(id) || FL.products[0];
+  if (!product) return;
+  const farmer = FL.findFarmer(product.farmerId);
   const lang = FL.state.lang;
 
   // Breadcrumb
@@ -32,9 +35,10 @@ function loadProduct() {
   galleryBadges.innerHTML = badgesEl.innerHTML;
 
   // Rating
-  document.getElementById('pd-stars').textContent = '⭐'.repeat(Math.floor(product.rating));
-  document.getElementById('pd-rating-text').textContent = `${product.rating} (${product.reviews} reviews)`;
-  document.getElementById('pd-sold').textContent = `${product.reviews * 3} sold`;
+  const rating = product.rating || 0;
+  document.getElementById('pd-stars').textContent = rating > 0 ? '⭐'.repeat(Math.max(1, Math.floor(rating))) : '';
+  document.getElementById('pd-rating-text').textContent = rating > 0 ? `${rating} (${product.reviews} reviews)` : 'New product';
+  document.getElementById('pd-sold').textContent = `${product.reviews || 0} sold`;
 
   // Farmer
   if (farmer) {
@@ -44,7 +48,7 @@ function loadProduct() {
     document.getElementById('pd-farmer-farm').textContent = lang === 'np' ? farmer.farmNp : farmer.farm;
     document.getElementById('pd-farmer-loc').textContent = '📍 ' + farmer.location;
     const farmerCard = document.getElementById('pd-farmer-card');
-    farmerCard.href = `farmer-profile.html?id=${farmer.id}`;
+    farmerCard.href = `farmer-profile.html?id=${encodeURIComponent(String(farmer.id))}`;
   }
 
   // Price
@@ -64,7 +68,8 @@ function loadProduct() {
   document.getElementById('pd-desc-text').textContent = product.description;
 
   // Tags
-  document.getElementById('pd-tags').innerHTML = product.tags.map(t => `<span class="chip">${t}</span>`).join('');
+  const tags = Array.isArray(product.tags) ? product.tags : [];
+  document.getElementById('pd-tags').innerHTML = tags.map(t => `<span class="chip">${t}</span>`).join('');
 
   // Wishlist
   const wbtn = document.getElementById('pd-wishlist-btn');
@@ -79,12 +84,23 @@ function loadProduct() {
     window.location.href = 'checkout.html';
   };
 
+  // Images
+  const gallery = document.getElementById('gallery-main-img');
+  const thumbs = document.getElementById('gallery-thumbs');
+  const images = Array.isArray(product.images) && product.images.length ? product.images : [product.image];
+  if (gallery && images[0]) gallery.src = images[0];
+  if (thumbs && images.length) {
+    thumbs.innerHTML = images.map((img, idx) => `
+      <img src="${img}" class="gallery-thumb ${idx === 0 ? 'active' : ''}" onclick="setMainImg('${img}')">
+    `).join('');
+  }
+
   // Related products
   renderRelated(product);
 }
 
 function updateTotal() {
-  const product = FL.products.find(p => p.id === currentProductId);
+  const product = FL.findProduct(currentProductId);
   if (!product) return;
   const total = product.price * currentQty;
   document.getElementById('pd-total-price').textContent = `Rs ${total}`;
@@ -92,7 +108,7 @@ function updateTotal() {
 }
 
 function updatePreorderAmounts() {
-  const product = FL.products.find(p => p.id === currentProductId);
+  const product = FL.findProduct(currentProductId);
   if (!product) return;
   const total = product.price * currentQty;
   const deposit = Math.ceil(total * 0.2);
@@ -111,8 +127,9 @@ function changeQty(delta) {
 }
 
 function setMainImg(src) {
+  const target = new URL(src, window.location.href).href;
   document.getElementById('gallery-main-img').src = src;
-  document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.toggle('active', t.src === src));
+  document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.toggle('active', t.src === target));
 }
 
 function toggleProductWishlist() {
@@ -132,18 +149,18 @@ function renderRelated(product) {
   grid.innerHTML = related.map(p => `
     <div class="product-card">
       <div class="product-card-img-wrap">
-        <img src="${p.image}" alt="${p.name}" class="product-card-img" onclick="window.location='product-detail.html?id=${p.id}'" loading="lazy">
+        <img src="${p.image}" alt="${p.name}" class="product-card-img" onclick="window.location='product-detail.html?id=${encodeURIComponent(String(p.id))}'" loading="lazy">
         <div class="product-card-badges">
           ${p.organic ? '<span class="badge badge-organic">🌱 Organic</span>' : ''}
         </div>
       </div>
       <div class="product-card-body">
-        <h3 class="product-name" onclick="window.location='product-detail.html?id=${p.id}'" style="cursor:pointer;">${p.name}</h3>
+        <h3 class="product-name" onclick="window.location='product-detail.html?id=${encodeURIComponent(String(p.id))}'" style="cursor:pointer;">${p.name}</h3>
         <div class="product-price-row">
           <span class="product-price">Rs ${p.price}</span>
           <span class="product-unit">/ ${p.unit}</span>
         </div>
-        <button class="btn btn-primary btn-sm w-full" style="width:100%;justify-content:center;margin-top:var(--space-3);" onclick="Cart.add(${p.id})">🛒 Add to Cart</button>
+        <button class="btn btn-primary btn-sm w-full" style="width:100%;justify-content:center;margin-top:var(--space-3);" onclick="Cart.add(${JSON.stringify(String(p.id))})">🛒 Add to Cart</button>
       </div>
     </div>
   `).join('');
@@ -169,8 +186,11 @@ function initStarInput() {
 }
 
 // Qty input direct
-document.addEventListener('DOMContentLoaded', () => {
-  loadProduct();
+document.addEventListener('DOMContentLoaded', async () => {
+  if (typeof FL.ensureDataReady === 'function') {
+    await FL.ensureDataReady();
+  }
+  await loadProduct();
   initStarInput();
 
   document.getElementById('qty-input')?.addEventListener('input', e => {

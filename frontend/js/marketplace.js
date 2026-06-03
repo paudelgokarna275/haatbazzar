@@ -35,11 +35,12 @@ function renderMktProducts() {
   // Search
   if (currentFilters.search) {
     const q = currentFilters.search.toLowerCase();
-    products = products.filter(p =>
-      p.name.toLowerCase().includes(q) ||
-      p.location.toLowerCase().includes(q) ||
-      p.tags.some(t => t.includes(q))
-    );
+    products = products.filter(p => {
+      const tags = Array.isArray(p.tags) ? p.tags : [];
+      const location = (p.location || '').toLowerCase();
+      const name = (p.name || '').toLowerCase();
+      return name.includes(q) || location.includes(q) || tags.some(t => String(t).toLowerCase().includes(q));
+    });
   }
 
   // Price
@@ -69,16 +70,21 @@ function renderMktProducts() {
   grid.innerHTML = products.map(p => {
     const farmer = FL.farmers.find(f => f.id === p.farmerId);
     const isWishlisted = Wishlist.has(p.id);
+    const idValue = JSON.stringify(String(p.id));
+    const productUrl = `product-detail.html?id=${encodeURIComponent(String(p.id))}`;
+    const ratingText = p.rating > 0
+      ? `⭐ ${p.rating} <span style="color:var(--text-light)">(${p.reviews})</span>`
+      : '<span style="color:var(--text-light)">New</span>';
     return `
       <div class="product-card reveal">
         <div class="product-card-img-wrap">
-          <img src="${p.image}" alt="${p.name}" class="product-card-img" onclick="window.location='product-detail.html?id=${p.id}'" loading="lazy">
+          <img src="${p.image}" alt="${p.name}" class="product-card-img" onclick="window.location='${productUrl}'" loading="lazy">
           <div class="product-card-badges">
             ${p.organic ? '<span class="badge badge-organic">🌱 Organic</span>' : ''}
             ${p.surplus ? '<span class="badge badge-surplus">♻️ Surplus</span>' : ''}
             ${p.preOrder ? '<span class="badge badge-accent">📅 Pre-Order</span>' : ''}
           </div>
-          <button class="product-wishlist-btn ${isWishlisted ? 'active' : ''}" data-wishlist="${p.id}" onclick="Wishlist.toggle(${p.id})">
+          <button class="product-wishlist-btn ${isWishlisted ? 'active' : ''}" data-wishlist="${p.id}" onclick="Wishlist.toggle(${idValue})">
             ${isWishlisted ? '❤️' : '🤍'}
           </button>
         </div>
@@ -87,18 +93,18 @@ function renderMktProducts() {
             <img src="${farmer?.avatar || ''}" alt="" class="product-farmer-avatar">
             <span class="product-farmer-name">${farmer ? farmer.name : ''}</span>
           </div>
-          <h3 class="product-name" onclick="window.location='product-detail.html?id=${p.id}'" style="cursor:pointer;">${p.name}</h3>
-          <div class="product-location">📍 ${p.location}</div>
+          <h3 class="product-name" onclick="window.location='${productUrl}'" style="cursor:pointer;">${p.name}</h3>
+          <div class="product-location">📍 ${p.location || 'Nepal'}</div>
           <div class="product-price-row">
             <div>
               <span class="product-price">Rs ${p.price}</span>
               <span class="product-unit">/ ${p.unit}</span>
             </div>
-            <div class="product-rating">⭐ ${p.rating} <span style="color:var(--text-light)">(${p.reviews})</span></div>
+            <div class="product-rating">${ratingText}</div>
           </div>
           <div style="display:flex;gap:var(--space-2);margin-top:var(--space-3);">
-            <button class="btn btn-primary btn-sm" style="flex:1;" onclick="Cart.add(${p.id})">🛒 Add to Cart</button>
-            <a href="product-detail.html?id=${p.id}" class="btn btn-secondary btn-sm">View</a>
+            <button class="btn btn-primary btn-sm" style="flex:1;" onclick="Cart.add(${idValue})">🛒 Add to Cart</button>
+            <a href="${productUrl}" class="btn btn-secondary btn-sm">View</a>
           </div>
         </div>
       </div>
@@ -112,7 +118,7 @@ function renderMktFarmers() {
   const grid = document.getElementById('farmers-mkt-grid');
   if (!grid) return;
   grid.innerHTML = FL.farmers.map(f => `
-    <a href="farmer-profile.html?id=${f.id}" class="farmer-card" style="display:block;text-decoration:none;">
+    <a href="farmer-profile.html?id=${encodeURIComponent(String(f.id))}" class="farmer-card" style="display:block;text-decoration:none;">
       <img src="${f.cover}" alt="${f.farm}" class="farmer-card-cover">
       <div class="farmer-card-body">
         <div class="farmer-avatar-wrap">
@@ -124,7 +130,7 @@ function renderMktFarmers() {
             <div class="farmer-name">${f.name}</div>
             <div class="farmer-location">📍 ${f.location}</div>
           </div>
-          <div>⭐ ${f.rating}</div>
+          <div>${f.rating > 0 ? `⭐ ${f.rating}` : '<span style="font-size:0.8rem;color:var(--text-muted)">New</span>'}</div>
         </div>
         ${f.organic ? '<span class="badge badge-organic">🌱 Organic</span>' : ''}
         <div class="farmer-stats-row">
@@ -146,7 +152,10 @@ function clearAllFilters() {
   renderMktProducts();
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  if (typeof FL.ensureDataReady === 'function') {
+    await FL.ensureDataReady();
+  }
   renderMktProducts();
 
   // Tab switching

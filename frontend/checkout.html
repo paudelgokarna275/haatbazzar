@@ -121,7 +121,7 @@
   <div class="modal" style="text-align:center;max-width:400px;padding:var(--space-8);">
     <div style="font-size:4rem;margin-bottom:var(--space-3);"></div>
     <h2 style="font-family:var(--font-heading);font-weight:800;margin-bottom:var(--space-2);color:var(--primary);">Order Placed!</h2>
-    <p style="color:var(--text-muted);margin-bottom:var(--space-6);">Thank you for supporting Nepali farmers. Your order ID is <strong>#FL-005</strong>.</p>
+    <p style="color:var(--text-muted);margin-bottom:var(--space-6);">Thank you for supporting Nepali farmers. Your order ID is <strong id="co-order-id">#-</strong>.</p>
     <a href="consumer-dashboard.html" class="btn btn-primary w-full" style="justify-content:center;">Go to Dashboard</a>
   </div>
 </div>
@@ -129,7 +129,10 @@
 <script src="js/data.js"></script>
 <script src="js/main.js"></script>
 <script>
-  function renderCheckout() {
+  async function renderCheckout() {
+    if (typeof FL.ensureDataReady === 'function') {
+      await FL.ensureDataReady();
+    }
     const items = JSON.parse(localStorage.getItem('fl_cart')) || [];
     const container = document.getElementById('co-cart-items');
     
@@ -143,13 +146,14 @@
 
     let subtotal = 0;
     container.innerHTML = items.map(item => {
-      let product = item.customObj || FL.products.find(p => p.id === item.id);
+      let product = item.customObj || (typeof FL.findProduct === 'function' ? FL.findProduct(item.id) : null);
       if (!product) return '';
-      let farmer = FL.farmers.find(f => f.id === product.farmerId);
+      let farmer = typeof FL.findFarmer === 'function' ? FL.findFarmer(product.farmerId) : null;
+      const image = product.image || 'assets/images/produce-market.png';
       subtotal += product.price * item.qty;
       return `
         <div class="cart-item">
-          <img src="${product.image}" class="cart-img">
+          <img src="${image}" class="cart-img">
           <div class="cart-info">
             <div class="cart-name">${product.name}</div>
             ${farmer ? `<div class="cart-farmer">‍ ${farmer.name}</div>` : ''}
@@ -168,17 +172,43 @@
     document.getElementById('co-total').textContent = `Rs ${subtotal + delivery + 50}`;
   }
 
-  function placeOrder() {
-    if (JSON.parse(localStorage.getItem('fl_cart') || '[]').length === 0) {
+  async function placeOrder() {
+    const items = JSON.parse(localStorage.getItem('fl_cart') || '[]');
+    if (items.length === 0) {
       showToast('Cart is empty', 'error');
       return;
     }
+    const inputs = Array.from(document.querySelectorAll('.co-card .form-input'));
+    const address1 = inputs[3] ? inputs[3].value.trim() : '';
+    const address2 = inputs[4] ? inputs[4].value.trim() : '';
+    const shippingAddress = [address1, address2].filter(Boolean).join(', ') || null;
+    const selectedPayment = document.querySelector('.payment-option input:checked')?.closest('.payment-option');
+    const paymentMethod = selectedPayment ? selectedPayment.textContent.trim().replace(/\s+/g, ' ') : null;
+
+    if (FL.api && FL.api.accessToken) {
+      const result = await FL.placeOrder(items, {
+        shippingAddress,
+        paymentMethod,
+      });
+      if (!result.ok) {
+        showToast(result.error?.message || 'Order failed', 'error');
+        return;
+      }
+      // Show real order ID from API response
+      if (result.order && result.order.id) {
+        const idEl = document.getElementById('co-order-id');
+        if (idEl) idEl.textContent = '#' + String(result.order.id).slice(0, 8).toUpperCase();
+      }
+    } else {
+      showToast('No API session found. Placing a demo order.', 'info');
+    }
+
     localStorage.removeItem('fl_cart');
     Cart.updateBadge();
     document.getElementById('success-modal').classList.add('active');
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('DOMContentLoaded', async () => {
     // Select payment
     document.querySelectorAll('.payment-option').forEach(opt => {
       opt.addEventListener('click', () => {
@@ -188,7 +218,7 @@
       });
     });
 
-    renderCheckout();
+    await renderCheckout();
   });
 </script>
 </body>

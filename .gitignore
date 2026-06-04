@@ -1,0 +1,30 @@
+# Python
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# Environment secrets — NEVER commit these
+.env
+backend/.env
+*.env
+
+# Uploads (user-generated content)
+backend/uploads/*
+!backend/uploads/.gitkeep
+uploads/*
+!uploads/.gitkeep
+
+# OS / Editor
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Docker
+*.log
+
+# Stale duplicate folder (typo)
+fontend/

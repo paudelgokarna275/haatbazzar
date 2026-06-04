@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Consumer Dashboard — HaatBazaar Nepal</title>
+  <meta name="description" content="Manage your orders, subscriptions, and wishlist on HaatBazaar Nepal.">
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    body { background: var(--bg-2); }
+  </style>
+</head>
+<body>
+
+<nav class="nav" id="main-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><span class="logo-icon"></span>HaatBazaar <span style="color:var(--accent)">Nepal</span></a>
+    <div class="nav-actions">
+      <div class="lang-toggle"><button class="lang-btn active" data-lang="en">EN</button><button class="lang-btn" data-lang="np">नेपाली</button></div>
+      <a href="checkout.html" class="btn-icon" style="position:relative;"><span class="cart-badge" style="position:absolute;top:-6px;right:-6px;background:var(--accent);color:white;width:18px;height:18px;border-radius:50%;font-size:0.65rem;font-weight:700;display:none;align-items:center;justify-content:center;">0</span></a>
+      <div id="user-menu" style="display:flex;align-items:center;gap:10px;">
+        <span id="user-name" style="font-size:0.875rem;font-weight:600;"></span>
+        <button data-logout class="btn btn-ghost btn-sm">Logout</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="dashboard-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Menu</div>
+      <a href="#" class="sidebar-link active"><span class="sidebar-icon"></span> Overview</a>
+      <a href="marketplace.html" class="sidebar-link"><span class="sidebar-icon"></span> Shop Produce</a>
+      <a href="#" class="sidebar-link"><span class="sidebar-icon"></span> My Orders <span class="sidebar-badge" id="orders-badge">0</span></a>
+      <a href="group-buying.html" class="sidebar-link"><span class="sidebar-icon"></span> Group Buying</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Account</div>
+      <a href="#" class="sidebar-link"><span class="sidebar-icon">️</span> Settings</a>
+      <a href="#" class="sidebar-link" data-logout><span class="sidebar-icon"></span> Logout</a>
+    </div>
+  </aside>
+
+  <main class="dashboard-main">
+    <div class="dashboard-header">
+      <h1 id="dash-greeting" style="font-family:var(--font-heading);font-weight:800;font-size:1.75rem;">Welcome back! </h1>
+      <p style="color:var(--text-muted);">Here's what's happening with your farm fresh food.</p>
+    </div>
+
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-icon green"></div>
+        <div>
+          <div class="metric-value" id="metric-active-orders">—</div>
+          <div class="metric-label">Active Orders</div>
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon blue">️</div>
+        <div>
+          <div class="metric-value" id="metric-wishlist">—</div>
+          <div class="metric-label">Saved Products</div>
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon orange"></div>
+        <div>
+          <div class="metric-value" id="metric-cart">—</div>
+          <div class="metric-label">Items in Cart</div>
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon purple"></div>
+        <div>
+          <div class="metric-value" id="metric-total-orders">—</div>
+          <div class="metric-label">Total Orders</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Orders -->
+    <div class="card" style="padding:var(--space-6);margin-top:var(--space-6);">
+      <div style="display:flex;justify-content:space-between;margin-bottom:var(--space-5);">
+        <h3 style="font-family:var(--font-heading);font-weight:700;">Recent Orders</h3>
+        <a href="marketplace.html" style="font-size:0.85rem;color:var(--primary);font-weight:600;">Shop More →</a>
+      </div>
+      <div id="orders-table-wrap">
+        <div style="text-align:center;padding:var(--space-8);color:var(--text-muted);">Loading orders...</div>
+      </div>
+    </div>
+
+    <!-- Recommended -->
+    <div style="margin-top:var(--space-8);">
+      <h3 style="font-family:var(--font-heading);font-weight:700;margin-bottom:var(--space-4);">Recommended for You</h3>
+      <div class="products-grid" id="recommended-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--space-5);">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    // Auth guard — requires real JWT token
+    if (!FL.api.accessToken) {
+      window.location.href = 'index.html';
+      return;
+    }
+
+    // Show user name
+    const user = FL.state.user;
+    if (user && user.name) {
+      document.getElementById('dash-greeting').textContent = `Welcome back, ${user.name}! 🌾`;
+      const userNameEl = document.getElementById('user-name');
+      if (userNameEl) userNameEl.textContent = user.name;
+    }
+
+    // Local cart/wishlist metrics
+    const cartCount = Cart.count();
+    const wishlistCount = JSON.parse(localStorage.getItem('fl_wishlist') || '[]').length;
+    document.getElementById('metric-cart').textContent = cartCount;
+    document.getElementById('metric-wishlist').textContent = wishlistCount;
+
+    // Fetch orders from API
+    let orders = [];
+    try {
+      orders = await FL.apiFetch('/api/v1/orders');
+      if (!Array.isArray(orders)) orders = [];
+    } catch (e) {
+      orders = [];
+    }
+
+    const activeOrders = orders.filter(o => !['delivered', 'cancelled'].includes(o.status));
+    document.getElementById('metric-active-orders').textContent = activeOrders.length;
+    document.getElementById('metric-total-orders').textContent = orders.length;
+    document.getElementById('orders-badge').textContent = activeOrders.length;
+
+    // Render orders table
+    const wrap = document.getElementById('orders-table-wrap');
+    if (orders.length === 0) {
+      wrap.innerHTML = `
+        <div style="text-align:center;padding:var(--space-8);">
+          <div style="font-size:3rem;margin-bottom:var(--space-3)"></div>
+          <p style="color:var(--text-muted);margin-bottom:var(--space-4);">No orders yet. Start shopping!</p>
+          <a href="marketplace.html" class="btn btn-primary">Explore Marketplace</a>
+        </div>`;
+    } else {
+      wrap.innerHTML = `
+        <div class="table-wrap">
+          <table class="table">
+            <thead><tr><th>Order ID</th><th>Status</th><th>Total</th><th>Date</th></tr></thead>
+            <tbody>
+              ${orders.slice(0, 5).map(o => `
+                <tr>
+                  <td><span style="color:var(--primary);font-weight:600;">#${o.id}</span></td>
+                  <td><span class="status-badge status-${o.status}">${o.status}</span></td>
+                  <td>Rs ${o.total_price || o.total || '—'}</td>
+                  <td>${o.created_at ? new Date(o.created_at).toLocaleDateString() : '—'}</td>
+                </tr>`).join('')}
+            </tbody>
+          </table>
+        </div>`;
+    }
+
+    // Load product recommendations
+    await FL.ensureDataReady();
+    const grid = document.getElementById('recommended-grid');
+    if (FL.products.length > 0) {
+      grid.innerHTML = FL.products.slice(0, 4).map(p => `
+        <div class="product-card" style="background:white;">
+          <div class="product-card-img-wrap">
+            <img src="${p.image}" class="product-card-img" onclick="window.location='product-detail.html?id=${encodeURIComponent(String(p.id))}'" style="cursor:pointer;height:140px;">
+          </div>
+          <div class="product-card-body" style="padding:12px;">
+            <h4 style="font-size:0.9rem;font-weight:700;margin-bottom:4px;">${p.name}</h4>
+            <div style="font-size:0.85rem;color:var(--primary);font-weight:700;">Rs ${p.price}</div>
+            <button class="btn btn-primary btn-sm" style="width:100%;margin-top:8px;" onclick="Cart.add('${p.id}')">🛒 Add to Cart</button>
+          </div>
+        </div>
+      `).join('');
+    } else {
+      grid.innerHTML = `<p style="color:var(--text-muted);grid-column:1/-1;">No products available yet.</p>`;
+    }
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Farmer Profile — HaatBazaar Nepal</title>
+  <meta name="description" content="View farmer profiles, farm stories, products, ratings, and adopt-a-farm program on HaatBazaar Nepal.">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/farmer-profile.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+</head>
+<body>
+
+<nav class="nav" id="main-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><span class="logo-icon"></span>HaatBazaar <span style="color:var(--accent)">Nepal</span></a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="marketplace.html" class="nav-link">Marketplace</a>
+      <a href="farmer-profile.html" class="nav-link active">Farmers</a>
+    
+    </div>
+    <div class="nav-actions">
+      <div class="lang-toggle"><button class="lang-btn active" data-lang="en">EN</button><button class="lang-btn" data-lang="np">नेपाली</button></div>
+      <a href="checkout.html" class="btn-icon" style="position:relative;"><span class="cart-badge" style="position:absolute;top:-6px;right:-6px;background:var(--accent);color:white;width:18px;height:18px;border-radius:50%;font-size:0.65rem;font-weight:700;display:none;align-items:center;justify-content:center;">0</span></a>
+      <button class="btn btn-ghost btn-sm btn-login">Log In</button>
+      <button class="btn btn-primary btn-sm btn-signup">Join Free</button>
+      <div id="user-menu" class="hidden" style="display:flex;align-items:center;gap:10px;"><span id="user-name" style="font-size:0.875rem;font-weight:600;"></span><button data-logout class="btn btn-ghost btn-sm">Logout</button></div>
+    </div>
+  </div>
+</nav>
+
+<div style="padding-top:var(--nav-height);">
+
+<!-- COVER & HEADER -->
+<div class="fp-cover-section">
+  <div class="fp-cover-img" id="fp-cover" style="background-image:url('assets/images/farm-cover.png')"></div>
+  <div class="container">
+    <div class="fp-header">
+      <div class="fp-avatar-wrap">
+        <img src="assets/images/farmer-1.png" alt="Farmer" class="fp-avatar" id="fp-avatar">
+        <span class="fp-verified-badge" id="fp-verified-badge" title="Verified Farmer"></span>
+      </div>
+      <div class="fp-header-info">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:var(--space-4);">
+          <div>
+            <h1 class="fp-name" id="fp-name">Hari Bahadur Tamang</h1>
+            <p class="fp-farm" id="fp-farm">Green Valley Organic Farm</p>
+            <div class="fp-meta">
+              <span class="fp-meta-item"> <span id="fp-location">Sindhupalchok</span></span>
+              <span class="fp-meta-item">⭐ <span id="fp-rating">4.8</span> (<span id="fp-reviews">156</span> reviews)</span>
+              <span class="fp-meta-item"> Since <span id="fp-year">2018</span></span>
+              <span class="fp-meta-item badge badge-organic" id="fp-organic-badge"> Organic</span>
+            </div>
+          </div>
+          <div class="fp-actions">
+            <button class="btn btn-secondary" id="fp-follow-btn" onclick="toggleFollow()">️ Follow Farm</button>
+            <button class="btn btn-accent" onclick="document.getElementById('adopt-section').scrollIntoView({behavior:'smooth'})"> Adopt Farm</button>
+            <a href="farmer-dashboard.html" class="btn btn-ghost btn-sm" style="display:none;" id="edit-profile-btn">️ Edit Profile</a>
+          </div>
+        </div>
+
+        <!-- Stats Row -->
+        <div class="fp-stats-row">
+          <div class="fp-stat">
+            <span class="fp-stat-val" id="fp-products">12</span>
+            <span class="fp-stat-label">Products</span>
+          </div>
+          <div class="fp-stat">
+            <span class="fp-stat-val" id="fp-followers">892</span>
+            <span class="fp-stat-label">Followers</span>
+          </div>
+          <div class="fp-stat">
+            <span class="fp-stat-val" id="fp-orders">2,400+</span>
+            <span class="fp-stat-label">Orders Fulfilled</span>
+          </div>
+          <div class="fp-stat">
+            <span class="fp-stat-val" id="fp-rank">#3</span>
+            <span class="fp-stat-label">Farm Rank</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTENT TABS -->
+<div class="fp-tabs-bar">
+  <div class="container">
+    <div class="fp-tabs">
+      <button class="fp-tab active" data-panel="about">About</button>
+      <button class="fp-tab" data-panel="products">Products</button>
+      <button class="fp-tab" data-panel="reviews">Reviews</button>
+      <button class="fp-tab" data-panel="tracking">Crop Updates</button>
+    </div>
+  </div>
+</div>
+
+<div class="container fp-content">
+  <div class="fp-main">
+
+    <!-- ABOUT PANEL -->
+    <div class="fp-panel active" id="panel-about">
+      <!-- Bio -->
+      <div class="fp-section-card reveal">
+        <h2 class="fp-section-title"> Our Farm Story</h2>
+        <p class="fp-bio" id="fp-bio">Third-generation farmer committed to organic practices. We grow over 20 varieties of vegetables using traditional Nepali farming wisdom combined with modern organic techniques.</p>
+        <div class="fp-tags" id="fp-tags">
+          <span class="badge badge-organic"> Organic</span>
+          <span class="badge badge-accent">️ Mountain Farm</span>
+          <span class="badge badge-new"> Traditional Methods</span>
+        </div>
+      </div>
+
+      <!-- Map -->
+      <div class="fp-section-card reveal">
+        <h2 class="fp-section-title"> Farm Location</h2>
+        <div id="farm-map" class="farm-map"></div>
+        <p style="font-size:0.85rem;color:var(--text-muted);margin-top:var(--space-3);"> Sindhupalchok District, Bagmati Province, Nepal</p>
+      </div>
+
+      <!-- Farmer Ranking -->
+      <div class="fp-section-card reveal">
+        <h2 class="fp-section-title"> Farmer Ranking</h2>
+        <div class="ranking-card">
+          <div class="ranking-badge">#3</div>
+          <div class="ranking-info">
+            <h3>Top Organic Vegetable Farmer</h3>
+            <p style="font-size:0.85rem;color:var(--text-muted);">Ranked by ratings, delivery success, product quality, and customer satisfaction</p>
+          </div>
+        </div>
+        <div class="ranking-metrics">
+          <div class="ranking-metric">
+            <span class="ranking-metric-label">Product Quality</span>
+            <div class="progress-bar"><div class="progress-fill" style="width:96%"></div></div>
+            <span class="ranking-metric-val">9.6/10</span>
+          </div>
+          <div class="ranking-metric">
+            <span class="ranking-metric-label">Delivery Success</span>
+            <div class="progress-bar"><div class="progress-fill" style="width:98%"></div></div>
+            <span class="ranking-metric-val">98%</span>
+          </div>
+          <div class="ranking-metric">
+            <span class="ranking-metric-label">Customer Satisfaction</span>
+            <div class="progress-bar"><div class="progress-fill" style="width:94%"></div></div>
+            <span class="ranking-metric-val">94%</span>
+          </div>
+          <div class="ranking-metric">
+            <span class="ranking-metric-label">Response Rate</span>
+            <div class="progress-bar"><div class="progress-fill" style="width:88%"></div></div>
+            <span class="ranking-metric-val">88%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCTS PANEL -->
+    <div class="fp-panel hidden" id="panel-products">
+      <div class="fp-products-grid" id="fp-products-grid"></div>
+    </div>
+
+    <!-- REVIEWS PANEL -->
+    <div class="fp-panel hidden" id="panel-reviews">
+      <div class="fp-section-card">
+        <div style="display:flex;gap:var(--space-4);align-items:center;margin-bottom:var(--space-6);">
+          <div style="text-align:center;">
+            <div style="font-family:var(--font-heading);font-size:3.5rem;font-weight:900;color:var(--primary);line-height:1;">4.8</div>
+            <div style="font-size:1.2rem;margin:var(--space-2) 0;">⭐⭐⭐⭐⭐</div>
+            <div style="font-size:0.85rem;color:var(--text-muted);">156 reviews</div>
+          </div>
+          <div style="flex:1;">
+            <div class="rating-bar-row" style="display:grid;grid-template-columns:24px 1fr 36px;gap:var(--space-2);align-items:center;margin-bottom:var(--space-2);font-size:0.8rem;color:var(--text-muted);">
+              <span>5</span><div class="progress-bar"><div class="progress-fill" style="width:80%"></div></div><span>80%</span>
+            </div>
+            <div class="rating-bar-row" style="display:grid;grid-template-columns:24px 1fr 36px;gap:var(--space-2);align-items:center;margin-bottom:var(--space-2);font-size:0.8rem;color:var(--text-muted);">
+              <span>4</span><div class="progress-bar"><div class="progress-fill" style="width:13%"></div></div><span>13%</span>
+            </div>
+            <div class="rating-bar-row" style="display:grid;grid-template-columns:24px 1fr 36px;gap:var(--space-2);align-items:center;font-size:0.8rem;color:var(--text-muted);">
+              <span>3</span><div class="progress-bar"><div class="progress-fill" style="width:7%"></div></div><span>7%</span>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:var(--space-4);">
+          <div class="review-card" style="background:var(--bg);border-radius:var(--radius);padding:var(--space-4);border:1px solid var(--border-light);">
+            <div style="display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-3);">
+              <img src="assets/images/farmer-2.png" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">
+              <div><strong style="font-size:0.9rem;">Priya Maharjan</strong><div style="font-size:0.8rem;color:var(--accent);">⭐⭐⭐⭐⭐</div></div>
+              <span style="margin-left:auto;font-size:0.75rem;color:var(--text-light);">May 28, 2026</span>
+            </div>
+            <p style="font-size:0.875rem;color:var(--text);">"Hari dai's farm is absolutely incredible. The vegetables are always fresh, never seen anything like it in Kathmandu. The crop tracking feature is a game changer!"</p>
+          </div>
+          <div class="review-card" style="background:var(--bg);border-radius:var(--radius);padding:var(--space-4);border:1px solid var(--border-light);">
+            <div style="display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-3);">
+              <img src="assets/images/farmer-1.png" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">
+              <div><strong style="font-size:0.9rem;">Suman Thapa</strong><div style="font-size:0.8rem;color:var(--accent);">⭐⭐⭐⭐⭐</div></div>
+              <span style="margin-left:auto;font-size:0.75rem;color:var(--text-light);">May 10, 2026</span>
+            </div>
+            <p style="font-size:0.875rem;color:var(--text);">"I've adopted this farm for 6 months now. Every seasonal update brings joy to my family. We know exactly what we're eating and where it comes from!"</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CROP UPDATES PANEL -->
+    <div class="fp-panel hidden" id="panel-tracking">
+      <div class="fp-section-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-5);">
+          <h2 class="fp-section-title" style="margin:0;"> Live Crop Updates</h2>
+          <a href="crop-tracking.html" class="btn btn-primary btn-sm">View Full Tracker →</a>
+        </div>
+        <div class="crop-updates-list">
+          <div class="crop-update-item">
+            <div class="cup-icon"></div>
+            <div class="cup-content">
+              <strong>Tomatoes — Flowering Stage</strong>
+              <p>Plants are in full bloom! Pollination is underway. Expected harvest in 12 days.</p>
+              <img src="assets/images/crop-stages.png" alt="Crop update" class="cup-img">
+              <span class="cup-date">June 1, 2026</span>
+            </div>
+          </div>
+          <div class="crop-update-item">
+            <div class="cup-icon"></div>
+            <div class="cup-content">
+              <strong>Spinach — Growing Stage</strong>
+              <p>Young plants transplanted. Looking healthy and green. Harvest in 3 weeks.</p>
+              <span class="cup-date">May 25, 2026</span>
+            </div>
+          </div>
+          <div class="crop-update-item">
+            <div class="cup-icon"></div>
+            <div class="cup-content">
+              <strong>Bell Peppers — Seeded</strong>
+              <p>Fresh seeds sown in nursery beds. Germination underway!</p>
+              <span class="cup-date">May 18, 2026</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT SIDEBAR -->
+  <aside class="fp-sidebar">
+    <!-- Adopt-a-Farm -->
+    <div class="adopt-card" id="adopt-section">
+      <div class="adopt-icon"></div>
+      <h3 class="adopt-title">Adopt This Farm</h3>
+      <p class="adopt-desc">Support Hari Bahadur's farm directly. Get seasonal updates, priority harvest access, and a share of every season's produce.</p>
+      <ul class="adopt-benefits">
+        <li> Monthly seasonal produce box</li>
+        <li> Exclusive farm photo updates</li>
+        <li> Priority pre-order access</li>
+        <li> Digital farming certificate</li>
+        <li> Personal thank-you from farmer</li>
+      </ul>
+      <div class="adopt-price">Rs 2,500 <span>/month</span></div>
+      <button class="btn btn-accent w-full" style="width:100%;justify-content:center;" onclick="showToast(' Adoption request sent! Hari dai will contact you soon.', 'success')">Adopt This Farm</button>
+      <p style="font-size:0.78rem;color:var(--text-light);text-align:center;margin-top:var(--space-2);">12 families already adopted</p>
+    </div>
+
+    <!-- Quick Contact -->
+    <div class="fp-contact-card">
+      <h4 style="font-family:var(--font-heading);font-weight:700;margin-bottom:var(--space-4);"> Contact Farmer</h4>
+      <div style="display:flex;flex-direction:column;gap:var(--space-3);">
+        <button class="btn btn-secondary w-full" style="width:100%;justify-content:center;" onclick="showToast('Message sent to Hari Bahadur! ', 'success')"> Send Message</button>
+        <button class="btn btn-ghost w-full" style="width:100%;justify-content:center;border:1px solid var(--border);" onclick="showToast('WhatsApp contact shared! ', 'info')"> WhatsApp</button>
+      </div>
+    </div>
+
+    <!-- Farm Certifications -->
+    <div class="fp-cert-card">
+      <h4 style="font-family:var(--font-heading);font-weight:700;margin-bottom:var(--space-4);"> Certifications</h4>
+      <div style="display:flex;flex-direction:column;gap:var(--space-3);">
+        <div style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3);background:var(--primary-50);border-radius:var(--radius);">
+          <span style="font-size:1.5rem;"></span>
+          <div><div style="font-weight:600;font-size:0.85rem;">Organic Nepal Certified</div><div style="font-size:0.75rem;color:var(--text-muted);">Valid until Dec 2026</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3);background:#E3F2FD;border-radius:var(--radius);">
+          <span style="font-size:1.5rem;"></span>
+          <div><div style="font-weight:600;font-size:0.85rem;">HaatBazaar Verified</div><div style="font-size:0.75rem;color:var(--text-muted);">ID verified & farm inspected</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3);background:#FFF3E0;border-radius:var(--radius);">
+          <span style="font-size:1.5rem;"></span>
+          <div><div style="font-weight:600;font-size:0.85rem;">Top Seller 2025</div><div style="font-size:0.75rem;color:var(--text-muted);">Best organic farmer award</div></div>
+        </div>
+      </div>
+    </div>
+  </aside>
+</div>
+</div>
+
+<!-- Auth Modal -->
+<div class="modal-overlay" id="auth-modal">
+  <div class="modal">
+    <div class="modal-header"><h3 style="font-family:var(--font-heading);font-weight:700;">Join HaatBazaar Nepal </h3><button data-close-modal style="font-size:1.25rem;color:var(--text-muted);background:none;border:none;cursor:pointer;"></button></div>
+    <div style="display:flex;border-bottom:1px solid var(--border-light);padding:0 var(--space-6);">
+      <button class="auth-tab active" data-tab="login" style="flex:1;padding:var(--space-4);font-weight:600;font-size:0.9rem;border-bottom:2px solid var(--primary);color:var(--primary);background:none;border-top:none;border-left:none;border-right:none;cursor:pointer;">Log In</button>
+      <button class="auth-tab" data-tab="signup" style="flex:1;padding:var(--space-4);font-weight:600;font-size:0.9rem;border-bottom:2px solid transparent;color:var(--text-muted);background:none;border-top:none;border-left:none;border-right:none;cursor:pointer;">Sign Up</button>
+    </div>
+    <div class="auth-panel modal-body" data-panel="login">
+      <div style="background:var(--primary-50);border-radius:var(--radius);padding:var(--space-4);margin-bottom:var(--space-4);"><p style="font-size:0.8rem;font-weight:700;color:var(--primary);margin-bottom:var(--space-2);"> Demo:</p><div style="display:flex;gap:var(--space-2);"><button class="btn btn-primary btn-sm" data-role-login="consumer"> Consumer</button><button class="btn btn-secondary btn-sm" data-role-login="farmer">‍ Farmer</button></div></div>
+      <button class="btn btn-primary w-full" style="width:100%;justify-content:center;" data-role-login="consumer">Log In</button>
+    </div>
+    <div class="auth-panel hidden modal-body" data-panel="signup"><button class="btn btn-primary w-full" style="width:100%;justify-content:center;" data-role-login="consumer">Create Account</button></div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="js/farmer-profile.js"></script>
+</body>
+</html>

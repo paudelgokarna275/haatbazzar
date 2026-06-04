@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Group Buying — HaatBazaar Nepal</title>
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    .gb-hero { background: var(--bg-2); padding: var(--space-12) 0; border-bottom: 1px solid var(--border-light); }
+    .gb-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6); }
+    .gb-card { background: white; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-light); box-shadow: var(--shadow); }
+    .gb-img { width: 100%; height: 200px; object-fit: cover; }
+    .gb-body { padding: var(--space-5); }
+    .gb-progress-wrap { margin-top: var(--space-4); margin-bottom: var(--space-4); }
+    .gb-progress-text { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600; margin-bottom: 4px; }
+    @media (max-width: 1024px) { .gb-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 768px) { .gb-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<nav class="nav" id="main-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><span class="logo-icon"></span>HaatBazaar <span style="color:var(--accent)">Nepal</span></a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="marketplace.html" class="nav-link">Marketplace</a>
+      <a href="farmer-profile.html" class="nav-link">Farmers</a>
+      <a href="group-buying.html" class="nav-link active">Group Buy</a>
+    </div>
+    <div class="nav-actions">
+      <div class="lang-toggle"><button class="lang-btn active" data-lang="en">EN</button><button class="lang-btn" data-lang="np">नेपाली</button></div>
+      <a href="checkout.html" class="btn-icon" style="position:relative;"><span class="cart-badge" style="position:absolute;top:-6px;right:-6px;background:var(--accent);color:white;width:18px;height:18px;border-radius:50%;font-size:0.65rem;font-weight:700;display:none;align-items:center;justify-content:center;">0</span></a>
+      <button class="btn btn-ghost btn-sm btn-login">Log In</button>
+      <button class="btn btn-primary btn-sm btn-signup">Join Free</button>
+      <div id="user-menu" class="hidden" style="display:flex;align-items:center;gap:10px;"><span id="user-name" style="font-size:0.875rem;font-weight:600;"></span><button data-logout class="btn btn-ghost btn-sm">Logout</button></div>
+    </div>
+  </div>
+</nav>
+
+<div style="padding-top:var(--nav-height);">
+
+<header class="gb-hero">
+  <div class="container" style="text-align:center;">
+    <span class="section-tag" style="margin:0 auto var(--space-4);"> Community Buying</span>
+    <h1 style="font-family:var(--font-heading);font-weight:900;font-size:clamp(2rem, 5vw, 3rem);color:var(--text);margin-bottom:var(--space-3);">Buy Together, Save More</h1>
+    <p style="color:var(--text-muted);max-width:600px;margin:0 auto;line-height:1.6;font-size:1.1rem;">Join forces with your community to unlock wholesale prices directly from farmers. When the group target is met, everyone gets the deal.</p>
+  </div>
+</header>
+
+<section class="section">
+  <div class="container">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-6);">
+      <h2 style="font-family:var(--font-heading);font-weight:700;font-size:1.5rem;">Active Group Deals</h2>
+      <select class="form-select" style="width:auto;font-size:0.85rem;"><option>Near Me</option><option>Ending Soon</option><option>Newest</option></select>
+    </div>
+
+    <div class="gb-grid">
+      
+      <!-- Deal 1 -->
+      <div class="gb-card">
+        <div style="position:relative;">
+          <img src="assets/images/produce-market.png" class="gb-img">
+          <span class="badge badge-accent" style="position:absolute;top:16px;left:16px;">Save 40%</span>
+        </div>
+        <div class="gb-body">
+          <h3 style="font-weight:700;font-size:1.125rem;margin-bottom:4px;">Mustang Apples (20kg Box)</h3>
+          <p style="font-size:0.85rem;color:var(--text-muted);">Farmer: Tenzin Norbu (Mustang)</p>
+          
+          <div style="display:flex;align-items:baseline;gap:var(--space-2);margin-top:var(--space-3);">
+            <span style="font-family:var(--font-heading);font-size:1.5rem;font-weight:800;color:var(--primary);">Rs 2,400</span>
+            <span style="font-size:0.85rem;color:var(--text-light);text-decoration:line-through;">Rs 4,000</span>
+          </div>
+
+          <div class="gb-progress-wrap">
+            <div class="gb-progress-text"><span style="color:var(--text);">32 / 50 Orders</span><span style="color:var(--accent-dark);">Ends in 2 days</span></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:64%"></div></div>
+          </div>
+
+          <button class="btn btn-primary w-full" style="width:100%;justify-content:center;" onclick="showToast('Joined group buy! Deal triggers at 50 orders.', 'success')">Join Deal</button>
+        </div>
+      </div>
+
+      <!-- Deal 2 -->
+      <div class="gb-card">
+        <div style="position:relative;">
+          <img src="assets/images/crop-stages.png" class="gb-img">
+          <span class="badge badge-accent" style="position:absolute;top:16px;left:16px;">Save 25%</span>
+        </div>
+        <div class="gb-body">
+          <h3 style="font-weight:700;font-size:1.125rem;margin-bottom:4px;">Organic Red Potatoes (50kg)</h3>
+          <p style="font-size:0.85rem;color:var(--text-muted);">Farmer: Shyam Gurung (Kavre)</p>
+          
+          <div style="display:flex;align-items:baseline;gap:var(--space-2);margin-top:var(--space-3);">
+            <span style="font-family:var(--font-heading);font-size:1.5rem;font-weight:800;color:var(--primary);">Rs 3,000</span>
+            <span style="font-size:0.85rem;color:var(--text-light);text-decoration:line-through;">Rs 4,000</span>
+          </div>
+
+          <div class="gb-progress-wrap">
+            <div class="gb-progress-text"><span style="color:var(--text);">18 / 20 Orders</span><span style="color:var(--primary-dark);">Ends in 5 hours!</span></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:90%"></div></div>
+          </div>
+
+          <button class="btn btn-accent w-full" style="width:100%;justify-content:center;" onclick="showToast('Joined group buy!', 'success')">Join Deal</button>
+        </div>
+      </div>
+
+      <!-- Deal 3 -->
+      <div class="gb-card">
+        <div style="position:relative;">
+          <img src="assets/images/farm-cover.png" class="gb-img">
+          <span class="badge badge-accent" style="position:absolute;top:16px;left:16px;">Save 30%</span>
+        </div>
+        <div class="gb-body">
+          <h3 style="font-weight:700;font-size:1.125rem;margin-bottom:4px;">Jumla Walnuts (5kg)</h3>
+          <p style="font-size:0.85rem;color:var(--text-muted);">Farmer: Cooperative Jumla</p>
+          
+          <div style="display:flex;align-items:baseline;gap:var(--space-2);margin-top:var(--space-3);">
+            <span style="font-family:var(--font-heading);font-size:1.5rem;font-weight:800;color:var(--primary);">Rs 3,500</span>
+            <span style="font-size:0.85rem;color:var(--text-light);text-decoration:line-through;">Rs 5,000</span>
+          </div>
+
+          <div class="gb-progress-wrap">
+            <div class="gb-progress-text"><span style="color:var(--text);">5 / 100 Orders</span><span style="color:var(--text-muted);">Ends in 14 days</span></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:5%"></div></div>
+          </div>
+
+          <button class="btn btn-primary w-full" style="width:100%;justify-content:center;" onclick="showToast('Joined group buy!', 'success')">Join Deal</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+</div>
+
+<!-- Auth Modal (Standard) -->
+<div class="modal-overlay" id="auth-modal">
+  <div class="modal">
+    <div class="modal-header"><h3 style="font-family:var(--font-heading);font-weight:700;">Join HaatBazaar Nepal </h3><button data-close-modal style="font-size:1.25rem;color:var(--text-muted);background:none;border:none;cursor:pointer;"></button></div>
+    <div style="display:flex;border-bottom:1px solid var(--border-light);padding:0 var(--space-6);"><button class="auth-tab active" data-tab="login" style="flex:1;padding:var(--space-4);font-weight:600;font-size:0.9rem;border-bottom:2px solid var(--primary);color:var(--primary);background:none;border-top:none;border-left:none;border-right:none;cursor:pointer;">Log In</button><button class="auth-tab" data-tab="signup" style="flex:1;padding:var(--space-4);font-weight:600;font-size:0.9rem;border-bottom:2px solid transparent;color:var(--text-muted);background:none;border-top:none;border-left:none;border-right:none;cursor:pointer;">Sign Up</button></div>
+    <div class="auth-panel modal-body" data-panel="login"><div style="background:var(--primary-50);border-radius:var(--radius);padding:var(--space-4);margin-bottom:var(--space-4);"><p style="font-size:0.8rem;font-weight:700;color:var(--primary);margin-bottom:var(--space-2);"> Demo:</p><div style="display:flex;gap:var(--space-2);"><button class="btn btn-primary btn-sm" data-role-login="consumer"> Consumer</button><button class="btn btn-secondary btn-sm" data-role-login="farmer">‍ Farmer</button></div></div><button class="btn btn-primary w-full" style="width:100%;justify-content:center;" data-role-login="consumer">Log In</button></div>
+    <div class="auth-panel hidden modal-body" data-panel="signup"><button class="btn btn-primary w-full" style="width:100%;justify-content:center;" data-role-login="consumer">Create Account</button></div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HaatBazaar Nepal — Farm Fresh, Direct to You | किसानसँग सिधा जोडिनुस्</title>
+  <meta name="description" content="HaatBazaar Nepal connects you directly with verified Nepali farmers. Pre-order fresh crops, track growth, subscribe to produce boxes, and support local agriculture.">
+  <meta property="og:title" content="HaatBazaar Nepal — Farm Fresh, Direct to You">
+  <meta property="og:description" content="Nepal's premier agricultural marketplace connecting farmers directly with consumers.">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/landing.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
+</head>
+<body>
+
+<!-- Navigation-->
+<nav class="nav" id="main-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <span class="logo-icon"></span>
+      HaatBazaar <span style="color:var(--accent)">Nepal</span>
+    </a>
+
+    <div class="nav-links" id="nav-links">
+      <a href="index.html" class="nav-link active" data-i18n="nav_home">Home</a>
+      <a href="marketplace.html" class="nav-link" data-i18n="nav_marketplace">Marketplace</a>
+      <a href="farmer-profile.html" class="nav-link" data-i18n="nav_farmers">Farmers</a>
+
+      <a href="group-buying.html" class="nav-link">Group Buy</a>
+    </div>
+
+    <div class="nav-actions">
+      <!-- Language Toggle -->
+      <div class="lang-toggle">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="np">नेपाली</button>
+      </div>
+
+      <!-- Cart -->
+      <a href="checkout.html" class="btn-icon" style="position:relative;" id="cart-btn">
+        
+        <span class="cart-badge" style="position:absolute;top:-6px;right:-6px;background:var(--accent);color:white;width:18px;height:18px;border-radius:50%;font-size:0.65rem;font-weight:700;display:none;align-items:center;justify-content:center;">0</span>
+      </a>
+
+      <!-- Auth Buttons -->
+      <button class="btn btn-ghost btn-sm btn-login" data-i18n="nav_login">Log In</button>
+      <button class="btn btn-primary btn-sm btn-signup" data-i18n="nav_signup">Join Free</button>
+
+      <!-- User Menu (hidden until login) -->
+      <div id="user-menu" class="hidden" style="display:flex;align-items:center;gap:10px;">
+        <span style="font-size:0.875rem;font-weight:600;" id="user-name"></span>
+        <div class="user-avatar-nav"></div>
+        <button data-logout class="btn btn-ghost btn-sm">Logout</button>
+      </div>
+
+      <!-- Hamburger -->
+      <button id="hamburger" class="btn-icon" style="display:none;"></button>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero Section-->
+<section class="hero" id="hero">
+  <div class="hero-bg" style="background-image:url('assets/images/hero-farm.png')"></div>
+  <div class="hero-overlay"></div>
+
+  <!-- Floating particles -->
+  <div class="hero-particles">
+    <span class="particle"></span>
+    <span class="particle"></span>
+    <span class="particle"></span>
+    <span class="particle"></span>
+    <span class="particle"></span>
+  </div>
+
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge reveal" style="--delay:0s">
+        <span>🇳🇵</span> Nepal's #1 Farm-to-Table Platform
+      </div>
+
+      <h1 class="hero-title reveal" style="--delay:0.1s" data-i18n="hero_title">
+        Farm Fresh,<br>Direct to You
+      </h1>
+
+      <p class="hero-subtitle reveal" style="--delay:0.2s" data-i18n="hero_subtitle">
+        Connect directly with verified Nepali farmers. Pre-order crops, track growth, and enjoy the freshest produce delivered to your door.
+      </p>
+
+      <!-- Search Bar -->
+      <div class="hero-search reveal" style="--delay:0.3s">
+        <div class="search-box">
+          <span class="search-icon-hero"></span>
+          <input type="text" class="search-input main-search" data-i18n-placeholder="hero_search_placeholder" placeholder="Search for products, farmers, locations...">
+          <div class="search-filters">
+            <button class="search-filter-btn active">All</button>
+            <button class="search-filter-btn">Vegetables</button>
+            <button class="search-filter-btn">Fruits</button>
+            <button class="search-filter-btn">Organic</button>
+          </div>
+          <a href="marketplace.html" class="btn btn-accent search-cta">Search</a>
+        </div>
+
+        <div class="hero-tags">
+          <span class="hero-tag"> Tomatoes</span>
+          <span class="hero-tag"> Strawberries</span>
+          <span class="hero-tag"> Leafy Greens</span>
+          <span class="hero-tag"> Honey</span>
+          <span class="hero-tag">️ Spices</span>
+        </div>
+      </div>
+
+      <!-- CTAs -->
+      <div class="hero-ctas reveal" style="--delay:0.4s">
+        <a href="marketplace.html" class="btn btn-accent btn-xl" data-i18n="hero_cta_primary">
+          Explore Marketplace
+        </a>
+        <button class="btn btn-hero-outline btn-xl" data-open-auth="signup" data-i18n="hero_cta_secondary">
+          Join as Farmer
+        </button>
+      </div>
+
+      <!-- Trust Indicators -->
+      <div class="hero-trust reveal" style="--delay:0.5s">
+        <div class="trust-item"><span></span> Verified Farmers</div>
+        <div class="trust-item"><span></span> Secure Payments</div>
+        <div class="trust-item"><span></span> Fresh Delivery</div>
+        <div class="trust-item"><span></span> 100% Traceable</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll Indicator -->
+  <div class="scroll-indicator">
+    <div class="scroll-dot"></div>
+  </div>
+</section>
+
+<!-- Stat Section -->
+<section class="stats-section">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item reveal">
+        <div class="stat-icon">‍</div>
+        <div class="stat-number"><span data-target="1842" data-suffix="+">0</span></div>
+        <div class="stat-label" data-i18n="stats_farmers">Verified Farmers</div>
+      </div>
+      <div class="stat-item reveal" style="--delay:0.1s">
+        <div class="stat-icon"></div>
+        <div class="stat-number"><span data-target="28500" data-suffix="+">0</span></div>
+        <div class="stat-label" data-i18n="stats_consumers">Happy Consumers</div>
+      </div>
+      <div class="stat-item reveal" style="--delay:0.2s">
+        <div class="stat-icon"></div>
+        <div class="stat-number"><span data-target="4200" data-suffix="+">0</span></div>
+        <div class="stat-label" data-i18n="stats_products">Fresh Products</div>
+      </div>
+      <div class="stat-item reveal" style="--delay:0.3s">
+        <div class="stat-icon"></div>
+        <div class="stat-number"><span data-target="77" data-suffix="">0</span></div>
+        <div class="stat-label" data-i18n="stats_districts">Districts Covered</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section how-it-works">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag"> Simple Process</div>
+      <h2 class="section-title" data-i18n="how_it_works">How It Works</h2>
+      <p class="section-subtitle">From farm to your doorstep in just a few clicks. No middlemen, no markup — just fresh, fair produce.</p>
+    </div>
+
+    <div class="steps-grid">
+      <div class="step-card reveal">
+        <div class="step-number">01</div>
+        <div class="step-icon"></div>
+        <h3 class="step-title" data-i18n="step1_title">Browse & Discover</h3>
+        <p class="step-desc">Explore hundreds of products from verified local farmers near you. Filter by organic, location, price, and more.</p>
+        <div class="step-arrow">→</div>
+      </div>
+      <div class="step-card reveal" style="--delay:0.15s">
+        <div class="step-number">02</div>
+        <div class="step-icon"></div>
+        <h3 class="step-title" data-i18n="step2_title">Pre-Order or Buy</h3>
+        <p class="step-desc">Reserve crops before harvest with a small deposit, or purchase available produce directly. Pay securely via eSewa or Khalti.</p>
+        <div class="step-arrow">→</div>
+      </div>
+      <div class="step-card reveal" style="--delay:0.3s">
+        <div class="step-number">03</div>
+        <div class="step-icon"></div>
+        <h3 class="step-title">Track Growth</h3>
+        <p class="step-desc">Watch your food grow! Farmers post live photo updates through planting, growing, flowering, and harvest stages.</p>
+        <div class="step-arrow">→</div>
+      </div>
+      <div class="step-card reveal" style="--delay:0.45s">
+        <div class="step-number">04</div>
+        <div class="step-icon"></div>
+        <h3 class="step-title" data-i18n="step3_title">Track & Receive</h3>
+        <p class="step-desc">Get harvest alerts, track your delivery, and enjoy the freshest farm produce delivered directly to your door.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Farmers-->
+<section class="section featured-farmers" style="background:var(--bg-2);">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">‍ Top Rated</div>
+      <h2 class="section-title" data-i18n="featured_farmers">Featured Farmers</h2>
+      <p class="section-subtitle">Meet the dedicated farmers behind your food. Verified, rated, and trusted by thousands of consumers.</p>
+    </div>
+
+    <div class="farmers-grid" id="farmers-grid">
+      <!-- Populated by JS -->
+    </div>
+
+    <div style="text-align:center;margin-top:var(--space-8)">
+      <a href="marketplace.html#farmers" class="btn btn-secondary btn-lg" data-i18n="btn_view_all">View All Farmers</a>
+    </div>
+  </div>
+</section>
+
+<!--Seasonal Produce -->
+<section class="section seasonal-produce">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag"> In Season Now</div>
+      <h2 class="section-title" data-i18n="seasonal_produce">Seasonal Produce</h2>
+      <p class="section-subtitle">Freshest picks of the season, harvested at peak ripeness and rushed to you.</p>
+    </div>
+
+    <!-- Filter Chips -->
+    <div class="chip-group" id="product-filters" style="justify-content:center;margin-bottom:var(--space-8)">
+      <button class="chip active" data-filter="all">All Products</button>
+      <button class="chip" data-filter="vegetables"> Vegetables</button>
+      <button class="chip" data-filter="fruits"> Fruits</button>
+      <button class="chip" data-filter="leafy-greens"> Leafy Greens</button>
+      <button class="chip" data-filter="honey"> Honey</button>
+      <button class="chip" data-filter="spices">️ Spices</button>
+    </div>
+
+    <div class="products-grid" id="products-grid">
+      <!-- Populated by JS -->
+    </div>
+
+    <div style="text-align:center;margin-top:var(--space-8)">
+      <a href="marketplace.html" class="btn btn-primary btn-lg">View All Products →</a>
+    </div>
+  </div>
+</section>
+
+<!-- Unique Features -->
+<section class="section features-section" style="background:var(--primary-dark);color:white;">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag" style="background:rgba(255,255,255,0.15);color:white;"> What Makes Us Different</div>
+      <h2 class="section-title" style="color:white;">More Than Just a Marketplace</h2>
+      <p class="section-subtitle" style="color:rgba(255,255,255,0.75);">HaatBazaar Nepal is a complete agricultural ecosystem built for Nepal's unique farming community.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <div class="feature-icon"></div>
+        <h3>Pre-Harvest Booking</h3>
+        <p>Reserve crops before harvest. Pay a small deposit now, get the freshest produce when it's ready.</p>
+        <a href="product-detail.html" class="feature-link">Learn more →</a>
+      </div>
+      <div class="feature-card reveal" style="--delay:0.1s">
+        <div class="feature-icon"></div>
+        <h3>Live Crop Tracking</h3>
+        <p>Watch your food grow! Get live photo updates from the farm at every stage of crop development.</p>
+        <a href="crop-tracking.html" class="feature-link">Learn more →</a>
+      </div>
+      <div class="feature-card reveal" style="--delay:0.2s">
+        <div class="feature-icon"></div>
+        <h3>Adopt-a-Farm</h3>
+        <p>Support a specific farmer year-round. Receive seasonal harvests, updates, and priority access to their crops.</p>
+        <a href="farmer-profile.html" class="feature-link">Learn more →</a>
+      </div>
+      <div class="feature-card reveal" style="--delay:0.3s">
+        <div class="feature-icon"></div>
+        <h3>Group Buying</h3>
+        <p>Team up with neighbors to order in bulk. Lower prices, shared delivery, stronger community bonds.</p>
+        <a href="group-buying.html" class="feature-link">Learn more →</a>
+      </div>
+      <div class="feature-card reveal" style="--delay:0.4s">
+        <div class="feature-icon"></div>
+        <h3>Subscription Boxes</h3>
+        <p>Weekly or monthly curated boxes of seasonal produce. Set it, forget it, and eat fresh every week.</p>
+        <a href="subscription.html" class="feature-link">Learn more →</a>
+      </div>
+      <div class="feature-card reveal" style="--delay:0.5s">
+        <div class="feature-icon">️</div>
+        <h3>Food Waste Marketplace</h3>
+        <p>Imperfect produce at discounted prices. Good for your wallet, great for the planet.</p>
+        <a href="marketplace.html?tab=surplus" class="feature-link">Learn more →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI Based Demand Prediction-->
+<section class="section ai-section">
+  <div class="container">
+    <div class="ai-banner reveal">
+      <div class="ai-left">
+        <div class="ai-icon-wrap"></div>
+        <div>
+          <div class="section-tag" style="margin-bottom:var(--space-3)"> AI-Powered</div>
+          <h2 style="margin-bottom:var(--space-4)">Smart Farming with AI Demand Forecasting</h2>
+          <p style="margin-bottom:var(--space-6)">Our AI analyzes market trends, seasonal patterns, and consumer demand to tell farmers exactly what to grow and when. Reduce waste, increase profits.</p>
+          <div class="ai-stats-row">
+            <div class="ai-stat"><span class="ai-stat-num">34%</span><span>Higher Revenue</span></div>
+            <div class="ai-stat"><span class="ai-stat-num">28%</span><span>Less Waste</span></div>
+            <div class="ai-stat"><span class="ai-stat-num">2.4x</span><span>Faster Sell-Through</span></div>
+          </div>
+          <a href="farmer-dashboard.html" class="btn btn-primary btn-lg" style="margin-top:var(--space-5)">See Farmer Dashboard →</a>
+        </div>
+      </div>
+      <div class="ai-right">
+        <div class="ai-forecast-card">
+          <div class="ai-forecast-header">
+            <span> AI Crop Recommendations</span>
+            <span class="badge badge-accent">Live</span>
+          </div>
+          <div class="ai-crop-list">
+            <div class="ai-crop-item">
+              <span class="crop-emoji"></span>
+              <div class="crop-info">
+                <span class="crop-name">Tomatoes</span>
+                <span class="crop-reason">High demand in Kathmandu this week</span>
+              </div>
+              <div class="crop-demand high">▲ High</div>
+            </div>
+            <div class="ai-crop-item">
+              <span class="crop-emoji"></span>
+              <div class="crop-info">
+                <span class="crop-name">Spinach</span>
+                <span class="crop-reason">Low supply, prices rising</span>
+              </div>
+              <div class="crop-demand high">▲ High</div>
+            </div>
+            <div class="ai-crop-item">
+              <span class="crop-emoji">🫑</span>
+              <div class="crop-info">
+                <span class="crop-name">Bell Pepper</span>
+                <span class="crop-reason">Seasonal peak approaching</span>
+              </div>
+              <div class="crop-demand medium">→ Medium</div>
+            </div>
+            <div class="ai-crop-item">
+              <span class="crop-emoji"></span>
+              <div class="crop-info">
+                <span class="crop-name">Potatoes</span>
+                <span class="crop-reason">Stable demand, good pricing</span>
+              </div>
+              <div class="crop-demand medium">→ Medium</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!--Testimonals -->
+<section class="section testimonials" style="background:var(--bg-2);">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag"> Real Stories</div>
+      <h2 class="section-title">Trusted by Farmers & Consumers</h2>
+    </div>
+
+    <div class="testimonials-grid">
+      <div class="testimonial-card reveal">
+        <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+        <p class="testimonial-text">"HaatBazaar Nepal has changed my life. I used to sell through middlemen who paid me Rs 20 per kg for tomatoes they sold for Rs 80. Now I get Rs 70-80 directly. My income tripled in one season!"</p>
+        <div class="testimonial-author">
+          <img src="assets/images/farmer-1.png" alt="Hari Bahadur" class="testimonial-avatar">
+          <div>
+            <div class="testimonial-name">Hari Bahadur Tamang</div>
+            <div class="testimonial-role"> Organic Farmer, Sindhupalchok</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="--delay:0.15s">
+        <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+        <p class="testimonial-text">"I love watching my vegetables grow in real-time! The crop tracking feature is amazing — I feel connected to the food I eat. The tomatoes arrived perfectly fresh."</p>
+        <div class="testimonial-author">
+          <img src="assets/images/farmer-2.png" alt="Priya" class="testimonial-avatar">
+          <div>
+            <div class="testimonial-name">Priya Maharjan</div>
+            <div class="testimonial-role"> Consumer, Kathmandu</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="--delay:0.3s">
+        <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+        <p class="testimonial-text">"The weekly subscription box is perfect for our family. Fresh, organic, affordable — and we discover new seasonal vegetables every week. Highly recommended!"</p>
+        <div class="testimonial-author">
+          <img src="assets/images/farmer-2.png" alt="Suman" class="testimonial-avatar">
+          <div>
+            <div class="testimonial-name">Suman Karki</div>
+            <div class="testimonial-role"> Subscriber, Lalitpur</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!--CTA Banner-->
+<section class="cta-banner">
+  <div class="container">
+    <div class="cta-inner">
+      <div class="cta-text">
+        <h2 style="color:white;margin-bottom:var(--space-4)">Ready to Eat Fresher?<br>Support Local Farmers?</h2>
+        <p style="color:rgba(255,255,255,0.8);margin-bottom:var(--space-6)">Join thousands of Nepali consumers who are already eating healthier, fresher food — directly from the farm.</p>
+        <div style="display:flex;gap:var(--space-4);flex-wrap:wrap;">
+          <button class="btn btn-accent btn-xl btn-signup">Start Shopping Free →</button>
+          <button class="btn btn-hero-outline btn-xl" data-open-auth="signup">Join as Farmer</button>
+        </div>
+      </div>
+      <div class="cta-illustration">
+        <div class="cta-cards-stack">
+          <div class="cta-float-card"> 1,842 Farmers Ready</div>
+          <div class="cta-float-card"> Free Delivery on First Order</div>
+          <div class="cta-float-card"> Certified Organic Options</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <span class="logo-icon"></span>
+          HaatBazaar <span style="color:var(--primary-light)">Nepal</span>
+        </div>
+        <p class="footer-desc" data-i18n="footer_tagline">
+          Connecting Nepal's farmers directly with consumers for a healthier, fairer food system.
+        </p>
+        <div class="footer-social">
+          <a href="#" class="footer-social-btn" title="Facebook"></a>
+          <a href="#" class="footer-social-btn" title="Instagram"></a>
+          <a href="#" class="footer-social-btn" title="Twitter"></a>
+          <a href="#" class="footer-social-btn" title="YouTube"></a>
+          <a href="#" class="footer-social-btn" title="WhatsApp"></a>
+        </div>
+        <!-- Newsletter -->
+        <div style="margin-top:var(--space-5)">
+          <p style="color:rgba(255,255,255,0.7);font-size:0.85rem;margin-bottom:var(--space-3)">Get harvest alerts in your inbox:</p>
+          <div style="display:flex;gap:var(--space-2)">
+            <input type="email" placeholder="your@email.com" style="flex:1;padding:9px 12px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.1);color:white;font-size:0.85rem;">
+            <button class="btn btn-accent btn-sm" onclick="showToast('You\'re subscribed! ', 'success')">Subscribe</button>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">Marketplace</h4>
+        <ul class="footer-links">
+          <li><a href="marketplace.html" class="footer-link">Browse Products</a></li>
+          <li><a href="marketplace.html?filter=organic" class="footer-link">Organic Section</a></li>
+          <li><a href="marketplace.html?tab=surplus" class="footer-link">Food Waste Market</a></li>
+          <li><a href="subscription.html" class="footer-link">Subscription Boxes</a></li>
+          <li><a href="group-buying.html" class="footer-link">Group Buying</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">For Farmers</h4>
+        <ul class="footer-links">
+          <li><a href="farmer-dashboard.html" class="footer-link">Farmer Dashboard</a></li>
+          <li><a href="#" class="footer-link">List Products</a></li>
+          <li><a href="crop-tracking.html" class="footer-link">Crop Updates</a></li>
+          <li><a href="farmer-dashboard.html#forecast" class="footer-link">AI Forecasting</a></li>
+          <li><a href="#" class="footer-link">Cooperative Portal</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">Company</h4>
+        <ul class="footer-links">
+          <li><a href="#" class="footer-link">About Us</a></li>
+          <li><a href="#" class="footer-link">Municipality Portal</a></li>
+          <li><a href="#" class="footer-link">Contact Us</a></li>
+          <li><a href="#" class="footer-link">Privacy Policy</a></li>
+          <li><a href="#" class="footer-link">Terms of Service</a></li>
+        </ul>
+        <div style="margin-top:var(--space-5)">
+          <p style="color:rgba(255,255,255,0.5);font-size:0.8rem;margin-bottom:var(--space-2)"> +977-1-4XXXXXX</p>
+          <p style="color:rgba(255,255,255,0.5);font-size:0.8rem;margin-bottom:var(--space-2)"> hello@haatbazaarnepal.com</p>
+          <p style="color:rgba(255,255,255,0.5);font-size:0.8rem;"> Kathmandu, Nepal</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 HaatBazaar Nepal. Built with ️ for Nepali farmers.</span>
+      <div style="display:flex;gap:var(--space-5)">
+        <a href="#" class="footer-link" style="font-size:0.8rem">Privacy</a>
+        <a href="#" class="footer-link" style="font-size:0.8rem">Terms</a>
+        <a href="#" class="footer-link" style="font-size:0.8rem">Sitemap</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Auth Modal -->
+<div class="modal-overlay" id="auth-modal">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-header">
+      <div>
+        <h3 style="font-family:var(--font-heading);font-weight:700;">Welcome to HaatBazaar Nepal </h3>
+        <p style="font-size:0.85rem;color:var(--text-muted);margin-top:4px">Access your account or join us today</p>
+      </div>
+      <button data-close-modal style="font-size:1.25rem;color:var(--text-muted);background:none;border:none;cursor:pointer;"></button>
+    </div>
+
+    <!-- Tabs -->
+    <div style="display:flex;border-bottom:1px solid var(--border-light);padding:0 var(--space-6);">
+      <button class="auth-tab active" data-tab="login" style="flex:1;padding:var(--space-4);font-weight:600;font-size:0.9rem;border-bottom:2px solid var(--primary);color:var(--primary);background:none;border-top:none;border-left:none;border-right:none;cursor:pointer;">Log In</button>
+      <button class="auth-tab" data-tab="signup" style="flex:1;padding:var(--space-4);font-weight:600;font-size:0.9rem;border-bottom:2px solid transparent;color:var(--text-muted);background:none;border-top:none;border-left:none;border-right:none;cursor:pointer;">Sign Up</button>
+    </div>
+
+    <!-- Login Panel -->
+    <div class="auth-panel" data-panel="login">
+      <div class="modal-body">
+        <div class="auth-api-form" data-api-login>
+          <div class="form-group" style="margin-bottom:var(--space-3);">
+            <label class="form-label">Email Address</label>
+            <input type="email" class="form-input" data-api-email placeholder="you@example.com">
+          </div>
+          <div class="form-group" style="margin-bottom:var(--space-3);">
+            <label class="form-label">Password</label>
+            <input type="password" class="form-input" data-api-password placeholder="••••••••">
+          </div>
+          <button type="button" class="btn btn-primary w-full" data-api-login-btn style="width:100%;justify-content:center;">Log In</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Signup Panel -->
+    <div class="auth-panel hidden" data-panel="signup">
+      <div class="modal-body">
+        <div class="auth-api-form" data-api-signup>
+          <div class="form-group" style="margin-bottom:var(--space-3);">
+            <label class="form-label">Full Name</label>
+            <input type="text" class="form-input" data-api-name placeholder="Full Name">
+          </div>
+          <div class="form-group" style="margin-bottom:var(--space-3);">
+            <label class="form-label">Email Address</label>
+            <input type="email" class="form-input" data-api-email placeholder="you@example.com">
+          </div>
+          <div class="form-group" style="margin-bottom:var(--space-3);">
+            <label class="form-label">Phone Number</label>
+            <input type="tel" class="form-input" data-api-phone placeholder="+9779800000001">
+            <small style="color:var(--text-muted);font-size:0.75rem;">Format: +977XXXXXXXXXX</small>
+          </div>
+          <div class="form-group" style="margin-bottom:var(--space-3);">
+            <label class="form-label">Password</label>
+            <input type="password" class="form-input" data-api-password placeholder="Min 8 chars, 1 uppercase, 1 digit">
+            <small style="color:var(--text-muted);font-size:0.75rem;">At least 8 characters, one uppercase letter, and one digit</small>
+          </div>
+          <button type="button" class="btn btn-primary w-full" data-api-signup-btn style="width:100%;justify-content:center;">Create Account</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script src="js/landing.js"></script>
+</body>
+</html>

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marketplace — HaatBazaar Nepal | बजार</title>
+  <meta name="description" content="Browse fresh organic produce from verified Nepali farmers. Filter by category, location, price, and organic certification.">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/marketplace.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="main-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <span class="logo-icon"></span>
+      HaatBazaar <span style="color:var(--accent)">Nepal</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link" data-i18n="nav_home">Home</a>
+      <a href="marketplace.html" class="nav-link active" data-i18n="nav_marketplace">Marketplace</a>
+      <a href="farmer-profile.html" class="nav-link" data-i18n="nav_farmers">Farmers</a>
+      <a href="group-buying.html" class="nav-link">Group Buy</a>
+    </div>
+    <div class="nav-actions">
+      <div class="lang-toggle">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="np">नेपाली</button>
+      </div>
+      <a href="checkout.html" class="btn-icon" style="position:relative;">
+        <span class="cart-badge" style="position:absolute;top:-6px;right:-6px;background:var(--accent);color:white;width:18px;height:18px;border-radius:50%;font-size:0.65rem;font-weight:700;display:none;align-items:center;justify-content:center;">0</span>
+      </a>
+      <button class="btn btn-ghost btn-sm btn-login">Log In</button>
+      <button class="btn btn-primary btn-sm btn-signup">Join Free</button>
+      <div id="user-menu" class="hidden" style="display:flex;align-items:center;gap:10px;">
+        <span style="font-size:0.875rem;font-weight:600;" id="user-name"></span>
+        <button data-logout class="btn btn-ghost btn-sm">Logout</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="marketplace-header">
+  <div class="container">
+    <div class="mkt-header-inner">
+      <div>
+        <h1 class="mkt-title"> Fresh Marketplace</h1>
+        <p class="mkt-subtitle">Farm-to-table, direct from Nepal's finest farmers</p>
+      </div>
+      <div class="mkt-search-wrap">
+        <div class="search-wrap">
+          <span class="search-icon"></span>
+          <input type="text" id="mkt-search" class="form-input" placeholder="Search products, farmers..." style="padding-left:44px;border-radius:var(--radius-md);">
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab Bar -->
+    <div class="mkt-tabs">
+      <button class="mkt-tab active" data-tab="all">All Products</button>
+      <button class="mkt-tab" data-tab="organic"> Organic Only</button>
+      <button class="mkt-tab" data-tab="preorder"> Pre-Order</button>
+      <button class="mkt-tab" data-tab="surplus">️ Food Waste Market</button>
+      <button class="mkt-tab" data-tab="farmers">‍ Farmers</button>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="marketplace-body">
+  <div class="container">
+    <div class="mkt-layout">
+
+      <!-- SIDEBAR FILTERS -->
+      <aside class="mkt-sidebar">
+        <div class="filter-card">
+          <div class="filter-header">
+            <h3>Filters</h3>
+            <button id="clear-filters" class="btn btn-ghost btn-sm" style="color:var(--accent)">Clear All</button>
+          </div>
+
+          <!-- Category -->
+          <div class="filter-group">
+            <h4 class="filter-label">Category</h4>
+            <div class="filter-options" id="cat-filters">
+              <label class="filter-option"><input type="checkbox" value="all" checked> All Categories</label>
+              <label class="filter-option"><input type="checkbox" value="vegetables">  Vegetables</label>
+              <label class="filter-option"><input type="checkbox" value="fruits">  Fruits</label>
+              <label class="filter-option"><input type="checkbox" value="leafy-greens">  Leafy Greens</label>
+              <label class="filter-option"><input type="checkbox" value="honey">  Honey</label>
+              <label class="filter-option"><input type="checkbox" value="spices"> ️ Spices</label>
+              <label class="filter-option"><input type="checkbox" value="dairy">  Dairy</label>
+              <label class="filter-option"><input type="checkbox" value="grains">  Grains</label>
+            </div>
+          </div>
+
+          <!-- Price Range -->
+          <div class="filter-group">
+            <h4 class="filter-label">Price Range (Rs)</h4>
+            <div class="price-range">
+              <input type="number" id="price-min" class="form-input" placeholder="Min" min="0" value="0" style="font-size:0.85rem;">
+              <span style="color:var(--text-light)">—</span>
+              <input type="number" id="price-max" class="form-input" placeholder="Max" min="0" value="2000" style="font-size:0.85rem;">
+            </div>
+            <input type="range" id="price-slider" min="0" max="2000" value="2000" class="price-slider" style="width:100%;margin-top:8px;accent-color:var(--primary);">
+            <div style="text-align:right;font-size:0.75rem;color:var(--text-muted);margin-top:4px">Max: Rs <span id="price-display">2000</span></div>
+          </div>
+
+          <!-- Location -->
+          <div class="filter-group">
+            <h4 class="filter-label">Location / Province</h4>
+            <select class="form-select" id="loc-filter" style="font-size:0.85rem;">
+              <option value="">All Locations</option>
+              <option value="Bagmati">Bagmati Province</option>
+              <option value="Gandaki">Gandaki Province</option>
+              <option value="Province 1">Province 1</option>
+              <option value="Lumbini">Lumbini Province</option>
+              <option value="Karnali">Karnali Province</option>
+            </select>
+          </div>
+
+          <!-- Certification -->
+          <div class="filter-group">
+            <h4 class="filter-label">Certification</h4>
+            <div class="filter-options">
+              <label class="filter-option"><input type="checkbox" id="filter-organic">  Organic Certified</label>
+              <label class="filter-option"><input type="checkbox" id="filter-preorder">  Pre-Order Available</label>
+              <label class="filter-option"><input type="checkbox" id="filter-surplus"> ️ Surplus/Discounted</label>
+              <label class="filter-option"><input type="checkbox" id="filter-verified">  Verified Farmer Only</label>
+            </div>
+          </div>
+
+          <!-- Harvest Window -->
+          <div class="filter-group">
+            <h4 class="filter-label">Harvest Within</h4>
+            <div class="chip-group" style="flex-wrap:wrap;">
+              <button class="chip active" data-harvest="all">Any time</button>
+              <button class="chip" data-harvest="7">7 days</button>
+              <button class="chip" data-harvest="14">14 days</button>
+              <button class="chip" data-harvest="30">30 days</button>
+            </div>
+          </div>
+
+          <button class="btn btn-primary w-full" id="apply-filters" style="width:100%;justify-content:center;margin-top:var(--space-4);">Apply Filters</button>
+        </div>
+
+        <!-- Harvest Alert Subscribe -->
+        <div class="alert-subscribe-card">
+          <div style="font-size:2rem;margin-bottom:var(--space-3)"></div>
+          <h4 style="font-family:var(--font-heading);font-weight:700;margin-bottom:var(--space-2);">Harvest Alerts</h4>
+          <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:var(--space-4);">Get notified when fresh produce becomes available near you.</p>
+          <input type="text" class="form-input" placeholder="Your location..." style="font-size:0.85rem;margin-bottom:var(--space-2);">
+          <button class="btn btn-primary w-full" style="width:100%;justify-content:center;font-size:0.85rem;" onclick="showToast(' Harvest alerts enabled!', 'success')">Enable Alerts</button>
+        </div>
+      </aside>
+
+      <!-- PRODUCT AREA -->
+      <div class="mkt-content">
+        <!-- Sort & Results Bar -->
+        <div class="mkt-results-bar">
+          <span id="results-count" style="font-size:0.875rem;color:var(--text-muted);">Showing <strong id="count-num">8</strong> products</span>
+          <div style="display:flex;align-items:center;gap:var(--space-3);">
+            <label style="font-size:0.85rem;color:var(--text-muted);">Sort by:</label>
+            <select class="form-select" id="sort-select" style="padding:8px 12px;font-size:0.85rem;width:auto;">
+              <option value="popular">Most Popular</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+              <option value="rating">Top Rated</option>
+              <option value="harvest">Harvest Date</option>
+              <option value="newest">Newest</option>
+            </select>
+            <div class="view-toggle">
+              <button class="view-btn active" data-view="grid">⊞</button>
+              <button class="view-btn" data-view="list"></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Active Filter Tags -->
+        <div id="active-filters" style="display:flex;gap:var(--space-2);flex-wrap:wrap;margin-bottom:var(--space-4);"></div>
+
+        <!-- Product Grid -->
+        <div class="mkt-products-grid" id="mkt-products-grid"></div>
+
+        <!-- No Results -->
+        <div id="no-results" class="no-results hidden">
+          <div style="font-size:4rem;margin-bottom:var(--space-4)"></div>
+          <h3>No products found</h3>
+          <p>Try adjusting your filters or search term</p>
+          <button class="btn btn-primary" onclick="clearAllFilters()">Clear Filters</button>
+        </div>
+
+        <!-- Pagination -->
+        <div class="mkt-pagination" id="pagination">
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">3</button>
+          <span style="color:var(--text-light)">...</span>
+          <button class="page-btn">12</button>
+          <button class="page-btn">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- FARMERS TAB PANEL (hidden by default) -->
+    <div id="farmers-panel" class="hidden">
+      <div class="farmers-mkt-grid" id="farmers-mkt-grid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Auth Modal -->
+<div class="modal-overlay" id="auth-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 style="font-family:var(--font-heading);font-weight:700;">Welcome to HaatBazaar Nepal </h3>
+      <button data-close-modal style="font-size:1.25rem;color:var(--text-muted);background:none;border:none;cursor:pointer;"></button>
+    </div>
+    <div style="display:flex;border-bottom:1px solid var(--border-light);padding:0 var(--space-6);">
+      <button class="auth-tab active" data-tab="login" style="flex:1;padding:var(--space-4);font-weight:600;font-size:0.9rem;border-bottom:2px solid var(--primary);color:var(--primary);background:none;border-top:none;border-left:none;border-right:none;cursor:pointer;">Log In</button>
+      <button class="auth-tab" data-tab="signup" style="flex:1;padding:var(--space-4);font-weight:600;font-size:0.9rem;border-bottom:2px solid transparent;color:var(--text-muted);background:none;border-top:none;border-left:none;border-right:none;cursor:pointer;">Sign Up</button>
+    </div>
+    <div class="auth-panel modal-body" data-panel="login">
+      <div class="auth-api-form" data-api-login>
+        <div class="form-group" style="margin-bottom:var(--space-3);">
+          <label class="form-label">Email Address</label>
+          <input type="email" class="form-input" data-api-email placeholder="you@example.com">
+        </div>
+        <div class="form-group" style="margin-bottom:var(--space-3);">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-input" data-api-password placeholder="••••••••">
+        </div>
+        <button type="button" class="btn btn-primary w-full" data-api-login-btn style="width:100%;justify-content:center;">Log In</button>
+      </div>
+    </div>
+    <div class="auth-panel hidden modal-body" data-panel="signup">
+      <div class="auth-api-form" data-api-signup>
+        <div class="form-group" style="margin-bottom:var(--space-3);">
+          <label class="form-label">Full Name</label>
+          <input type="text" class="form-input" data-api-name placeholder="Full Name">
+        </div>
+        <div class="form-group" style="margin-bottom:var(--space-3);">
+          <label class="form-label">Email Address</label>
+          <input type="email" class="form-input" data-api-email placeholder="you@example.com">
+        </div>
+        <div class="form-group" style="margin-bottom:var(--space-3);">
+          <label class="form-label">Phone</label>
+          <input type="tel" class="form-input" data-api-phone placeholder="+977-98XXXXXXXX">
+        </div>
+        <div class="form-group" style="margin-bottom:var(--space-3);">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-input" data-api-password placeholder="Create a strong password">
+        </div>
+        <button type="button" class="btn btn-primary w-full" data-api-signup-btn style="width:100%;justify-content:center;">Create Account</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script src="js/marketplace.js"></script>
+</body>
+</html>

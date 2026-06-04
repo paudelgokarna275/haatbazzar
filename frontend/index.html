@@ -422,7 +422,7 @@
         <p style="color:rgba(255,255,255,0.8);margin-bottom:var(--space-6)">Join thousands of Nepali consumers who are already eating healthier, fresher food — directly from the farm.</p>
         <div style="display:flex;gap:var(--space-4);flex-wrap:wrap;">
           <button class="btn btn-accent btn-xl btn-signup">Start Shopping Free →</button>
-          <button class="btn btn-hero-outline btn-xl" data-role-login="farmer">Join as Farmer</button>
+          <button class="btn btn-hero-outline btn-xl" data-open-auth="signup">Join as Farmer</button>
         </div>
       </div>
       <div class="cta-illustration">
@@ -535,28 +535,16 @@
     <!-- Login Panel -->
     <div class="auth-panel" data-panel="login">
       <div class="modal-body">
-        <!-- Demo Role Login -->
-        <div style="background:var(--primary-50);border-radius:var(--radius);padding:var(--space-4);margin-bottom:var(--space-5);">
-          <p style="font-size:0.8rem;font-weight:700;color:var(--primary);margin-bottom:var(--space-3);"> Demo Quick Login:</p>
-          <div style="display:flex;gap:var(--space-2);flex-wrap:wrap;">
-            <button class="btn btn-primary btn-sm" data-role-login="consumer"> Consumer</button>
-            <button class="btn btn-secondary btn-sm" data-role-login="farmer">‍ Farmer</button>
-            <button class="btn btn-secondary btn-sm" data-role-login="municipality">️ Municipality</button>
-          </div>
-        </div>
-
-        <div style="text-align:center;color:var(--text-light);font-size:0.8rem;margin-bottom:var(--space-5);">— or login with email —</div>
-
-        <div style="display:flex;flex-direction:column;gap:var(--space-4);">
-          <div class="form-group">
+        <div class="auth-api-form" data-api-login>
+          <div class="form-group" style="margin-bottom:var(--space-3);">
             <label class="form-label">Email Address</label>
-            <input type="email" class="form-input" placeholder="you@example.com">
+            <input type="email" class="form-input" data-api-email placeholder="you@example.com">
           </div>
-          <div class="form-group">
+          <div class="form-group" style="margin-bottom:var(--space-3);">
             <label class="form-label">Password</label>
-            <input type="password" class="form-input" placeholder="••••••••">
+            <input type="password" class="form-input" data-api-password placeholder="••••••••">
           </div>
-          <button class="btn btn-primary w-full" style="width:100%;justify-content:center;" data-role-login="consumer">Log In</button>
+          <button type="button" class="btn btn-primary w-full" data-api-login-btn style="width:100%;justify-content:center;">Log In</button>
         </div>
       </div>
     </div>
@@ -564,45 +552,26 @@
     <!-- Signup Panel -->
     <div class="auth-panel hidden" data-panel="signup">
       <div class="modal-body">
-        <div style="display:flex;flex-direction:column;gap:var(--space-4);">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3);">
-            <div class="form-group">
-              <label class="form-label">First Name</label>
-              <input type="text" class="form-input" placeholder="Bikash">
-            </div>
-            <div class="form-group">
-              <label class="form-label">Last Name</label>
-              <input type="text" class="form-input" placeholder="Adhikari">
-            </div>
+        <div class="auth-api-form" data-api-signup>
+          <div class="form-group" style="margin-bottom:var(--space-3);">
+            <label class="form-label">Full Name</label>
+            <input type="text" class="form-input" data-api-name placeholder="Full Name">
           </div>
-          <div class="form-group">
-            <label class="form-label">I am joining as:</label>
-            <div style="display:flex;gap:var(--space-3);">
-              <label style="flex:1;padding:var(--space-3);border:2px solid var(--primary);border-radius:var(--radius);cursor:pointer;text-align:center;background:var(--primary-50);">
-                <input type="radio" name="signup-role" value="consumer" checked style="display:none;">
-                <div style="font-size:1.5rem;margin-bottom:4px"></div>
-                <div style="font-size:0.8rem;font-weight:600;color:var(--primary)">Consumer</div>
-              </label>
-              <label style="flex:1;padding:var(--space-3);border:2px solid var(--border);border-radius:var(--radius);cursor:pointer;text-align:center;">
-                <input type="radio" name="signup-role" value="farmer" style="display:none;">
-                <div style="font-size:1.5rem;margin-bottom:4px">‍</div>
-                <div style="font-size:0.8rem;font-weight:600;color:var(--text-muted)">Farmer</div>
-              </label>
-            </div>
-          </div>
-          <div class="form-group">
+          <div class="form-group" style="margin-bottom:var(--space-3);">
             <label class="form-label">Email Address</label>
-            <input type="email" class="form-input" placeholder="you@example.com">
+            <input type="email" class="form-input" data-api-email placeholder="you@example.com">
           </div>
-          <div class="form-group">
+          <div class="form-group" style="margin-bottom:var(--space-3);">
             <label class="form-label">Phone Number</label>
-            <input type="tel" class="form-input" placeholder="+977-98XXXXXXXX">
+            <input type="tel" class="form-input" data-api-phone placeholder="+9779800000001">
+            <small style="color:var(--text-muted);font-size:0.75rem;">Format: +977XXXXXXXXXX</small>
           </div>
-          <div class="form-group">
+          <div class="form-group" style="margin-bottom:var(--space-3);">
             <label class="form-label">Password</label>
-            <input type="password" class="form-input" placeholder="Create a strong password">
+            <input type="password" class="form-input" data-api-password placeholder="Min 8 chars, 1 uppercase, 1 digit">
+            <small style="color:var(--text-muted);font-size:0.75rem;">At least 8 characters, one uppercase letter, and one digit</small>
           </div>
-          <button class="btn btn-primary w-full" style="width:100%;justify-content:center;" data-role-login="consumer">Create Account Free</button>
+          <button type="button" class="btn btn-primary w-full" data-api-signup-btn style="width:100%;justify-content:center;">Create Account</button>
         </div>
       </div>
     </div>

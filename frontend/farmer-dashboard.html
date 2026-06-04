@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Farmer Dashboard — HaatBazaar Nepal</title>
+  <meta name="description" content="Manage your farm, products, orders, and view AI demand insights.">
   <link rel="stylesheet" href="css/main.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
@@ -17,85 +18,80 @@
     <a href="index.html" class="nav-logo"><span class="logo-icon"></span>HaatBazaar <span style="color:var(--accent)">Nepal</span></a>
     <div class="nav-actions">
       <div class="lang-toggle"><button class="lang-btn active" data-lang="en">EN</button><button class="lang-btn" data-lang="np">नेपाली</button></div>
-      <div id="user-menu" style="display:flex;align-items:center;gap:10px;"><span id="user-name" style="font-size:0.875rem;font-weight:600;">Hari Bahadur Tamang</span><button data-logout class="btn btn-ghost btn-sm">Logout</button></div>
+      <div id="user-menu" style="display:flex;align-items:center;gap:10px;">
+        <span id="user-name" style="font-size:0.875rem;font-weight:600;"></span>
+        <button data-logout class="btn btn-ghost btn-sm">Logout</button>
+      </div>
     </div>
   </div>
 </nav>
 
 <div class="dashboard-layout">
-  
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-section">
       <div class="sidebar-section-title">Farm Management</div>
       <a href="#" class="sidebar-link active"><span class="sidebar-icon"></span> Overview</a>
-      <a href="#" class="sidebar-link"><span class="sidebar-icon"></span> Orders <span class="sidebar-badge">4</span></a>
+      <a href="#" class="sidebar-link"><span class="sidebar-icon"></span> Orders <span class="sidebar-badge" id="orders-badge">0</span></a>
       <a href="#" class="sidebar-link"><span class="sidebar-icon"></span> Products</a>
-      <a href="#" class="sidebar-link"><span class="sidebar-icon"></span> Crop Tracker</a>
     </div>
     <div class="sidebar-section">
       <div class="sidebar-section-title">Insights</div>
       <a href="#forecast" class="sidebar-link"><span class="sidebar-icon"></span> AI Forecast</a>
       <a href="#" class="sidebar-link"><span class="sidebar-icon"></span> Revenue</a>
-      <a href="#" class="sidebar-link"><span class="sidebar-icon">⭐</span> Reviews</a>
     </div>
     <div class="sidebar-section">
       <div class="sidebar-section-title">Account</div>
       <a href="farmer-profile.html" class="sidebar-link"><span class="sidebar-icon"></span> View Profile</a>
       <a href="#" class="sidebar-link"><span class="sidebar-icon">️</span> Settings</a>
+      <a href="#" class="sidebar-link" data-logout><span class="sidebar-icon"></span> Logout</a>
     </div>
   </aside>
 
   <main class="dashboard-main">
     <div class="dashboard-header" style="display:flex;justify-content:space-between;align-items:flex-end;">
       <div>
-        <h1 style="font-family:var(--font-heading);font-weight:800;font-size:1.75rem;">Farmer Dashboard</h1>
+        <h1 id="dash-greeting" style="font-family:var(--font-heading);font-weight:800;font-size:1.75rem;">Farmer Dashboard</h1>
         <p style="color:var(--text-muted);">Manage your farm, track orders, and view AI insights.</p>
       </div>
-      <button class="btn btn-primary" onclick="showToast('Product draft created!', 'success')"> Add Product</button>
+      <button class="btn btn-primary" id="add-product-btn"> Add Product</button>
     </div>
 
     <div class="metric-grid">
       <div class="metric-card">
         <div class="metric-icon green"></div>
         <div>
-          <div class="metric-value">Rs 45K</div>
-          <div class="metric-label">Revenue (This Month)</div>
-          <div class="metric-change up">↑ 12% vs last month</div>
+          <div class="metric-value" id="metric-products">—</div>
+          <div class="metric-label">Listed Products</div>
         </div>
       </div>
       <div class="metric-card">
         <div class="metric-icon orange"></div>
         <div>
-          <div class="metric-value">24</div>
+          <div class="metric-value" id="metric-orders">—</div>
           <div class="metric-label">Pending Orders</div>
-          <div class="metric-change down">↓ 2 need action</div>
         </div>
       </div>
       <div class="metric-card">
         <div class="metric-icon blue">⭐</div>
         <div>
-          <div class="metric-value">4.8</div>
+          <div class="metric-value" id="metric-rating">—</div>
           <div class="metric-label">Average Rating</div>
-          <div class="metric-change up">↑ 0.1 vs last month</div>
         </div>
       </div>
       <div class="metric-card">
         <div class="metric-icon purple"></div>
         <div>
-          <div class="metric-value">12</div>
-          <div class="metric-label">Adopted Families</div>
-          <div class="metric-change up">↑ 3 new</div>
+          <div class="metric-value" id="metric-total-revenue">—</div>
+          <div class="metric-label">Total Revenue</div>
         </div>
       </div>
     </div>
 
     <div style="display:grid;grid-template-columns:2fr 1fr;gap:var(--space-6);margin-bottom:var(--space-6);">
-      
       <!-- Revenue Chart -->
       <div class="chart-container">
         <div class="chart-header">
           <h3 class="chart-title">Revenue Overview</h3>
-          <select class="form-select" style="width:auto;padding:4px 8px;font-size:0.8rem;"><option>Last 6 Months</option></select>
         </div>
         <div style="position: relative; height: 250px;">
           <canvas id="revenueChart"></canvas>
@@ -108,83 +104,19 @@
           <h3 class="chart-title"><span style="font-size:1.2rem;"></span> AI Demand Forecast</h3>
         </div>
         <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:var(--space-3);">Based on Kathmandu market trends for the next 3 months.</p>
-        
-        <div style="display:flex;flex-direction:column;gap:var(--space-3);">
-          <div style="background:white;padding:var(--space-3);border-radius:var(--radius-sm);border:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
-            <div style="display:flex;align-items:center;gap:var(--space-2);">
-              <span style="font-size:1.5rem;"></span>
-              <div>
-                <div style="font-weight:700;font-size:0.85rem;">Plant Tomatoes</div>
-                <div style="font-size:0.75rem;color:var(--text-muted);">High demand expected</div>
-              </div>
-            </div>
-            <span class="badge badge-organic" style="background:var(--primary-50);color:var(--primary);">↑ 40% Demand</span>
-          </div>
-          
-          <div style="background:white;padding:var(--space-3);border-radius:var(--radius-sm);border:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
-            <div style="display:flex;align-items:center;gap:var(--space-2);">
-              <span style="font-size:1.5rem;"></span>
-              <div>
-                <div style="font-weight:700;font-size:0.85rem;">Hold Spinach</div>
-                <div style="font-size:0.75rem;color:var(--text-muted);">Market oversupply</div>
-              </div>
-            </div>
-            <span class="badge" style="background:#FFF3E0;color:var(--accent-dark);">↓ Prices Dropping</span>
-          </div>
-          
-          <div style="background:white;padding:var(--space-3);border-radius:var(--radius-sm);border:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
-            <div style="display:flex;align-items:center;gap:var(--space-2);">
-              <span style="font-size:1.5rem;"></span>
-              <div>
-                <div style="font-weight:700;font-size:0.85rem;">Garlic Shortage</div>
-                <div style="font-size:0.75rem;color:var(--text-muted);">Import restrictions</div>
-              </div>
-            </div>
-            <span class="badge" style="background:#E8F5E9;color:var(--primary-dark);">⭐ Premium Price</span>
-          </div>
+        <div id="ai-forecast-list" style="display:flex;flex-direction:column;gap:var(--space-3);">
+          <div style="text-align:center;color:var(--text-muted);padding:var(--space-4);">Loading AI forecast...</div>
         </div>
       </div>
-
     </div>
 
     <!-- Recent Orders Table -->
     <div class="card" style="padding:var(--space-6);">
       <div style="display:flex;justify-content:space-between;margin-bottom:var(--space-5);">
         <h3 style="font-family:var(--font-heading);font-weight:700;">Recent Orders</h3>
-        <button class="btn btn-ghost btn-sm">Filter</button>
       </div>
-      <div class="table-wrap">
-        <table class="table">
-          <thead>
-            <tr><th>Order ID</th><th>Customer</th><th>Product</th><th>Qty</th><th>Status</th><th>Action</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><a href="#" style="color:var(--primary);font-weight:600;">FL-004</a></td>
-              <td>Bikash Adhikari</td>
-              <td>Green Cardamom</td>
-              <td>2 x 100g</td>
-              <td><span class="status-badge status-pending">Pending</span></td>
-              <td><button class="btn btn-sm btn-primary" onclick="showToast('Order Accepted!', 'success')">Accept</button></td>
-            </tr>
-            <tr>
-              <td><a href="crop-tracking.html" style="color:var(--primary);font-weight:600;">FL-002</a></td>
-              <td>Priya Maharjan</td>
-              <td>Organic Tomatoes (Pre-order)</td>
-              <td>5 kg</td>
-              <td><span class="status-badge status-growing"> Growing</span></td>
-              <td><button class="btn btn-sm btn-secondary" onclick="window.location='crop-tracking.html'">Update Crop</button></td>
-            </tr>
-            <tr>
-              <td><a href="#" style="color:var(--primary);font-weight:600;">FL-001</a></td>
-              <td>Suman Thapa</td>
-              <td>Organic Tomatoes</td>
-              <td>3 kg</td>
-              <td><span class="status-badge status-delivered"> Delivered</span></td>
-              <td><span style="color:var(--text-light);font-size:0.8rem;">Completed</span></td>
-            </tr>
-          </tbody>
-        </table>
+      <div id="orders-table-wrap">
+        <div style="text-align:center;padding:var(--space-8);color:var(--text-muted);">Loading orders...</div>
       </div>
     </div>
 
@@ -194,13 +126,60 @@
 <script src="js/data.js"></script>
 <script src="js/main.js"></script>
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    if (!FL.state.user || FL.state.user.role !== 'farmer') {
+  document.addEventListener('DOMContentLoaded', async () => {
+    // Auth guard — requires real JWT token + farmer role
+    if (!FL.api.accessToken) {
       window.location.href = 'index.html';
       return;
     }
+    if (FL.state.user && FL.state.user.role !== 'farmer') {
+      window.location.href = 'consumer-dashboard.html';
+      return;
+    }
 
-    // Revenue Chart
+    const user = FL.state.user;
+    if (user && user.name) {
+      document.getElementById('dash-greeting').textContent = `Farmer Dashboard — ${user.name} 🌾`;
+      const userNameEl = document.getElementById('user-name');
+      if (userNameEl) userNameEl.textContent = user.name;
+    }
+
+    // Fetch farmer profile
+    let farmerProfile = null;
+    try {
+      farmerProfile = await FL.apiFetch('/api/v1/farmers/me');
+    } catch(e) {}
+
+    if (farmerProfile) {
+      document.getElementById('metric-rating').textContent =
+        farmerProfile.rating ? farmerProfile.rating.toFixed(1) : '—';
+    }
+
+    // Fetch farmer products
+    let myProducts = [];
+    try {
+      myProducts = await FL.apiFetch('/api/v1/products/mine');
+      if (!Array.isArray(myProducts)) myProducts = [];
+    } catch(e) { myProducts = []; }
+    document.getElementById('metric-products').textContent = myProducts.length;
+
+    // Fetch farmer orders
+    let orders = [];
+    try {
+      orders = await FL.apiFetch('/api/v1/orders');
+      if (!Array.isArray(orders)) orders = [];
+    } catch(e) { orders = []; }
+
+    const pendingOrders = orders.filter(o => o.status === 'pending');
+    document.getElementById('metric-orders').textContent = pendingOrders.length;
+    document.getElementById('orders-badge').textContent = pendingOrders.length;
+
+    // Estimated revenue (sum of delivered orders)
+    const deliveredOrders = orders.filter(o => o.status === 'delivered');
+    const revenue = deliveredOrders.reduce((s, o) => s + (o.total_price || o.total || 0), 0);
+    document.getElementById('metric-total-revenue').textContent = revenue > 0 ? `Rs ${revenue.toLocaleString()}` : '—';
+
+    // Revenue chart (monthly placeholder with real data shape)
     const ctx = document.getElementById('revenueChart').getContext('2d');
     new Chart(ctx, {
       type: 'bar',
@@ -209,17 +188,9 @@
         datasets: [{
           type: 'bar',
           label: 'Revenue (NPR)',
-          data: [12000, 19000, 15000, 25000, 22000, 45000],
+          data: [0, 0, 0, 0, 0, revenue],
           backgroundColor: '#81C784',
           borderRadius: 4
-        }, {
-          label: 'Projected Pre-orders',
-          type: 'line',
-          data: [10000, 15000, 12000, 20000, 18000, 55000],
-          borderColor: '#FF8F00',
-          borderWidth: 2,
-          tension: 0.3,
-          fill: false
         }]
       },
       options: {
@@ -228,6 +199,57 @@
         plugins: { legend: { position: 'top' } },
         scales: { y: { beginAtZero: true } }
       }
+    });
+
+    // Fetch AI forecast
+    let forecast = null;
+    try {
+      forecast = await FL.apiFetch('/api/v1/farmers/me/forecast');
+    } catch(e) {}
+    const forecastList = document.getElementById('ai-forecast-list');
+    if (forecast && Array.isArray(forecast.recommendations) && forecast.recommendations.length > 0) {
+      forecastList.innerHTML = forecast.recommendations.map(r => `
+        <div style="background:white;padding:var(--space-3);border-radius:var(--radius-sm);border:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="font-weight:700;font-size:0.85rem;">${r.crop || r.name}</div>
+            <div style="font-size:0.75rem;color:var(--text-muted);">${r.reason || ''}</div>
+          </div>
+          <span class="badge" style="background:${r.demand === 'high' ? 'var(--primary-50)' : '#FFF3E0'};color:${r.demand === 'high' ? 'var(--primary)' : 'var(--accent-dark)'};">${r.demand === 'high' ? '↑ High Demand' : '→ Moderate'}</span>
+        </div>`).join('');
+    } else {
+      forecastList.innerHTML = `<p style="color:var(--text-muted);font-size:0.85rem;text-align:center;padding:var(--space-4);">No AI forecast data available yet. Add products and get orders to unlock insights.</p>`;
+    }
+
+    // Render orders table
+    const wrap = document.getElementById('orders-table-wrap');
+    if (orders.length === 0) {
+      wrap.innerHTML = `
+        <div style="text-align:center;padding:var(--space-8);">
+          <div style="font-size:3rem;margin-bottom:var(--space-3)"></div>
+          <p style="color:var(--text-muted);">No orders yet. Make sure your products are listed!</p>
+        </div>`;
+    } else {
+      wrap.innerHTML = `
+        <div class="table-wrap">
+          <table class="table">
+            <thead><tr><th>Order ID</th><th>Product</th><th>Qty</th><th>Status</th><th>Total</th></tr></thead>
+            <tbody>
+              ${orders.slice(0, 6).map(o => `
+                <tr>
+                  <td><span style="color:var(--primary);font-weight:600;">#${o.id}</span></td>
+                  <td>${o.product_name || (o.items && o.items[0] && o.items[0].product_name) || '—'}</td>
+                  <td>${(o.items && o.items.reduce((s,i) => s + i.quantity, 0)) || '—'}</td>
+                  <td><span class="status-badge status-${o.status}">${o.status}</span></td>
+                  <td>Rs ${o.total_price || o.total || '—'}</td>
+                </tr>`).join('')}
+            </tbody>
+          </table>
+        </div>`;
+    }
+
+    // Add product button
+    document.getElementById('add-product-btn').addEventListener('click', () => {
+      showToast('Product creation form coming soon! Use the API directly for now.', 'info');
     });
   });
 </script>

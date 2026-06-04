@@ -225,12 +225,21 @@ const Auth = {
       });
       FL.setTokens(data.access_token, data.refresh_token);
       const role = await Auth.detectRole();
-      FL.state.user = { name: email, email, role };
+      // Try to get real name from user profile
+      let name = email;
+      try {
+        const profile = await FL.apiFetch('/api/v1/users/me');
+        if (profile && profile.full_name) name = profile.full_name;
+      } catch(e) {}
+      FL.state.user = { name, email, role };
       FL.state.role = role;
       localStorage.setItem('fl_user', JSON.stringify(FL.state.user));
       Auth.hide();
       updateAuthUI();
-      showToast('Logged in successfully', 'success');
+      showToast(`Welcome back, ${name}! 🌾`, 'success');
+      setTimeout(() => {
+        window.location.href = role === 'farmer' ? 'farmer-dashboard.html' : 'consumer-dashboard.html';
+      }, 1000);
       return true;
     } catch (err) {
       showToast(err.message || 'Login failed', 'error');
@@ -255,7 +264,10 @@ const Auth = {
       localStorage.setItem('fl_user', JSON.stringify(FL.state.user));
       Auth.hide();
       updateAuthUI();
-      showToast('Account created', 'success');
+      showToast(`Welcome to HaatBazaar, ${name}! 🌾`, 'success');
+      setTimeout(() => {
+        window.location.href = role === 'farmer' ? 'farmer-dashboard.html' : 'consumer-dashboard.html';
+      }, 1000);
       return true;
     } catch (err) {
       showToast(err.message || 'Sign up failed', 'error');
@@ -272,82 +284,32 @@ const Auth = {
   },
   initApiForms() {
     const loginPanel = document.querySelector('.auth-panel[data-panel="login"]');
-    if (loginPanel && !loginPanel.querySelector('[data-api-login]')) {
-      loginPanel.insertAdjacentHTML('beforeend', `
-        <div class="auth-api-form" data-api-login style="margin-top:var(--space-4);">
-          <div class="form-group" style="margin-bottom:var(--space-3);">
-            <label class="form-label">Email</label>
-            <input type="email" class="form-input" data-api-email placeholder="you@example.com">
-          </div>
-          <div class="form-group" style="margin-bottom:var(--space-3);">
-            <label class="form-label">Password</label>
-            <input type="password" class="form-input" data-api-password placeholder="********">
-          </div>
-          <button type="button" class="btn btn-primary w-full" data-api-login-btn style="width:100%;justify-content:center;">Log In with API</button>
-          <p style="font-size:0.75rem;color:var(--text-muted);margin-top:var(--space-2);">Use your backend account credentials.</p>
-        </div>
-      `);
+    if (loginPanel) {
       const loginBtn = loginPanel.querySelector('[data-api-login-btn]');
-      loginBtn?.addEventListener('click', async () => {
-        const email = loginPanel.querySelector('[data-api-email]')?.value?.trim();
-        const password = loginPanel.querySelector('[data-api-password]')?.value || '';
-        await Auth.loginApi(email, password);
-      });
+      if (loginBtn) {
+        loginBtn.addEventListener('click', async () => {
+          const email = loginPanel.querySelector('[data-api-email]')?.value?.trim();
+          const password = loginPanel.querySelector('[data-api-password]')?.value || '';
+          await Auth.loginApi(email, password);
+        });
+      }
     }
 
     const signupPanel = document.querySelector('.auth-panel[data-panel="signup"]');
-    if (signupPanel && !signupPanel.querySelector('[data-api-signup]')) {
-      signupPanel.insertAdjacentHTML('beforeend', `
-        <div class="auth-api-form" data-api-signup>
-          <div class="form-group" style="margin-bottom:var(--space-3);">
-            <label class="form-label">Full Name</label>
-            <input type="text" class="form-input" data-api-name placeholder="Full name">
-          </div>
-          <div class="form-group" style="margin-bottom:var(--space-3);">
-            <label class="form-label">Email</label>
-            <input type="email" class="form-input" data-api-email placeholder="you@example.com">
-          </div>
-          <div class="form-group" style="margin-bottom:var(--space-3);">
-            <label class="form-label">Phone</label>
-            <input type="tel" class="form-input" data-api-phone placeholder="+9779812345678">
-          </div>
-          <div class="form-group" style="margin-bottom:var(--space-3);">
-            <label class="form-label">Password</label>
-            <input type="password" class="form-input" data-api-password placeholder="At least 8 chars with 1 digit and 1 uppercase">
-          </div>
-          <button type="button" class="btn btn-primary w-full" data-api-signup-btn style="width:100%;justify-content:center;">Create Account</button>
-        </div>
-      `);
+    if (signupPanel) {
       const signupBtn = signupPanel.querySelector('[data-api-signup-btn]');
-      signupBtn?.addEventListener('click', async () => {
-        const payload = {
-          full_name: signupPanel.querySelector('[data-api-name]')?.value?.trim(),
-          email: signupPanel.querySelector('[data-api-email]')?.value?.trim(),
-          phone: signupPanel.querySelector('[data-api-phone]')?.value?.trim(),
-          password: signupPanel.querySelector('[data-api-password]')?.value || '',
-        };
-        await Auth.registerApi(payload);
-      });
+      if (signupBtn) {
+        signupBtn.addEventListener('click', async () => {
+          const payload = {
+            full_name: signupPanel.querySelector('[data-api-name]')?.value?.trim(),
+            email: signupPanel.querySelector('[data-api-email]')?.value?.trim(),
+            phone: signupPanel.querySelector('[data-api-phone]')?.value?.trim(),
+            password: signupPanel.querySelector('[data-api-password]')?.value || '',
+          };
+          await Auth.registerApi(payload);
+        });
+      }
     }
-  },
-  login(role) {
-    const users = {
-      consumer: { name: "Bikash Adhikari", nameNp: "बिकाश अधिकारी", role: 'consumer', email: "bikash@demo.com" },
-      farmer:   { name: "Hari Bahadur Tamang", nameNp: "हरि बहादुर तामाङ", role: 'farmer', email: "hari@demo.com" }
-    };
-    FL.state.user = users[role] || users.consumer;
-    FL.state.role = role;
-    localStorage.setItem('fl_user', JSON.stringify(FL.state.user));
-    Auth.hide();
-    updateAuthUI();
-    showToast(`Welcome, ${FL.state.user.name}! 🌾`, 'success');
-    setTimeout(() => {
-      const redirects = {
-        consumer: 'consumer-dashboard.html',
-        farmer: 'farmer-dashboard.html'
-      };
-      if (redirects[role]) window.location.href = redirects[role];
-    }, 1200);
   },
   logout() {
     FL.state.user = null;
@@ -433,18 +395,9 @@ document.addEventListener('DOMContentLoaded', () => {
     tab.addEventListener('click', () => Auth.switchTab(tab.dataset.tab));
   });
 
-  // Role quick login buttons (demo)
-  document.querySelectorAll('[data-role-login]').forEach(btn => {
-    btn.addEventListener('click', () => Auth.login(btn.dataset.roleLogin));
-  });
-
   // Logout
   document.querySelectorAll('[data-logout]').forEach(btn => {
     btn.addEventListener('click', Auth.logout);
   });
 
-  // Add harvest alert demo
-  setTimeout(() => {
-    showToast('🌾 Harvest Alert: Fresh Strawberries from Pokhara are now available!', 'harvest', 6000);
-  }, 3000);
 });
